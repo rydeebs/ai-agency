@@ -58,16 +58,7 @@ export function HeroSection() {
               flexDirection: "column",
             }}
           >
-            {/* Main row - left content and right stats */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-end",
-                flex: 1,
-              }}
-            >
-            {/* Left content column */}
+            {/* Left content column - top aligned */}
             <div
               style={{
                 maxWidth: "640px",
@@ -91,9 +82,9 @@ export function HeroSection() {
               >
                 Transform
                 <br />
-                <span style={{ marginLeft: "0.3em" }}>your Business</span>
+                your Business
                 <br />
-                <span style={{ color: "#D3F463", marginLeft: "0.3em" }}>with AI.</span>
+                <span style={{ color: "#D3F463" }}>with AI.</span>
               </h1>
               
               {/* Subheadline */}
@@ -203,53 +194,56 @@ export function HeroSection() {
                 </Link>
               </div>
             </div>
-
-            {/* Stats row — right side, bottom aligned with CTA */}
-            <div
-              style={{
-                display: "flex",
-                gap: "40px",
-                alignItems: "flex-end",
-              }}
-            >
-              {stats.map((stat) => (
-                <div
-                  key={stat.label}
+          </div>
+          
+          {/* Stats row — bottom of section */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: "48px",
+              right: "80px",
+              display: "flex",
+              gap: "40px",
+              alignItems: "flex-end",
+              zIndex: 1,
+            }}
+          >
+            {stats.map((stat) => (
+              <div
+                key={stat.label}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "4px",
+                  minWidth: stat.number === "12 Weeks" ? "160px" : "140px",
+                }}
+              >
+                <span
                   style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "4px",
-                    minWidth: stat.number === "12 Weeks" ? "160px" : "140px",
+                    fontFamily:
+                      'var(--font-darker-grotesque), "Darker Grotesque", sans-serif',
+                    fontSize: "48px",
+                    fontWeight: 500,
+                    color: "#D3F463",
+                    lineHeight: 1,
+                    letterSpacing: "-1px",
                   }}
                 >
-                  <span
-                    style={{
-                      fontFamily:
-                        'var(--font-darker-grotesque), "Darker Grotesque", sans-serif',
-                      fontSize: "48px",
-                      fontWeight: 500,
-                      color: "#D3F463",
-                      lineHeight: 1,
-                      letterSpacing: "-1px",
-                    }}
-                  >
-                    {stat.number}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "13px",
-                      color: "rgba(255,255,255,0.5)",
-                      fontFamily: "var(--font-dm-sans), sans-serif",
-                      lineHeight: 1.3,
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {stat.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-            </div>
+                  {stat.number}
+                </span>
+                <span
+                  style={{
+                    fontSize: "13px",
+                    color: "rgba(255,255,255,0.5)",
+                    fontFamily: "var(--font-dm-sans), sans-serif",
+                    lineHeight: 1.3,
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {stat.label}
+                </span>
+              </div>
+            ))}
           </div>
 
           {/* Glowing lime element — right side */}

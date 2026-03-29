@@ -71,10 +71,10 @@ export function StickyCardsSection() {
   return (
     <section
       id="why-us"
-      style={{ backgroundColor: '#EFEFEF', position: 'relative', overflow: 'hidden' }}
+      style={{ backgroundColor: '#EFEFEF', position: 'relative' }}
     >
       {/* Grid background with fade */}
-      <div className="grid-bg-light" />
+      <div className="grid-bg-light" style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }} />
       
       <div
         style={{
@@ -82,13 +82,14 @@ export function StickyCardsSection() {
           maxWidth: '1280px',
           margin: '0 auto',
           position: 'relative',
+          zIndex: 1,
         }}
       >
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '40% 60%',
-            gap: '40px',
+            gridTemplateColumns: '35% 65%',
+            gap: '60px',
             alignItems: 'start',
           }}
         >
@@ -96,9 +97,8 @@ export function StickyCardsSection() {
           <div
             style={{
               position: 'sticky',
-              top: '128px',
+              top: '100px',
               height: 'fit-content',
-              alignSelf: 'start',
               display: 'flex',
               flexDirection: 'column',
               gap: '24px',
@@ -151,7 +151,7 @@ export function StickyCardsSection() {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '0',
+              paddingBottom: '200px',
             }}
           >
             {cards.map((card, index) => (
@@ -159,14 +159,14 @@ export function StickyCardsSection() {
                 key={index}
                 style={{
                   position: 'sticky',
-                  top: `${160 + index * 16}px`,
-                  height: '280px',
+                  top: `${100 + index * 20}px`,
+                  height: '260px',
                   borderRadius: '20px',
                   display: 'flex',
                   overflow: 'hidden',
                   backgroundColor: card.bg,
-                  marginBottom: '16px',
-                  boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
+                  marginBottom: '-100px',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
                   zIndex: index + 1,
                 }}
               >
