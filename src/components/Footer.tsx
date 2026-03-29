@@ -1,14 +1,14 @@
 "use client";
 
 const navLinksCol1 = [
-  { label: 'Why us?', href: '#why-us' },
-  { label: 'Our Works', href: '#works' },
+  { label: 'AI Transformation', href: '#why-us' },
   { label: 'Services', href: '#services' },
+  { label: 'Pricing', href: '#pricing' },
 ];
 
 const navLinksCol2 = [
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Reviews', href: '#reviews' },
+  { label: 'About Us', href: '#team' },
+  { label: 'Outcomes', href: '#reviews' },
 ];
 
 export function Footer() {
@@ -32,18 +32,32 @@ export function Footer() {
           }}
         >
           {/* Brand text */}
-          <p
-            style={{
-              fontSize: '16px',
-              color: 'rgba(255,255,255,0.45)',
-              maxWidth: '240px',
-              lineHeight: 1.6,
-              margin: 0,
-              fontFamily: 'var(--font-dm-sans, DM Sans, sans-serif)',
-            }}
-          >
-            We&apos;re not just entrepreneurs, we&apos;re designers at heart
-          </p>
+          <div>
+            <p
+              style={{
+                fontSize: '20px',
+                color: 'white',
+                fontWeight: 700,
+                margin: '0 0 8px 0',
+                fontFamily: 'var(--font-dm-sans, DM Sans, sans-serif)',
+              }}
+            >
+              GenAIPI
+            </p>
+            <p
+              style={{
+                fontSize: '14px',
+                color: 'rgba(255,255,255,0.45)',
+                maxWidth: '280px',
+                lineHeight: 1.6,
+                margin: 0,
+                fontFamily: 'var(--font-dm-sans, DM Sans, sans-serif)',
+              }}
+            >
+              We embed with teams to build AI systems that actually ship. 
+              No slide decks. No pilot purgatory. Just results.
+            </p>
+          </div>
 
           {/* Nav links — two columns combined in one grid area using sub-grid */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 24px', gridColumn: 'span 1' }}>
@@ -101,7 +115,7 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Book a call button */}
+          {/* Book a Call button */}
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <a
               href="#contact"
@@ -120,7 +134,7 @@ export function Footer() {
                 whiteSpace: 'nowrap',
               }}
             >
-              Book a call ↗
+              Let&apos;s talk ↗
             </a>
           </div>
         </div>
@@ -141,7 +155,7 @@ export function Footer() {
               fontFamily: 'var(--font-dm-sans, DM Sans, sans-serif)',
             }}
           >
-            © 2026 Creative Propeller. Based in Switzerland
+            © 2026 General Artificial Intelligence Proficiency Institute. All rights reserved.
           </p>
         </div>
       </div>

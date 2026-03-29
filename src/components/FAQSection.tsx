@@ -4,24 +4,24 @@ import { useState } from 'react';
 
 const faqs = [
   {
-    q: 'What services are included in the subscription?',
-    a: "Your subscription gives you access to unlimited designs, from websites to motion design. We'll work on one request at a time.",
+    q: 'How is this different from hiring an AI consultant?',
+    a: "Consultants give you a report and leave. We sit in your Slack, join your standups, and build alongside your team until the systems are live and your people know how to run them. When we're done, you don't need us anymore — that's the point.",
   },
   {
-    q: 'How do I submit design requests?',
-    a: 'You can submit design requests through our designated software platform, providing detailed instructions and context for each task.',
+    q: 'What kind of results can we expect?',
+    a: "It depends on where you're starting, but most teams see their first automation live within 2-3 weeks. Typical outcomes include 30-50% reduction in manual task time, faster customer response, and team members who actually enjoy using AI instead of fearing it.",
   },
   {
-    q: 'What if I need help after the launch?',
-    a: 'The turnaround time varies based on task complexity. We strive to complete tasks promptly during regular working hours (9 a.m. to 5 p.m. Swiss time, Monday to Friday).',
+    q: 'Do you work with companies our size?',
+    a: "We work best with teams of 20-500 people. Big enough to have real operational complexity, small enough that we can move fast without getting stuck in enterprise procurement limbo.",
   },
   {
-    q: 'Can I request revisions for my designs?',
-    a: 'Yes, our service includes unlimited revision rounds. You can request revisions until you are satisfied, as long as the requests are reasonable and not entirely new tasks.',
+    q: 'What if our team isn\'t technical?',
+    a: "That's actually most of our clients. We specialize in making AI accessible to ops teams, sales orgs, HR departments — people who know their workflows cold but haven't touched code. By the end, they're building their own automations.",
   },
   {
-    q: 'How long does a project take?',
-    a: 'Imagine you want to build a house. If you want a one-meter square house, it will take much less time than a mansion. The same principle applies to our design services.',
+    q: 'How long does an engagement typically last?',
+    a: "Our standard partnership is 12 weeks: discovery, implementation, training, and handoff. Some teams bring us back for new initiatives, but the goal is always to make you self-sufficient. We also offer 2-week quick-start sprints for teams who want to test the waters.",
   },
 ];
 

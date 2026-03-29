@@ -1,9 +1,9 @@
 const teamBadges = [
-  { name: 'Mykhailo', color: '#8B5CF6', x: '15%', y: '15%' },
-  { name: 'Maxim', color: '#EF4444', x: '55%', y: '20%' },
-  { name: 'Rosario', color: '#10B981', x: '20%', y: '65%' },
-  { name: 'Benjamin', color: '#F59E0B', x: '45%', y: '55%' },
-  { name: 'Mycha', color: '#06B6D4', x: '75%', y: '70%' },
+  { name: 'AI Strategy', color: '#8B5CF6', x: '15%', y: '15%' },
+  { name: 'Training', color: '#EF4444', x: '55%', y: '20%' },
+  { name: 'Implementation', color: '#10B981', x: '20%', y: '65%' },
+  { name: 'Analytics', color: '#F59E0B', x: '45%', y: '55%' },
+  { name: 'Support', color: '#06B6D4', x: '75%', y: '70%' },
 ]
 
 const designScreens = [
@@ -22,6 +22,9 @@ export function FoundersSection() {
       style={{
         backgroundColor: '#0F1012',
         padding: '80px',
+        backgroundImage:
+          'linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
+        backgroundSize: '160px 160px',
       }}
     >
       <div
@@ -62,7 +65,7 @@ export function FoundersSection() {
                 fontWeight: 500,
               }}
             >
-              TEAM
+              WHO WE ARE
             </span>
             <h2
               style={{
@@ -75,8 +78,8 @@ export function FoundersSection() {
                 lineHeight: 1.1,
               }}
             >
-              We&apos;re not just entrepreneurs,{' '}
-              <span style={{ color: '#D3F463' }}>we&apos;re designers at heart.</span>
+              Operators, not{' '}
+              <span style={{ color: '#D3F463' }}>observers.</span>
             </h2>
           </div>
 
@@ -88,12 +91,14 @@ export function FoundersSection() {
               textAlign: 'center',
               marginBottom: '64px',
               fontFamily: 'var(--font-dm-sans)',
-              maxWidth: '600px',
+              maxWidth: '700px',
               marginLeft: 'auto',
               marginRight: 'auto',
             }}
           >
-            A global team dedicated to helping make your dream design a reality.
+            We&apos;re builders who got tired of watching companies fumble AI adoption. 
+            So we started embedding directly with teams — shipping automations, training staff, 
+            and leaving behind systems that actually stick.
           </p>
 
           {/* Team video mockup */}
@@ -245,7 +250,7 @@ export function FoundersSection() {
                   fontFamily: 'var(--font-dm-sans)',
                 }}
               >
-                design-system.fig
+                ai-transformation-dashboard.app
               </div>
             </div>
           </div>

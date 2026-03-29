@@ -4,77 +4,78 @@ import Image from 'next/image';
 
 const testimonials = [
   {
-    name: 'Darren Webb',
-    title: 'Co-Founder & CEO',
-    company: 'Mindset',
+    name: 'James Thornton',
+    title: 'CEO',
+    company: 'Meridian Auto',
     avatar: '/images/avatar-darren.avif',
     quote:
-      'Amazing buddy! The team truly understood our vision and delivered exceptional results that exceeded our expectations.',
+      'I was skeptical — we\'d been burned by consultants before. But this team actually shipped. Within 8 weeks, our ops team cut reporting time by 60%. Real results, not slide decks.',
     linkedIn: true,
+    featured: true,
   },
   {
-    name: 'CJ van der Westhuizen',
-    title: 'Co-Founder',
-    company: 'Culabr',
-    avatar: '/images/avatar-cj.avif',
-    quote:
-      "They've been really responsive, great at communicating and brought some really, really slick designs. For any start-up, I couldn't recommend them more.",
-    linkedIn: true,
-  },
-  {
-    name: 'Katherine Galvin',
-    title: 'Co-Founder & CEO',
-    company: 'AIFluence',
+    name: 'Priya Sharma',
+    title: 'VP of Operations',
+    company: 'ScaleForce',
     avatar: '/images/avatar-katherine.avif',
     quote:
-      'All good! Working with Creative Propeller was a breeze. Professional, fast, and the quality was outstanding.',
+      "We tried to do AI internally for a year — complete chaos. They came in, audited our workflows, and built automations that actually stuck. Our team finally gets it.",
     linkedIn: true,
   },
   {
-    name: 'Abraham Micael',
-    title: 'Product Strategy & Operations',
-    company: 'LaunchXR',
+    name: 'Marcus Webb',
+    title: 'Chief Digital Officer',
+    company: 'Horizon Health',
+    avatar: '/images/avatar-cj.avif',
+    quote:
+      'The difference? They didn\'t just recommend tools — they sat with our people and built alongside them. Now our staff trains new hires on AI workflows they created.',
+    linkedIn: true,
+  },
+  {
+    name: 'Elena Costa',
+    title: 'Director of Innovation',
+    company: 'Atlas Financial',
     avatar: '/images/avatar-abraham.avif',
     quote:
-      'His turnaround times were incredible, and his commitment to delivering an exceptional deck was evident throughout the process.',
+      'Our customer response time dropped from 4 hours to 12 minutes. Not because we hired more people — because they helped us work smarter.',
     linkedIn: true,
   },
   {
-    name: 'Tom Fitzgerald',
-    title: 'Strategy Lead',
-    company: 'Iterum',
+    name: 'David Park',
+    title: 'COO',
+    company: 'Apex Logistics',
     avatar: null,
     quote:
-      "They've been really responsive, great at communicating and brought some really, really slick designs. For any start-up, I couldn't recommend them more.",
+      "We automated 30+ hours of weekly admin work. My operations managers finally have time to actually manage operations instead of pushing paper.",
     linkedIn: true,
   },
 ];
 
 const projects = [
-  { name: '535West', bg: '#1A1A2E', textColor: 'white', tag: 'Investment Deck' },
-  { name: 'Veratad', bg: '#6B4EFF', textColor: 'white', tag: 'Brand & Web Design' },
-  { name: 'Upwardli', bg: '#4F46E5', textColor: 'white', tag: 'Mobile App UI' },
-  { name: 'CryptoLock', bg: '#0F172A', textColor: 'white', tag: 'SaaS UI' },
+  { name: 'Meridian Auto', bg: '#1A1A2E', textColor: 'white', tag: 'Full Stack AI Integration' },
+  { name: 'ScaleForce', bg: '#6B4EFF', textColor: 'white', tag: 'Team Enablement Program' },
+  { name: 'Horizon Health', bg: '#4F46E5', textColor: 'white', tag: 'Workflow Automation' },
+  { name: 'Atlas Financial', bg: '#0F172A', textColor: 'white', tag: 'Customer Experience AI' },
 ];
 
 const floatingAvatars = [
   {
-    initials: 'DW',
-    badge: 'Amazing buddy!',
+    initials: 'JT',
+    badge: 'Finally works!',
     badgeBg: '#D3F463',
     badgeColor: '#17181B',
     style: { left: '5%', top: '30%' } as React.CSSProperties,
   },
   {
-    initials: 'KG',
-    badge: 'Perfect',
+    initials: 'PS',
+    badge: 'Worth it',
     badgeBg: '#007AFF',
     badgeColor: 'white',
     style: { right: '30%', top: '20%' } as React.CSSProperties,
   },
   {
-    initials: 'AM',
-    badge: 'All good',
+    initials: 'MW',
+    badge: 'No more chaos',
     badgeBg: '#FFE176',
     badgeColor: '#17181B',
     style: { right: '5%', top: '40%' } as React.CSSProperties,
@@ -166,7 +167,7 @@ export function ReviewsSection() {
               marginBottom: '16px',
             }}
           >
-            CLIENT REVIEWS
+            CLIENT RESULTS
           </span>
           <h2
             style={{
@@ -178,7 +179,8 @@ export function ReviewsSection() {
               lineHeight: 1.1,
             }}
           >
-            Don&apos;t take our word for it.
+            Teams that stopped{' '}
+            <span style={{ color: '#8D96FD' }}>fighting AI and started winning.</span>
           </h2>
         </div>
 

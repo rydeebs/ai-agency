@@ -3,174 +3,219 @@ import { Navbar } from "./Navbar";
 import { ClientLogoBanner } from "./ClientLogoBanner";
 
 const stats = [
-  { number: "+50", label: "projects completed" },
-  { number: "+1000", label: "hours of creative work" },
-  { number: "+300", label: "Hours Spent Finding the Perfect Font" },
+  { number: "3x", label: "faster team output" },
+  { number: "40%", label: "reduction in manual tasks" },
+  { number: "12 Weeks", label: "to full AI integration" },
 ];
 
 const features = [
-  "Same day delivery*",
-  "Dedicated project manager",
-  "Any Design asset",
+  "Embedded AI leadership",
+  "Custom implementation roadmap",
+  "Live team workshops",
+  "Continuous optimization",
 ];
 
 export function HeroSection() {
   return (
-    <section
-      style={{
-        height: "954px",
-        overflow: "hidden",
-        position: "relative",
-        padding: "16px",
-        backgroundColor: "#EFEFEF",
-      }}
-    >
-      {/* Dark card */}
-      <div
+    <>
+      <section
         style={{
-          backgroundColor: "#17181B",
-          borderRadius: "12px",
-          position: "relative",
+          height: "900px",
           overflow: "hidden",
-          height: "100%",
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
-          backgroundSize: "160px 160px",
+          position: "relative",
+          padding: "16px",
+          backgroundColor: "#EFEFEF",
         }}
       >
-        {/* Navbar overlaid on top */}
-        <Navbar />
-
-        {/* Hero main content */}
+        {/* Dark card */}
         <div
           style={{
-            maxWidth: "1280px",
-            margin: "0 auto",
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            padding: "0 80px",
-            paddingTop: "120px",
+            backgroundColor: "#17181B",
+            borderRadius: "12px",
             position: "relative",
-            zIndex: 1,
+            overflow: "hidden",
+            height: "100%",
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
+            backgroundSize: "160px 160px",
           }}
         >
-          {/* Left content column */}
+          {/* Navbar overlaid on top */}
+          <Navbar />
+
+          {/* Hero main content */}
           <div
             style={{
-              maxWidth: "640px",
-              flex: 1,
+              maxWidth: "1280px",
+              margin: "0 auto",
+              height: "100%",
+              padding: "0 80px",
+              paddingTop: "120px",
+              position: "relative",
+              zIndex: 1,
             }}
           >
-            {/* Switzerland badge */}
+            {/* Left content column */}
             <div
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                border: "1px solid rgba(255,255,255,0.25)",
-                borderRadius: "100px",
-                padding: "8px 16px",
-                fontSize: "14px",
-                color: "white",
-                marginBottom: "32px",
-                fontFamily: "var(--font-dm-sans), sans-serif",
+                maxWidth: "640px",
               }}
             >
-              🇨🇭 Based in Switzerland
-            </div>
+              {/* AI Leadership badge */}
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  border: "1px solid rgba(255,255,255,0.25)",
+                  borderRadius: "100px",
+                  padding: "8px 16px",
+                  fontSize: "14px",
+                  color: "white",
+                  marginBottom: "32px",
+                  fontFamily: "var(--font-dm-sans), sans-serif",
+                }}
+              >
+                🤖 Your AI Integration Partner
+              </div>
 
-            {/* H1 */}
-            <h1
-              style={{
-                fontFamily:
-                  'var(--font-darker-grotesque), "Darker Grotesque", sans-serif',
-                fontSize: "clamp(80px, 10vw, 144px)",
-                fontWeight: 500,
-                color: "white",
-                lineHeight: 0.95,
-                letterSpacing: "-3px",
-                margin: 0,
-              }}
-            >
-              Design
-              <br />
-              On-demand
-            </h1>
+              {/* H1 */}
+              <h1
+                style={{
+                  fontFamily:
+                    'var(--font-darker-grotesque), "Darker Grotesque", sans-serif',
+                  fontSize: "clamp(64px, 8vw, 120px)",
+                  fontWeight: 500,
+                  color: "white",
+                  lineHeight: 0.95,
+                  letterSpacing: "-3px",
+                  margin: 0,
+                }}
+              >
+                AI that actually
+                <br />
+                <span style={{ color: "#D3F463" }}>moves the needle.</span>
+              </h1>
+              
+              {/* Subheadline */}
+              <p
+                style={{
+                  fontSize: "18px",
+                  color: "rgba(255,255,255,0.7)",
+                  lineHeight: 1.6,
+                  marginTop: "24px",
+                  marginBottom: "0",
+                  maxWidth: "500px",
+                  fontFamily: "var(--font-dm-sans), sans-serif",
+                }}
+              >
+                Stop drowning in AI hype. We embed directly with your team to build real systems 
+                that cut costs, accelerate output, and free your people to do meaningful work.
+              </p>
 
-            {/* Feature list */}
-            <ul
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "12px",
-                margin: "32px 0",
-                padding: 0,
-                listStyle: "none",
-              }}
-            >
-              {features.map((feature) => (
-                <li
-                  key={feature}
+              {/* Vertical auto-scrolling feature ticker */}
+              <div
+                style={{
+                  height: "28px",
+                  overflow: "hidden",
+                  margin: "32px 0",
+                }}
+              >
+                <div
                   style={{
-                    display: "flex",
-                    gap: "12px",
-                    alignItems: "center",
+                    animation: "ticker-scroll 4s linear infinite",
                   }}
                 >
-                  <span
-                    style={{
-                      color: "#D3F463",
-                      fontSize: "12px",
-                      flexShrink: 0,
-                      lineHeight: 1,
-                    }}
-                  >
-                    ✦
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "16px",
-                      color: "rgba(255,255,255,0.85)",
-                      fontFamily: "var(--font-dm-sans), sans-serif",
-                    }}
-                  >
-                    {feature}
-                  </span>
-                </li>
-              ))}
-            </ul>
+                  {[...features, ...features].map((feature, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        display: "flex",
+                        gap: "12px",
+                        alignItems: "center",
+                        height: "28px",
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: "#D3F463",
+                          fontSize: "12px",
+                          flexShrink: 0,
+                          lineHeight: 1,
+                        }}
+                      >
+                        ✦
+                      </span>
+                      <span
+                        style={{
+                          fontSize: "16px",
+                          color: "rgba(255,255,255,0.85)",
+                          fontFamily: "var(--font-dm-sans), sans-serif",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {feature}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-            {/* Large Get Started CTA */}
-            <Link
-              href="#"
-              style={{
-                backgroundColor: "#D3F463",
-                color: "#17181B",
-                borderRadius: "8px",
-                padding: "20px 32px",
-                fontSize: "18px",
-                fontWeight: 700,
-                fontFamily: "var(--font-dm-sans), sans-serif",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                textDecoration: "none",
-                transition: "opacity 0.2s ease",
-              }}
-            >
-              Get Started ↗
-            </Link>
+              {/* CTA Buttons */}
+              <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+                <Link
+                  href="#contact"
+                  style={{
+                    backgroundColor: "#D3F463",
+                    color: "#17181B",
+                    borderRadius: "8px",
+                    padding: "20px 32px",
+                    fontSize: "18px",
+                    fontWeight: 700,
+                    fontFamily: "var(--font-dm-sans), sans-serif",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    textDecoration: "none",
+                    transition: "opacity 0.2s ease",
+                  }}
+                >
+                  Schedule Strategy Call ↗
+                </Link>
+                <Link
+                  href="#why-us"
+                  style={{
+                    backgroundColor: "transparent",
+                    color: "white",
+                    borderRadius: "8px",
+                    padding: "20px 32px",
+                    fontSize: "18px",
+                    fontWeight: 500,
+                    fontFamily: "var(--font-dm-sans), sans-serif",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    textDecoration: "none",
+                    border: "1px solid rgba(255,255,255,0.3)",
+                    transition: "border-color 0.2s ease",
+                  }}
+                >
+                  See How It Works
+                </Link>
+              </div>
+            </div>
           </div>
 
-          {/* Stats row */}
+          {/* Stats row — bottom right */}
           <div
             style={{
+              position: "absolute",
+              bottom: "48px",
+              right: "80px",
               display: "flex",
               gap: "48px",
-              paddingTop: "60px",
-              paddingBottom: "48px",
               alignItems: "flex-end",
+              zIndex: 1,
             }}
           >
             {stats.map((stat) => (
@@ -209,40 +254,32 @@ export function HeroSection() {
               </div>
             ))}
           </div>
-        </div>
 
-        {/* Client logo banner — scrolling pills at bottom of dark card */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            zIndex: 2,
-          }}
-        >
-          <ClientLogoBanner />
+          {/* Glowing lime element — right side */}
+          <div
+            className="animate-spin-slow"
+            style={{
+              position: "absolute",
+              right: "-100px",
+              top: "50%",
+              width: "600px",
+              height: "600px",
+              borderRadius: "50%",
+              background:
+                "conic-gradient(rgba(211, 244, 99, 0.4) 0deg, transparent 60deg, transparent 310deg, rgba(211, 244, 99, 0.4) 360deg)",
+              filter: "blur(80px)",
+              pointerEvents: "none",
+              zIndex: 0,
+            }}
+            aria-hidden="true"
+          />
         </div>
+      </section>
 
-        {/* Glowing lime element — right side */}
-        <div
-          className="animate-spin-slow"
-          style={{
-            position: "absolute",
-            right: "-100px",
-            top: "50%",
-            width: "600px",
-            height: "600px",
-            borderRadius: "50%",
-            background:
-              "conic-gradient(rgba(211, 244, 99, 0.4) 0deg, transparent 60deg, transparent 310deg, rgba(211, 244, 99, 0.4) 360deg)",
-            filter: "blur(80px)",
-            pointerEvents: "none",
-            zIndex: 0,
-          }}
-          aria-hidden="true"
-        />
+      {/* Client logo banner — below the hero section */}
+      <div style={{ backgroundColor: "#EFEFEF", padding: "0 16px" }}>
+        <ClientLogoBanner />
       </div>
-    </section>
+    </>
   );
 }

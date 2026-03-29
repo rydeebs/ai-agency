@@ -1,14 +1,14 @@
 // Scrolling client logo banner — pill-shaped logos with infinite marquee
 
 const logos = [
-  { name: "DECKO", subtitle: "THE DECK COMPANY" },
-  { name: "Keenee" },
-  { name: "Lumina" },
-  { name: "Goa Ventures" },
-  { name: "Your Friends Are Boring ☺" },
-  { name: "535West" },
-  { name: "CryptoLock" },
-  { name: "Off the Grid" },
+  { name: "Meridian Auto", subtitle: "60% TIME SAVED" },
+  { name: "ScaleForce" },
+  { name: "Horizon Health" },
+  { name: "Atlas Financial" },
+  { name: "Apex Logistics", subtitle: "30+ HRS AUTOMATED" },
+  { name: "Citadel Ventures" },
+  { name: "Redwood Partners" },
+  { name: "Pinnacle Tech" },
 ];
 
 function LogoPill({ name, subtitle }: { name: string; subtitle?: string }) {

@@ -51,11 +51,24 @@ export function CTASection() {
           }}
         />
 
+        {/* Grid pattern overlay */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage:
+              'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)',
+            backgroundSize: '160px 160px',
+            zIndex: 2,
+            pointerEvents: 'none',
+          }}
+        />
+
         {/* Content */}
         <div
           style={{
             position: 'relative',
-            zIndex: 2,
+            zIndex: 3,
             textAlign: 'center',
             color: 'white',
             padding: '80px',
@@ -75,7 +88,7 @@ export function CTASection() {
               lineHeight: 1.1,
             }}
           >
-            Get any design, incredibly fast
+            Stop talking about AI. Start shipping it.
           </h2>
 
           <p
@@ -83,9 +96,11 @@ export function CTASection() {
               fontSize: '20px',
               color: 'rgba(255,255,255,0.7)',
               margin: 0,
+              maxWidth: '600px',
             }}
           >
-            Click here, and we will be in touch within 24 hours.
+            Book a 30-minute call. We&apos;ll audit one of your workflows live 
+            and show you exactly what&apos;s possible — no pitch deck, no fluff.
           </p>
 
           {/* Button row */}
@@ -112,10 +127,10 @@ export function CTASection() {
                 alignItems: 'center',
               }}
             >
-              Get Started ↗
+              Book a Free Audit Call ↗
             </a>
             <a
-              href="#contact"
+              href="#pricing"
               style={{
                 backgroundColor: 'white',
                 color: '#17181B',
@@ -128,7 +143,7 @@ export function CTASection() {
                 alignItems: 'center',
               }}
             >
-              Book a Call ↗
+              View Engagement Options ↗
             </a>
           </div>
         </div>

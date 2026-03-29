@@ -1,13 +1,13 @@
 export function WhatWeDoSection() {
   const services = [
-    'Sales deck design',
-    'Digital ads',
-    'Website design',
-    'Brand guidelines',
-    'Design systems',
-    'Brochures',
-    'Motion design',
-    'Social media graphics',
+    'Workflow Automation',
+    'AI Tool Selection & Setup',
+    'Hands-On Team Workshops',
+    'Process Re-engineering',
+    'Custom GPT & Agent Builds',
+    'Data Pipeline Integration',
+    'Leadership Alignment',
+    'Ongoing Support & Iteration',
   ];
 
   // Duplicate for seamless loop
@@ -15,6 +15,7 @@ export function WhatWeDoSection() {
 
   return (
     <section
+      id="services"
       style={{ backgroundColor: '#EFEFEF' }}
       className="section_what_we_do"
     >
@@ -45,6 +46,9 @@ export function WhatWeDoSection() {
               flexDirection: 'column',
               gap: '24px',
               boxSizing: 'border-box',
+              backgroundImage:
+                'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)',
+              backgroundSize: '160px 160px',
             }}
           >
             <span
@@ -57,7 +61,7 @@ export function WhatWeDoSection() {
                 fontWeight: 500,
               }}
             >
-              WHAT DO WE DO?
+              HOW WE WORK
             </span>
 
             <h2
@@ -70,9 +74,9 @@ export function WhatWeDoSection() {
                 margin: 0,
               }}
             >
-              Netflix for design: pay once per month,{' '}
+              We don&apos;t just consult —{' '}
               <span style={{ color: '#D3F463' }}>
-                ask for anything as much as you want.
+                we build alongside you.
               </span>
             </h2>
 
@@ -211,7 +215,7 @@ export function WhatWeDoSection() {
                 >
                   Layers
                 </div>
-                {['Header', 'Hero section', 'Cards grid', 'Footer', 'Background'].map(
+                {['Discovery & Audit', 'Quick Wins Sprint', 'Deep Integration', 'Team Enablement', 'Continuous Optimization'].map(
                   (layer, i) => (
                     <div
                       key={i}

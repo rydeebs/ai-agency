@@ -8,50 +8,50 @@ interface Card {
 const cards: Card[] = [
   {
     bg: '#D8F66F',
-    heading: 'Ultra-fast delivery',
-    text: "If it takes us two hours, you'll get it in two hours, not days.",
+    heading: 'Kill the busywork',
+    text: "Reports that took hours now take minutes. Data entry that drained your team? Gone.",
     textColor: '#17181B',
   },
   {
     bg: '#8D96FD',
-    heading: 'Any design asset, from web to motion',
-    text: "We have experts in countless design fields; we'll handle each request perfectly.",
+    heading: 'Let your people think again',
+    text: "When machines handle the grind, your team finally has headspace for strategy and creativity.",
     textColor: '#17181B',
   },
   {
     bg: '#FF7D84',
-    heading: 'Flexible: pay monthly, pause anytime',
-    text: "If you don't need the service, just pause it: no questions asked.",
+    heading: 'Better margins, same headcount',
+    text: "Do more with who you have. No layoffs, no burnout — just smarter operations.",
     textColor: '#17181B',
   },
   {
     bg: '#FFE176',
-    heading: 'Dedicated project management platform',
-    text: 'No more doubt: the status of any design request is at your fingertips.',
+    heading: 'Embedded, not external',
+    text: "We work inside your team, not from a consulting tower. Slack channels, standups, the whole thing.",
     textColor: '#17181B',
   },
   {
     bg: '#D8F66F',
-    heading: "We're always there, 100% uptime",
-    text: "No matter what, we'll always manage your request: no sick days.",
+    heading: 'Quick wins in weeks, not quarters',
+    text: "First automations ship in 2-3 weeks. You see ROI before the invoice arrives.",
     textColor: '#17181B',
   },
   {
     bg: '#8D96FD',
-    heading: 'Unlimited revision rounds',
-    text: "We're done with the design once you're 100% satisfied.",
+    heading: 'We train, you own',
+    text: "Your team learns as we build. When we leave, the knowledge stays.",
     textColor: '#17181B',
   },
   {
     bg: '#FF7D84',
-    heading: '100% unique designs',
-    text: 'No design will ever be reused or recycled. Everything is custom-made for you.',
+    heading: 'Built to evolve',
+    text: "AI moves fast. We build systems that adapt as tools improve — no rebuild required.",
     textColor: '#17181B',
   },
   {
     bg: '#FFE176',
-    heading: 'Dedicated project manager',
-    text: 'A dedicated PM manages your requests end to end, so nothing falls through the cracks.',
+    heading: 'Senior AI operators, not juniors',
+    text: "Every engagement is led by practitioners who\'ve shipped AI at scale, not fresh grads with ChatGPT.",
     textColor: '#17181B',
   },
 ];
@@ -110,7 +110,7 @@ export function StickyCardsSection() {
                 fontWeight: 500,
               }}
             >
-              WHY US?
+              WHY TEAMS CHOOSE US
             </span>
 
             <h2
@@ -123,8 +123,8 @@ export function StickyCardsSection() {
                 margin: 0,
               }}
             >
-              Exceptional designs{' '}
-              <span style={{ color: '#8D96FD' }}>without compromise.</span>
+              AI that ships,{' '}
+              <span style={{ color: '#8D96FD' }}>not AI theater.</span>
             </h2>
 
             <p
@@ -136,8 +136,9 @@ export function StickyCardsSection() {
                 margin: 0,
               }}
             >
-              We know what it is to need your design ASAP and perfect. That&apos;s
-              why we built a team and process that deliver both — every time.
+              Most AI initiatives die in pilot purgatory. We&apos;re not here to run 
+              experiments — we&apos;re here to deploy systems that your team actually uses 
+              every single day.
             </p>
           </div>
 

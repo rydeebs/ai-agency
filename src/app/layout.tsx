@@ -15,8 +15,8 @@ const darkerGrotesque = Darker_Grotesque({
 });
 
 export const metadata: Metadata = {
-  title: "Creative Propeller - Design On-demand",
-  description: "Design On-demand. Dedicated project manager. Any Design asset. Same day delivery.",
+  title: "GenAIPI - AI That Actually Ships",
+  description: "We embed with your team to build AI systems that work. Workflow automation, custom GPT agents, and hands-on training. No consultants, no slide decks — just results.",
   icons: {
     icon: "/seo/favicon.png",
   },

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-function PropellerIcon() {
+function AIIcon() {
   return (
     <svg
       width="32"
@@ -12,32 +12,16 @@ function PropellerIcon() {
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
-      {/* Center hub */}
-      <circle cx="16" cy="16" r="3" fill="#D3F463" />
-      {/* Blade 1 — top-left */}
-      <path
-        d="M16 13 C14 8, 8 6, 7 10 C6 13, 10 14, 13 13 Z"
-        fill="#D3F463"
-        opacity="0.9"
-      />
-      {/* Blade 2 — bottom-right */}
-      <path
-        d="M16 19 C18 24, 24 26, 25 22 C26 19, 22 18, 19 19 Z"
-        fill="#D3F463"
-        opacity="0.9"
-      />
-      {/* Blade 3 — top-right */}
-      <path
-        d="M19 13 C24 14, 26 8, 22 7 C19 6, 18 10, 19 13 Z"
-        fill="#D3F463"
-        opacity="0.7"
-      />
-      {/* Blade 4 — bottom-left */}
-      <path
-        d="M13 19 C8 18, 6 24, 10 25 C13 26, 14 22, 13 19 Z"
-        fill="#D3F463"
-        opacity="0.7"
-      />
+      {/* Neural network / AI brain icon */}
+      <circle cx="16" cy="16" r="14" stroke="#D3F463" strokeWidth="2" fill="none" />
+      <circle cx="16" cy="10" r="2.5" fill="#D3F463" />
+      <circle cx="10" cy="18" r="2.5" fill="#D3F463" />
+      <circle cx="22" cy="18" r="2.5" fill="#D3F463" />
+      <circle cx="16" cy="22" r="2" fill="#D3F463" opacity="0.7" />
+      <line x1="16" y1="12.5" x2="11.5" y2="16" stroke="#D3F463" strokeWidth="1.5" />
+      <line x1="16" y1="12.5" x2="20.5" y2="16" stroke="#D3F463" strokeWidth="1.5" />
+      <line x1="12" y1="19" x2="14.5" y2="21" stroke="#D3F463" strokeWidth="1.5" opacity="0.7" />
+      <line x1="20" y1="19" x2="17.5" y2="21" stroke="#D3F463" strokeWidth="1.5" opacity="0.7" />
     </svg>
   );
 }
@@ -74,7 +58,7 @@ export function Navbar() {
             textDecoration: "none",
           }}
         >
-          <PropellerIcon />
+          <AIIcon />
           <span
             style={{
               fontFamily: "var(--font-dm-sans), sans-serif",
@@ -83,8 +67,7 @@ export function Navbar() {
               letterSpacing: "-0.3px",
             }}
           >
-            <span style={{ fontWeight: 400 }}>Creative</span>
-            <span style={{ fontWeight: 700 }}> Propeller</span>
+            <span style={{ fontWeight: 700 }}>GenAIPI</span>
           </span>
         </Link>
 
@@ -101,9 +84,10 @@ export function Navbar() {
           }}
         >
           {[
+            { label: "AI Transformation", href: "#why-us" },
+            { label: "Services", href: "#services" },
+            { label: "Pricing", href: "#pricing" },
             { label: "About", href: "#team" },
-            { label: "PORTFOLIO", href: "/portfolio" },
-            { label: "Prices", href: "#pricing" },
           ].map((item) => (
             <li key={item.href}>
               <Link
@@ -141,9 +125,9 @@ export function Navbar() {
             gap: "8px",
           }}
         >
-          {/* Get Started button */}
+          {/* Schedule Strategy Call button */}
           <Link
-            href="#"
+            href="#contact"
             style={{
               backgroundColor: "rgb(211, 244, 99)",
               color: "rgb(23, 24, 27)",
@@ -160,50 +144,30 @@ export function Navbar() {
               whiteSpace: "nowrap",
             }}
           >
-            Get Started ↗
+            Schedule Strategy Call ↗
           </Link>
 
           {/* Login button */}
           <Link
             href="#"
             style={{
-              backgroundColor: "rgb(0, 122, 255)",
-              color: "rgb(23, 24, 27)",
+              backgroundColor: "transparent",
+              color: "rgb(170, 172, 180)",
               borderRadius: "8px",
               padding: "12px 16px",
               fontSize: "16px",
-              fontWeight: 700,
+              fontWeight: 500,
               fontFamily: "var(--font-dm-sans), sans-serif",
               display: "flex",
               alignItems: "center",
               gap: "6px",
               textDecoration: "none",
-              transition: "opacity 0.2s ease",
+              transition: "color 0.2s ease",
               whiteSpace: "nowrap",
             }}
           >
-            Login ↗
+            Log In
           </Link>
-
-          {/* Language selector */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              color: "rgb(170, 172, 180)",
-              fontSize: "14px",
-              fontFamily: "var(--font-dm-sans), sans-serif",
-              cursor: "pointer",
-              padding: "8px 12px",
-              borderRadius: "6px",
-              marginLeft: "4px",
-            }}
-          >
-            <span>🇬🇧</span>
-            <span>English</span>
-            <span style={{ fontSize: "10px" }}>▾</span>
-          </div>
         </div>
       </div>
     </nav>
