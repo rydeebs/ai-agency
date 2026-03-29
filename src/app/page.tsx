@@ -1,9 +1,27 @@
+import { HeroSection } from "@/components/HeroSection";
+import { ReviewsSection } from "@/components/ReviewsSection";
+import { WhatWeDoSection } from "@/components/WhatWeDoSection";
+import { StickyCardsSection } from "@/components/StickyCardsSection";
+import { TickerStrips } from "@/components/TickerStrips";
+import { PricingSection } from "@/components/PricingSection";
+import { FoundersSection } from "@/components/FoundersSection";
+import { FAQSection } from "@/components/FAQSection";
+import { CTASection } from "@/components/CTASection";
+import { Footer } from "@/components/Footer";
+
 export default function Home() {
   return (
-    <main className="flex min-h-screen items-center justify-center">
-      <p className="text-muted-foreground">
-        Clone target not yet built. Run <code className="font-mono text-foreground">/clone-website</code> to start.
-      </p>
+    <main style={{ backgroundColor: "#EFEFEF" }}>
+      <HeroSection />
+      <ReviewsSection />
+      <WhatWeDoSection />
+      <StickyCardsSection />
+      <TickerStrips />
+      <PricingSection />
+      <FoundersSection />
+      <FAQSection />
+      <CTASection />
+      <Footer />
     </main>
   );
 }
