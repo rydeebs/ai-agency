@@ -13,12 +13,16 @@ const navLinksCol2 = [
 
 export function Footer() {
   return (
-    <footer style={{ backgroundColor: '#000000' }}>
+    <footer style={{ backgroundColor: '#000000', position: 'relative', overflow: 'hidden' }}>
+      {/* Grid background with fade */}
+      <div className="grid-bg-dark" />
+      
       <div
         style={{
           maxWidth: '1280px',
           margin: '0 auto',
           padding: '64px 80px 40px',
+          position: 'relative',
         }}
       >
         {/* Main grid */}

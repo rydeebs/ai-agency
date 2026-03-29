@@ -115,7 +115,10 @@ function AvatarFallback({ initials, size = 64 }: { initials: string; size?: numb
 
 export function ReviewsSection() {
   return (
-    <section id="reviews" style={{ backgroundColor: '#EFEFEF' }}>
+    <section id="reviews" style={{ backgroundColor: '#EFEFEF', position: 'relative', overflow: 'hidden' }}>
+      {/* Grid background with fade */}
+      <div className="grid-bg-light" />
+      
       <div
         style={{
           padding: '128px 80px',

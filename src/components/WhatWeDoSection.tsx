@@ -16,14 +16,18 @@ export function WhatWeDoSection() {
   return (
     <section
       id="services"
-      style={{ backgroundColor: '#EFEFEF' }}
+      style={{ backgroundColor: '#EFEFEF', position: 'relative', overflow: 'hidden' }}
       className="section_what_we_do"
     >
+      {/* Grid background with fade */}
+      <div className="grid-bg-light" />
+      
       <div
         style={{
           padding: '128px 80px',
           maxWidth: '1280px',
           margin: '0 auto',
+          position: 'relative',
         }}
       >
         <div
@@ -46,11 +50,11 @@ export function WhatWeDoSection() {
               flexDirection: 'column',
               gap: '24px',
               boxSizing: 'border-box',
-              backgroundImage:
-                'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)',
-              backgroundSize: '160px 160px',
+              position: 'relative',
             }}
           >
+            {/* Grid background with fade */}
+            <div className="grid-bg-dark" style={{ borderRadius: '16px' }} />
             <span
               style={{
                 fontSize: '12px',

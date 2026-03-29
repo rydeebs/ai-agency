@@ -51,17 +51,13 @@ export function CTASection() {
           }}
         />
 
-        {/* Grid pattern overlay */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage:
-              'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)',
-            backgroundSize: '160px 160px',
+        {/* Grid pattern overlay with fade */}
+        <div 
+          className="grid-bg-dark" 
+          style={{ 
             zIndex: 2,
-            pointerEvents: 'none',
-          }}
+            borderRadius: '20px',
+          }} 
         />
 
         {/* Content */}

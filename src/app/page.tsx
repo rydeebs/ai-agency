@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <main style={{ backgroundColor: "#EFEFEF" }}>
       <HeroSection />
-      <ReviewsSection />
+      {/* <ReviewsSection /> */}
       <WhatWeDoSection />
       <StickyCardsSection />
       <TickerStrips />

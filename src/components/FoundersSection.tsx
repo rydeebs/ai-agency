@@ -22,15 +22,18 @@ export function FoundersSection() {
       style={{
         backgroundColor: '#0F1012',
         padding: '80px',
-        backgroundImage:
-          'linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
-        backgroundSize: '160px 160px',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
+      {/* Grid background with fade */}
+      <div className="grid-bg-dark" />
+      
       <div
         style={{
           maxWidth: '1440px',
           margin: '0 auto',
+          position: 'relative',
         }}
       >
         {/* Dark card */}
@@ -41,11 +44,10 @@ export function FoundersSection() {
             padding: '80px',
             position: 'relative',
             overflow: 'hidden',
-            backgroundImage:
-              'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)',
-            backgroundSize: '160px 160px',
           }}
         >
+          {/* Grid background with fade for inner card */}
+          <div className="grid-bg-dark" style={{ borderRadius: '20px' }} />
           {/* Header */}
           <div
             style={{

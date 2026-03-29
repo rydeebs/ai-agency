@@ -71,13 +71,17 @@ export function StickyCardsSection() {
   return (
     <section
       id="why-us"
-      style={{ backgroundColor: '#EFEFEF' }}
+      style={{ backgroundColor: '#EFEFEF', position: 'relative', overflow: 'hidden' }}
     >
+      {/* Grid background with fade */}
+      <div className="grid-bg-light" />
+      
       <div
         style={{
           padding: '128px 80px',
           maxWidth: '1280px',
           margin: '0 auto',
+          position: 'relative',
         }}
       >
         <div
