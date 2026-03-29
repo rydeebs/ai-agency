@@ -97,7 +97,7 @@ export function PricingSection() {
             <h3
               style={{
                 fontSize: '28px',
-                fontWeight: 700,
+                fontWeight: 500,
                 fontFamily: 'var(--font-darker-grotesque)',
                 color: '#17181B',
                 margin: '0 0 12px 0',

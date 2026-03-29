@@ -121,7 +121,7 @@ export function StickyCardsSection() {
               style={{
                 fontSize: '64px',
                 fontFamily: 'var(--font-darker-grotesque, "Darker Grotesque", sans-serif)',
-                fontWeight: 700,
+                fontWeight: 500,
                 color: '#17181B',
                 lineHeight: 1.05,
                 margin: 0,
@@ -186,7 +186,7 @@ export function StickyCardsSection() {
                     style={{
                       fontSize: '28px',
                       fontFamily: 'var(--font-darker-grotesque, "Darker Grotesque", sans-serif)',
-                      fontWeight: 700,
+                      fontWeight: 500,
                       color: card.textColor,
                       margin: 0,
                       lineHeight: 1.2,

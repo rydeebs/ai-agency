@@ -50,51 +50,50 @@ export function HeroSection() {
               margin: "0 auto",
               height: "100%",
               padding: "0 80px",
-              paddingTop: "120px",
+              paddingTop: "80px",
+              paddingBottom: "48px",
               position: "relative",
               zIndex: 1,
+              display: "flex",
+              flexDirection: "column",
             }}
           >
+            {/* Main row - left content and right stats */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-end",
+                flex: 1,
+              }}
+            >
             {/* Left content column */}
             <div
               style={{
                 maxWidth: "640px",
+                display: "flex",
+                flexDirection: "column",
               }}
             >
-              {/* AI Leadership badge */}
-              <div
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  border: "1px solid rgba(255,255,255,0.25)",
-                  borderRadius: "100px",
-                  padding: "8px 16px",
-                  fontSize: "14px",
-                  color: "white",
-                  marginBottom: "32px",
-                  fontFamily: "var(--font-dm-sans), sans-serif",
-                }}
-              >
-                🤖 Your AI Integration Partner
-              </div>
-
               {/* H1 */}
               <h1
                 style={{
                   fontFamily:
                     'var(--font-darker-grotesque), "Darker Grotesque", sans-serif',
-                  fontSize: "clamp(64px, 8vw, 120px)",
+                  fontSize: "clamp(56px, 7vw, 96px)",
                   fontWeight: 500,
                   color: "white",
-                  lineHeight: 0.95,
-                  letterSpacing: "-3px",
+                  lineHeight: 1,
+                  letterSpacing: "-2px",
                   margin: 0,
+                  textAlign: "left",
                 }}
               >
-                AI that actually
+                Transform
                 <br />
-                <span style={{ color: "#D3F463" }}>moves the needle.</span>
+                <span style={{ marginLeft: "0.3em" }}>your Business</span>
+                <br />
+                <span style={{ color: "#D3F463", marginLeft: "0.3em" }}>with AI.</span>
               </h1>
               
               {/* Subheadline */}
@@ -204,55 +203,53 @@ export function HeroSection() {
                 </Link>
               </div>
             </div>
-          </div>
 
-          {/* Stats row — bottom right */}
-          <div
-            style={{
-              position: "absolute",
-              bottom: "48px",
-              right: "80px",
-              display: "flex",
-              gap: "48px",
-              alignItems: "flex-end",
-              zIndex: 1,
-            }}
-          >
-            {stats.map((stat) => (
-              <div
-                key={stat.label}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "4px",
-                }}
-              >
-                <span
+            {/* Stats row — right side, bottom aligned with CTA */}
+            <div
+              style={{
+                display: "flex",
+                gap: "40px",
+                alignItems: "flex-end",
+              }}
+            >
+              {stats.map((stat) => (
+                <div
+                  key={stat.label}
                   style={{
-                    fontFamily:
-                      'var(--font-darker-grotesque), "Darker Grotesque", sans-serif',
-                    fontSize: "56px",
-                    fontWeight: 700,
-                    color: "#D3F463",
-                    lineHeight: 1,
-                    letterSpacing: "-1px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "4px",
+                    minWidth: stat.number === "12 Weeks" ? "160px" : "140px",
                   }}
                 >
-                  {stat.number}
-                </span>
-                <span
-                  style={{
-                    fontSize: "14px",
-                    color: "rgba(255,255,255,0.5)",
-                    fontFamily: "var(--font-dm-sans), sans-serif",
-                    maxWidth: "160px",
-                    lineHeight: 1.3,
-                  }}
-                >
-                  {stat.label}
-                </span>
-              </div>
-            ))}
+                  <span
+                    style={{
+                      fontFamily:
+                        'var(--font-darker-grotesque), "Darker Grotesque", sans-serif',
+                      fontSize: "48px",
+                      fontWeight: 500,
+                      color: "#D3F463",
+                      lineHeight: 1,
+                      letterSpacing: "-1px",
+                    }}
+                  >
+                    {stat.number}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "13px",
+                      color: "rgba(255,255,255,0.5)",
+                      fontFamily: "var(--font-dm-sans), sans-serif",
+                      lineHeight: 1.3,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {stat.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+            </div>
           </div>
 
           {/* Glowing lime element — right side */}
