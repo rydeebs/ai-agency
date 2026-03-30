@@ -1,30 +1,7 @@
 "use client";
 
 import Link from "next/link";
-
-function AIIcon() {
-  return (
-    <svg
-      width="32"
-      height="32"
-      viewBox="0 0 32 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      {/* Neural network / AI brain icon */}
-      <circle cx="16" cy="16" r="14" stroke="#D3F463" strokeWidth="2" fill="none" />
-      <circle cx="16" cy="10" r="2.5" fill="#D3F463" />
-      <circle cx="10" cy="18" r="2.5" fill="#D3F463" />
-      <circle cx="22" cy="18" r="2.5" fill="#D3F463" />
-      <circle cx="16" cy="22" r="2" fill="#D3F463" opacity="0.7" />
-      <line x1="16" y1="12.5" x2="11.5" y2="16" stroke="#D3F463" strokeWidth="1.5" />
-      <line x1="16" y1="12.5" x2="20.5" y2="16" stroke="#D3F463" strokeWidth="1.5" />
-      <line x1="12" y1="19" x2="14.5" y2="21" stroke="#D3F463" strokeWidth="1.5" opacity="0.7" />
-      <line x1="20" y1="19" x2="17.5" y2="21" stroke="#D3F463" strokeWidth="1.5" opacity="0.7" />
-    </svg>
-  );
-}
+import Image from "next/image";
 
 export function Navbar() {
   return (
@@ -54,21 +31,19 @@ export function Navbar() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "10px",
             textDecoration: "none",
           }}
         >
-          <AIIcon />
-          <span
+          <Image
+            src="/images/logo.png"
+            alt="NexRevGen"
+            width={180}
+            height={40}
             style={{
-              fontFamily: "var(--font-dm-sans), sans-serif",
-              fontSize: "18px",
-              color: "white",
-              letterSpacing: "-0.3px",
+              objectFit: "contain",
             }}
-          >
-            <span style={{ fontWeight: 700 }}>GenAIPI</span>
-          </span>
+            priority
+          />
         </Link>
 
         {/* Nav links */}
