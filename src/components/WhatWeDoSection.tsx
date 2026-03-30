@@ -70,12 +70,13 @@ export function WhatWeDoSection() {
 
             <h2
               style={{
-                fontSize: '36px',
+                fontSize: '64px',
                 fontFamily: 'var(--font-darker-grotesque, "Darker Grotesque", sans-serif)',
                 fontWeight: 500,
                 color: 'white',
-                lineHeight: 1.2,
+                lineHeight: 1.1,
                 margin: 0,
+                letterSpacing: '-1.3px',
               }}
             >
               We don&apos;t just consult —{' '}
@@ -84,56 +85,32 @@ export function WhatWeDoSection() {
               </span>
             </h2>
 
-            {/* Scrolling service list */}
+            {/* Service list with button borders */}
             <div
               style={{
-                overflow: 'hidden',
-                height: '200px',
-                flex: 1,
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '10px',
+                marginTop: '16px',
               }}
             >
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0',
-                  animation: 'ticker-scroll 12s linear infinite',
-                }}
-              >
-                {tickerItems.map((service, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '12px',
-                      padding: '10px 0',
-                    }}
-                  >
-                    <span
-                      style={{
-                        color: '#D3F463',
-                        fontSize: '20px',
-                        lineHeight: 1,
-                        flexShrink: 0,
-                      }}
-                    >
-                      •
-                    </span>
-                    <span
-                      style={{
-                        color: 'rgba(255,255,255,0.75)',
-                        fontSize: '20px',
-                        fontFamily: 'var(--font-dm-sans, DM Sans, sans-serif)',
-                        fontWeight: 400,
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {service}
-                    </span>
-                  </div>
-                ))}
-              </div>
+              {services.map((service, i) => (
+                <span
+                  key={i}
+                  style={{
+                    border: '1px solid rgba(255,255,255,0.3)',
+                    borderRadius: '100px',
+                    padding: '10px 20px',
+                    fontSize: '14px',
+                    color: 'rgba(255,255,255,0.8)',
+                    fontFamily: 'var(--font-dm-sans, DM Sans, sans-serif)',
+                    fontWeight: 400,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {service}
+                </span>
+              ))}
             </div>
           </div>
 

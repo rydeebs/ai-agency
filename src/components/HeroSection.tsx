@@ -51,14 +51,15 @@ export function HeroSection() {
               height: "100%",
               padding: "0 80px",
               paddingTop: "80px",
-              paddingBottom: "48px",
+              paddingBottom: "140px",
               position: "relative",
               zIndex: 1,
               display: "flex",
               flexDirection: "column",
+              justifyContent: "center",
             }}
           >
-            {/* Left content column - top aligned */}
+            {/* Left content column - vertically centered */}
             <div
               style={{
                 maxWidth: "640px",
