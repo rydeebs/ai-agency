@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Navbar } from "./Navbar";
 import { ClientLogoBanner } from "./ClientLogoBanner";
 
@@ -15,12 +18,92 @@ const features = [
   "Continuous optimization",
 ];
 
+interface GridHighlight {
+  id: number;
+  type: 'horizontal' | 'vertical';
+  position: number;
+  direction: 1 | -1;
+}
+
+function GridHighlights() {
+  const [highlights, setHighlights] = useState<GridHighlight[]>([]);
+
+  useEffect(() => {
+    let idCounter = 0;
+    
+    const addHighlight = () => {
+      const type: 'horizontal' | 'vertical' = Math.random() > 0.5 ? 'horizontal' : 'vertical';
+      const gridSize = 80;
+      const maxLines = type === 'horizontal' ? 10 : 16;
+      const lineIndex = Math.floor(Math.random() * maxLines);
+      const position = lineIndex * gridSize;
+      const direction: 1 | -1 = Math.random() > 0.5 ? 1 : -1;
+      
+      const newHighlight: GridHighlight = {
+        id: idCounter++,
+        type,
+        position,
+        direction,
+      };
+      
+      setHighlights(prev => [...prev, newHighlight]);
+      
+      setTimeout(() => {
+        setHighlights(prev => prev.filter(h => h.id !== newHighlight.id));
+      }, 2000);
+    };
+
+    addHighlight();
+    const interval = setInterval(addHighlight, 1500);
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        inset: 0,
+        overflow: 'hidden',
+        pointerEvents: 'none',
+        zIndex: 0,
+      }}
+    >
+      {highlights.map((highlight) => (
+        <div
+          key={highlight.id}
+          style={{
+            position: 'absolute',
+            ...(highlight.type === 'horizontal'
+              ? {
+                  top: highlight.position,
+                  left: highlight.direction === 1 ? '-100%' : '100%',
+                  width: '200px',
+                  height: '1px',
+                  background: 'linear-gradient(90deg, transparent, rgba(211, 244, 99, 0.6), transparent)',
+                  animation: `gridLineHorizontal${highlight.direction === 1 ? '' : 'Reverse'} 2s linear forwards`,
+                }
+              : {
+                  left: highlight.position,
+                  top: highlight.direction === 1 ? '-100%' : '100%',
+                  width: '1px',
+                  height: '200px',
+                  background: 'linear-gradient(180deg, transparent, rgba(211, 244, 99, 0.6), transparent)',
+                  animation: `gridLineVertical${highlight.direction === 1 ? '' : 'Reverse'} 2s linear forwards`,
+                }),
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export function HeroSection() {
   return (
     <>
       <section
         style={{
-          height: "900px",
+          height: "780px",
           overflow: "hidden",
           position: "relative",
           padding: "16px",
@@ -39,6 +122,9 @@ export function HeroSection() {
         >
           {/* Grid background with fade */}
           <div className="grid-bg-dark" />
+          
+          {/* Animated grid highlights */}
+          <GridHighlights />
           
           {/* Navbar overlaid on top */}
           <Navbar />

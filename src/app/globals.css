@@ -195,6 +195,29 @@
 }
 
 /* =====================
+   Grid line highlight animations
+   ===================== */
+@keyframes gridLineHorizontal {
+  from { transform: translateX(0); }
+  to { transform: translateX(200%); }
+}
+
+@keyframes gridLineHorizontalReverse {
+  from { transform: translateX(0); }
+  to { transform: translateX(-200%); }
+}
+
+@keyframes gridLineVertical {
+  from { transform: translateY(0); }
+  to { transform: translateY(200%); }
+}
+
+@keyframes gridLineVerticalReverse {
+  from { transform: translateY(0); }
+  to { transform: translateY(-200%); }
+}
+
+/* =====================
    Section padding utilities
    ===================== */
 .section-padding {
