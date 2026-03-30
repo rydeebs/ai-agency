@@ -38,8 +38,8 @@ export function FAQSection() {
       
       <div
         style={{
-          padding: '128px 80px',
-          maxWidth: '1280px',
+          padding: '128px 60px',
+          maxWidth: '1440px',
           margin: '0 auto',
           position: 'relative',
         }}

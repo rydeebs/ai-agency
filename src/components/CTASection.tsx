@@ -6,7 +6,9 @@ export function CTASection() {
       className="section_cta"
       style={{
         backgroundColor: '#EFEFEF',
-        padding: '0 80px 80px',
+        padding: '0 60px 80px',
+        maxWidth: '1440px',
+        margin: '0 auto',
       }}
     >
       {/* CTA card */}

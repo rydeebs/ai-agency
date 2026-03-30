@@ -46,19 +46,21 @@ export function HeroSection() {
           {/* Hero main content */}
           <div
             style={{
-              maxWidth: "1280px",
+              maxWidth: "1440px",
               margin: "0 auto",
               height: "100%",
-              padding: "0 80px",
+              padding: "0 60px",
               paddingTop: "80px",
-              paddingBottom: "140px",
+              paddingBottom: "48px",
               position: "relative",
               zIndex: 1,
               display: "flex",
               flexDirection: "column",
-              justifyContent: "center",
             }}
           >
+            {/* Spacer to push content to vertical center */}
+            <div style={{ flex: 1 }} />
+            
             {/* Left content column - vertically centered */}
             <div
               style={{
@@ -152,6 +154,20 @@ export function HeroSection() {
                 </div>
               </div>
 
+            </div>
+            
+            {/* Spacer to push buttons to bottom */}
+            <div style={{ flex: 1 }} />
+            
+            {/* Bottom row: CTA Buttons + Stats aligned */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-end",
+                width: "100%",
+              }}
+            >
               {/* CTA Buttons */}
               <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
                 <Link
@@ -194,57 +210,53 @@ export function HeroSection() {
                   See How It Works
                 </Link>
               </div>
-            </div>
-          </div>
-          
-          {/* Stats row — bottom of section */}
-          <div
-            style={{
-              position: "absolute",
-              bottom: "48px",
-              right: "80px",
-              display: "flex",
-              gap: "40px",
-              alignItems: "flex-end",
-              zIndex: 1,
-            }}
-          >
-            {stats.map((stat) => (
+              
+              {/* Stats row */}
               <div
-                key={stat.label}
                 style={{
                   display: "flex",
-                  flexDirection: "column",
-                  gap: "4px",
-                  minWidth: stat.number === "12 Weeks" ? "160px" : "140px",
+                  gap: "40px",
+                  alignItems: "flex-end",
                 }}
               >
-                <span
-                  style={{
-                    fontFamily:
-                      'var(--font-darker-grotesque), "Darker Grotesque", sans-serif',
-                    fontSize: "48px",
-                    fontWeight: 500,
-                    color: "#D3F463",
-                    lineHeight: 1,
-                    letterSpacing: "-1px",
-                  }}
-                >
-                  {stat.number}
-                </span>
-                <span
-                  style={{
-                    fontSize: "13px",
-                    color: "rgba(255,255,255,0.5)",
-                    fontFamily: "var(--font-dm-sans), sans-serif",
-                    lineHeight: 1.3,
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {stat.label}
-                </span>
+                {stats.map((stat) => (
+                  <div
+                    key={stat.label}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "4px",
+                      minWidth: stat.number === "12 Weeks" ? "160px" : "140px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily:
+                          'var(--font-darker-grotesque), "Darker Grotesque", sans-serif',
+                        fontSize: "48px",
+                        fontWeight: 500,
+                        color: "#D3F463",
+                        lineHeight: 1,
+                        letterSpacing: "-1px",
+                      }}
+                    >
+                      {stat.number}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "13px",
+                        color: "rgba(255,255,255,0.5)",
+                        fontFamily: "var(--font-dm-sans), sans-serif",
+                        lineHeight: 1.3,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {stat.label}
+                    </span>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
 
           {/* Glowing lime element — right side */}

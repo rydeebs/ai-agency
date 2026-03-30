@@ -40,9 +40,9 @@ export function Navbar() {
       <div
         style={{
           width: "100%",
-          maxWidth: "1280px",
+          maxWidth: "1440px",
           margin: "0 auto",
-          padding: "32px 80px 16px",
+          padding: "32px 60px 16px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",

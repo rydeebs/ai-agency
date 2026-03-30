@@ -60,8 +60,8 @@ export function StickyCardsSection() {
       
       <div
         style={{
-          padding: '128px 80px',
-          maxWidth: '1280px',
+          padding: '128px 60px',
+          maxWidth: '1440px',
           margin: '0 auto',
           position: 'relative',
           zIndex: 1,
@@ -134,6 +134,7 @@ export function StickyCardsSection() {
             style={{
               display: 'flex',
               flexDirection: 'column',
+              gap: '24px',
               paddingBottom: '200px',
             }}
           >
@@ -142,13 +143,12 @@ export function StickyCardsSection() {
                 key={index}
                 style={{
                   position: 'sticky',
-                  top: `${100 + index * 20}px`,
+                  top: `${100 + index * 24}px`,
                   height: '260px',
                   borderRadius: '20px',
                   display: 'flex',
                   overflow: 'hidden',
                   backgroundColor: card.bg,
-                  marginBottom: '-100px',
                   boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
                   zIndex: index + 1,
                 }}
