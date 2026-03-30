@@ -24,10 +24,9 @@ export function CTASection() {
           background: 'linear-gradient(135deg, #17181B 0%, #2A2B3D 100%)',
         }}
       >
-        {/* Background image (if available) */}
-        {/* Using a style background as fallback — if the image exists, it will load via the img tag */}
+        {/* Background image */}
         <img
-          src="/images/cta-background.avif"
+          src="/images/cta-background.png"
           alt=""
           aria-hidden="true"
           style={{
@@ -37,9 +36,6 @@ export function CTASection() {
             height: '100%',
             objectFit: 'cover',
             zIndex: 0,
-          }}
-          onError={(e) => {
-            (e.target as HTMLImageElement).style.display = 'none';
           }}
         />
 
@@ -86,7 +82,9 @@ export function CTASection() {
               lineHeight: 1.1,
             }}
           >
-            Stop talking about AI. Start shipping it.
+            Stop talking about AI.
+            <br />
+            <span style={{ color: '#D3F463' }}>Start implementing it.</span>
           </h2>
 
           <p
