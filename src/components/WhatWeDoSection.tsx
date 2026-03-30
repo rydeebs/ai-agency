@@ -85,32 +85,43 @@ export function WhatWeDoSection() {
               </span>
             </h2>
 
-            {/* Service list with button borders */}
+            {/* Service list with rotating vertical buttons */}
             <div
               style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '10px',
+                overflow: 'hidden',
+                height: '280px',
+                flex: 1,
                 marginTop: '16px',
               }}
             >
-              {services.map((service, i) => (
-                <span
-                  key={i}
-                  style={{
-                    border: '1px solid rgba(255,255,255,0.3)',
-                    borderRadius: '100px',
-                    padding: '10px 20px',
-                    fontSize: '14px',
-                    color: 'rgba(255,255,255,0.8)',
-                    fontFamily: 'var(--font-dm-sans, DM Sans, sans-serif)',
-                    fontWeight: 400,
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {service}
-                </span>
-              ))}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '12px',
+                  animation: 'ticker-scroll 12s linear infinite',
+                }}
+              >
+                {tickerItems.map((service, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      border: '1px solid rgba(255,255,255,0.3)',
+                      borderRadius: '100px',
+                      padding: '12px 24px',
+                      fontSize: '20px',
+                      lineHeight: '30px',
+                      color: 'rgba(255,255,255,0.8)',
+                      fontFamily: 'var(--font-dm-sans, DM Sans, sans-serif)',
+                      fontWeight: 400,
+                      whiteSpace: 'nowrap',
+                      width: 'fit-content',
+                    }}
+                  >
+                    {service}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 

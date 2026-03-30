@@ -16,6 +16,7 @@ export function StatementSection() {
           maxWidth: '1280px',
           margin: '0 auto',
           position: 'relative',
+          textAlign: 'center',
         }}
       >
         <h2
@@ -25,7 +26,7 @@ export function StatementSection() {
             fontWeight: 500,
             color: '#17181B',
             lineHeight: 1.1,
-            margin: 0,
+            margin: '0 auto',
             letterSpacing: '-1.7px',
             maxWidth: '1100px',
           }}
