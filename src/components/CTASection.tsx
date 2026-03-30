@@ -101,49 +101,23 @@ export function CTASection() {
             and show you exactly what&apos;s possible — no pitch deck, no fluff.
           </p>
 
-          {/* Button row */}
-          <div
+          {/* Button */}
+          <a
+            href="#contact"
             style={{
-              display: 'flex',
-              gap: '16px',
+              backgroundColor: '#D3F463',
+              color: '#17181B',
+              borderRadius: '8px',
+              padding: '20px 40px',
+              fontSize: '18px',
+              fontWeight: 700,
+              textDecoration: 'none',
+              display: 'inline-flex',
               alignItems: 'center',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
             }}
           >
-            <a
-              href="#contact"
-              style={{
-                backgroundColor: '#D3F463',
-                color: '#17181B',
-                borderRadius: '8px',
-                padding: '20px 40px',
-                fontSize: '18px',
-                fontWeight: 700,
-                textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-              }}
-            >
-              Book a Free Audit Call ↗
-            </a>
-            <a
-              href="#pricing"
-              style={{
-                backgroundColor: 'white',
-                color: '#17181B',
-                borderRadius: '8px',
-                padding: '20px 40px',
-                fontSize: '18px',
-                fontWeight: 700,
-                textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-              }}
-            >
-              View Engagement Options ↗
-            </a>
-          </div>
+            Book a Free Audit Call ↗
+          </a>
         </div>
       </div>
     </section>

@@ -47,7 +47,7 @@ export function FAQSection() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '40% 60%',
+            gridTemplateColumns: '45% 50%',
             gap: '80px',
             alignItems: 'start',
           }}
