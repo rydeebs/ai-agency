@@ -8,7 +8,7 @@ import { ClientLogoBanner } from "./ClientLogoBanner";
 const stats = [
   { number: "3x", label: "faster team output" },
   { number: "40%", label: "reduction in manual tasks" },
-  { number: "12 Weeks", label: "to full AI integration" },
+  { number: "6 Weeks", label: "to full AI integration" },
 ];
 
 const features = [
