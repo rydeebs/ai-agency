@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 const navLinksCol1 = [
   { label: 'AI Transformation', href: '#why-us' },
   { label: 'Services', href: '#services' },
@@ -35,19 +37,18 @@ export function Footer() {
             marginBottom: '48px',
           }}
         >
-          {/* Brand text */}
+          {/* Brand logo and slogan */}
           <div>
-            <p
+            <Image
+              src="/images/logo.png"
+              alt="NexRevGen"
+              width={160}
+              height={36}
               style={{
-                fontSize: '20px',
-                color: 'white',
-                fontWeight: 700,
-                margin: '0 0 8px 0',
-                fontFamily: 'var(--font-dm-sans, DM Sans, sans-serif)',
+                objectFit: 'contain',
+                marginBottom: '12px',
               }}
-            >
-              GenAIPI
-            </p>
+            />
             <p
               style={{
                 fontSize: '14px',
@@ -58,8 +59,7 @@ export function Footer() {
                 fontFamily: 'var(--font-dm-sans, DM Sans, sans-serif)',
               }}
             >
-              We embed with teams to build AI systems that actually ship. 
-              No slide decks. No pilot purgatory. Just results.
+              Your AI transformation partner. We build, you scale.
             </p>
           </div>
 
@@ -159,7 +159,7 @@ export function Footer() {
               fontFamily: 'var(--font-dm-sans, DM Sans, sans-serif)',
             }}
           >
-            © 2026 General Artificial Intelligence Proficiency Institute. All rights reserved.
+            © 2026 NexRevGen. All rights reserved.
           </p>
         </div>
       </div>

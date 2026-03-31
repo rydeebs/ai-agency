@@ -133,7 +133,6 @@ export function WhatWeDoSection() {
               height: '100%',
               position: 'relative',
               backgroundColor: '#1E1E1E',
-              padding: '24px',
             }}
           >
             <video
@@ -144,8 +143,7 @@ export function WhatWeDoSection() {
               style={{
                 width: '100%',
                 height: '100%',
-                objectFit: 'cover',
-                borderRadius: '12px',
+                objectFit: 'contain',
               }}
             >
               <source src="/videos/how-we-work.mp4" type="video/mp4" />

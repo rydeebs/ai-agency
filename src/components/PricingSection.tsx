@@ -1,7 +1,7 @@
 export function PricingSection() {
   const featureTags = [
     'Embedded AI team',
-    '12-week sprints',
+    '6-week sprints',
     'Weekly syncs',
     'Live workshops',
     'Slack support',

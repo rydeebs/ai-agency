@@ -201,10 +201,8 @@ export function StickyCardsSection() {
                 <div
                   style={{
                     width: '45%',
-                    backgroundColor: getAccentBg(card.bg),
                     position: 'relative',
                     overflow: 'hidden',
-                    padding: '16px',
                   }}
                 >
                   <video
@@ -216,7 +214,6 @@ export function StickyCardsSection() {
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      borderRadius: '12px',
                     }}
                   >
                     <source src={card.video} type="video/mp4" />
