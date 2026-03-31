@@ -24,21 +24,24 @@ export function CTASection() {
           background: 'linear-gradient(135deg, #17181B 0%, #2A2B3D 100%)',
         }}
       >
-        {/* Background image */}
-        <img
-          src="/images/cta-background.png"
-          alt=""
-          aria-hidden="true"
+        {/* Background video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
           style={{
             position: 'absolute',
             inset: 0,
             width: '100%',
             height: '100%',
-            objectFit: 'contain',
+            objectFit: 'cover',
             objectPosition: 'center',
             zIndex: 0,
           }}
-        />
+        >
+          <source src="/videos/cta-background.mp4" type="video/mp4" />
+        </video>
 
         {/* Dark overlay */}
         <div
