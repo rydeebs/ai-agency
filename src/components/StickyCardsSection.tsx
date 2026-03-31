@@ -3,6 +3,7 @@ interface Card {
   heading: string;
   text: string;
   textColor: string;
+  video: string;
 }
 
 const cards: Card[] = [
@@ -11,30 +12,35 @@ const cards: Card[] = [
     heading: 'Kill the busywork',
     text: "Reports that took hours now take minutes. Data entry that drained your team? Gone.",
     textColor: '#17181B',
+    video: '/videos/cards/kill-busywork.mp4',
   },
   {
     bg: '#FF7D84',
     heading: 'Better margins, same headcount',
     text: "Do more with who you have. No layoffs, no burnout — just smarter operations.",
     textColor: '#17181B',
+    video: '/videos/cards/better-margins.mp4',
   },
   {
     bg: '#FFE176',
     heading: 'Embedded, not external',
     text: "We work inside your team, not from a consulting tower. Slack channels, standups, the whole thing.",
     textColor: '#17181B',
+    video: '/videos/cards/embedded.mp4',
   },
   {
     bg: '#8D96FD',
     heading: 'We train, you own',
     text: "Your team learns as we build. When we leave, the knowledge stays.",
     textColor: '#17181B',
+    video: '/videos/cards/train-own.mp4',
   },
   {
-    bg: '#FF7D84',
+    bg: '#D8F66F',
     heading: 'Built to evolve',
     text: "AI moves fast. We build systems that adapt as tools improve — no rebuild required.",
     textColor: '#17181B',
+    video: '/videos/cards/built-evolve.mp4',
   },
 ];
 
@@ -191,87 +197,30 @@ export function StickyCardsSection() {
                   </p>
                 </div>
 
-                {/* Right half — accent decorative area */}
+                {/* Right half — video */}
                 <div
                   style={{
                     width: '45%',
                     backgroundColor: getAccentBg(card.bg),
                     position: 'relative',
                     overflow: 'hidden',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    padding: '16px',
                   }}
                 >
-                  {/* Decorative geometric shapes */}
-                  <div
+                  <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
                     style={{
-                      position: 'absolute',
-                      top: '20%',
-                      right: '15%',
-                      width: '80px',
-                      height: '80px',
-                      borderRadius: '50%',
-                      backgroundColor: 'rgba(255,255,255,0.25)',
-                    }}
-                  />
-                  <div
-                    style={{
-                      position: 'absolute',
-                      bottom: '15%',
-                      left: '10%',
-                      width: '60px',
-                      height: '60px',
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
                       borderRadius: '12px',
-                      backgroundColor: 'rgba(255,255,255,0.18)',
-                      transform: 'rotate(15deg)',
-                    }}
-                  />
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      width: '100px',
-                      height: '100px',
-                      borderRadius: '20px',
-                      backgroundColor: 'rgba(255,255,255,0.15)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
                     }}
                   >
-                    <div
-                      style={{
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '10px',
-                        backgroundColor: 'rgba(255,255,255,0.4)',
-                      }}
-                    />
-                  </div>
-                  {/* Card index badge */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      bottom: '20px',
-                      right: '20px',
-                      width: '36px',
-                      height: '36px',
-                      borderRadius: '50%',
-                      backgroundColor: 'rgba(23,24,27,0.15)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '14px',
-                      fontWeight: 700,
-                      color: 'rgba(23,24,27,0.5)',
-                      fontFamily: 'var(--font-darker-grotesque, "Darker Grotesque", sans-serif)',
-                    }}
-                  >
-                    {String(index + 1).padStart(2, '0')}
-                  </div>
+                    <source src={card.video} type="video/mp4" />
+                  </video>
                 </div>
               </div>
             ))}
