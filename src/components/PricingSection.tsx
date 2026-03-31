@@ -38,12 +38,13 @@ export function PricingSection() {
         {/* Heading */}
         <h2
           style={{
-            fontSize: 'clamp(48px, 6vw, 84px)',
+            fontSize: '84px',
             fontFamily: 'var(--font-darker-grotesque)',
             fontWeight: 500,
             color: '#17181B',
             margin: '0 0 32px 0',
-            lineHeight: 1.1,
+            lineHeight: '75.6px',
+            letterSpacing: '-1.7px',
             maxWidth: '700px',
           }}
         >

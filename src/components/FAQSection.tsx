@@ -69,12 +69,13 @@ export function FAQSection() {
             </span>
             <h2
               style={{
-                fontSize: 'clamp(40px, 5vw, 64px)',
+                fontSize: '84px',
                 fontFamily: 'var(--font-darker-grotesque)',
                 fontWeight: 500,
                 color: '#17181B',
                 margin: '0 0 24px 0',
-                lineHeight: 1.1,
+                lineHeight: '75.6px',
+                letterSpacing: '-1.7px',
               }}
             >
               Frequently asked questions
