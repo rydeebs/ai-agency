@@ -23,7 +23,7 @@ export function WhatWeDoSection() {
       
       <div
         style={{
-          padding: 'clamp(64px, 12vw, 128px) clamp(20px, 5vw, 60px)',
+          padding: 'clamp(64px, 10vw, 100px) clamp(20px, 5vw, 60px)',
           maxWidth: '1440px',
           margin: '0 auto',
           position: 'relative',
@@ -35,7 +35,7 @@ export function WhatWeDoSection() {
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))',
             gap: '16px',
-            minHeight: 'clamp(400px, 60vw, 640px)',
+            height: 'clamp(350px, 45vw, 480px)',
           }}
         >
           {/* LEFT — Dark card */}
@@ -43,12 +43,12 @@ export function WhatWeDoSection() {
             style={{
               backgroundColor: '#2A2B30',
               borderRadius: '16px',
-              padding: 'clamp(24px, 5vw, 48px)',
-              minHeight: 'clamp(350px, 50vw, 500px)',
+              padding: 'clamp(24px, 4vw, 40px)',
+              height: '100%',
               overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column',
-              gap: 'clamp(16px, 3vw, 24px)',
+              gap: 'clamp(12px, 2vw, 20px)',
               boxSizing: 'border-box',
               position: 'relative',
             }}
@@ -70,7 +70,7 @@ export function WhatWeDoSection() {
 
             <h2
               style={{
-                fontSize: 'clamp(32px, 7vw, 64px)',
+                fontSize: 'clamp(28px, 5vw, 52px)',
                 fontFamily: 'var(--font-darker-grotesque, "Darker Grotesque", sans-serif)',
                 fontWeight: 500,
                 color: 'white',
@@ -89,16 +89,16 @@ export function WhatWeDoSection() {
             <div
               style={{
                 overflow: 'hidden',
-                height: 'clamp(180px, 30vw, 280px)',
+                height: 'clamp(140px, 20vw, 200px)',
                 flex: 1,
-                marginTop: 'clamp(8px, 2vw, 16px)',
+                marginTop: 'clamp(4px, 1vw, 8px)',
               }}
             >
               <div
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: 'clamp(8px, 2vw, 12px)',
+                  gap: 'clamp(6px, 1.5vw, 10px)',
                   animation: 'ticker-scroll 12s linear infinite',
                 }}
               >
@@ -108,9 +108,9 @@ export function WhatWeDoSection() {
                     style={{
                       border: '1px solid rgba(255,255,255,0.3)',
                       borderRadius: '100px',
-                      padding: 'clamp(8px, 2vw, 12px) clamp(16px, 3vw, 24px)',
-                      fontSize: 'clamp(14px, 3vw, 20px)',
-                      lineHeight: 'clamp(20px, 4vw, 30px)',
+                      padding: 'clamp(6px, 1.5vw, 10px) clamp(14px, 2.5vw, 20px)',
+                      fontSize: 'clamp(13px, 2.5vw, 18px)',
+                      lineHeight: 'clamp(18px, 3vw, 26px)',
                       color: 'rgba(255,255,255,0.8)',
                       fontFamily: 'var(--font-dm-sans, DM Sans, sans-serif)',
                       fontWeight: 400,
@@ -130,7 +130,7 @@ export function WhatWeDoSection() {
             style={{
               borderRadius: '16px',
               overflow: 'hidden',
-              minHeight: 'clamp(250px, 40vw, 640px)',
+              height: '100%',
               position: 'relative',
               backgroundColor: '#1E1E1E',
             }}

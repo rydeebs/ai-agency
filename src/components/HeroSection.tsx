@@ -104,7 +104,7 @@ export function HeroSection() {
       <section
         className="hero-section"
         style={{
-          minHeight: "100vh",
+          height: "780px",
           overflow: "hidden",
           position: "relative",
           padding: "clamp(8px, 2vw, 16px)",
@@ -119,7 +119,6 @@ export function HeroSection() {
             position: "relative",
             overflow: "hidden",
             height: "100%",
-            minHeight: "calc(100vh - clamp(16px, 4vw, 32px))",
           }}
         >
           {/* Grid background with fade */}
@@ -133,6 +132,7 @@ export function HeroSection() {
 
           {/* Hero main content */}
           <div
+            className="hero-content"
             style={{
               maxWidth: "1440px",
               margin: "0 auto",
@@ -144,7 +144,6 @@ export function HeroSection() {
               zIndex: 1,
               display: "flex",
               flexDirection: "column",
-              minHeight: "calc(100vh - clamp(16px, 4vw, 32px))",
             }}
           >
             {/* Spacer to push content to vertical center */}
@@ -242,9 +241,25 @@ export function HeroSection() {
                   ))}
                 </div>
               </div>
-
-              {/* CTA Buttons - moved inside content for mobile */}
-              <div className="hero-cta-mobile" style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+            </div>
+            
+            {/* Spacer to push buttons to bottom */}
+            <div style={{ flex: 1 }} />
+            
+            {/* Bottom row: CTA Buttons + Stats aligned on same line (desktop) */}
+            <div
+              className="hero-bottom-row"
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-end",
+                width: "100%",
+                flexWrap: "wrap",
+                gap: "24px",
+              }}
+            >
+              {/* CTA Buttons */}
+              <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
                 <Link
                   href="#contact"
                   style={{
@@ -286,57 +301,53 @@ export function HeroSection() {
                   See How It Works
                 </Link>
               </div>
-            </div>
-            
-            {/* Spacer to push stats to bottom */}
-            <div style={{ flex: 1 }} />
-            
-            {/* Stats row - at bottom */}
-            <div
-              className="hero-stats"
-              style={{
-                display: "flex",
-                gap: "clamp(20px, 5vw, 40px)",
-                alignItems: "flex-end",
-                flexWrap: "wrap",
-                marginTop: "32px",
-              }}
-            >
-              {stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "4px",
-                  }}
-                >
-                  <span
+              
+              {/* Stats row */}
+              <div
+                className="hero-stats"
+                style={{
+                  display: "flex",
+                  gap: "clamp(20px, 3vw, 40px)",
+                  alignItems: "flex-end",
+                }}
+              >
+                {stats.map((stat) => (
+                  <div
+                    key={stat.label}
                     style={{
-                      fontFamily:
-                        'var(--font-darker-grotesque), "Darker Grotesque", sans-serif',
-                      fontSize: "clamp(32px, 8vw, 48px)",
-                      fontWeight: 500,
-                      color: "#D3F463",
-                      lineHeight: 1,
-                      letterSpacing: "-1px",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "4px",
+                      minWidth: "120px",
                     }}
                   >
-                    {stat.number}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "clamp(11px, 2vw, 13px)",
-                      color: "rgba(255,255,255,0.5)",
-                      fontFamily: "var(--font-dm-sans), sans-serif",
-                      lineHeight: 1.3,
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {stat.label}
-                  </span>
-                </div>
-              ))}
+                    <span
+                      style={{
+                        fontFamily:
+                          'var(--font-darker-grotesque), "Darker Grotesque", sans-serif',
+                        fontSize: "clamp(32px, 5vw, 48px)",
+                        fontWeight: 500,
+                        color: "#D3F463",
+                        lineHeight: 1,
+                        letterSpacing: "-1px",
+                      }}
+                    >
+                      {stat.number}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "clamp(11px, 1.5vw, 13px)",
+                        color: "rgba(255,255,255,0.5)",
+                        fontFamily: "var(--font-dm-sans), sans-serif",
+                        lineHeight: 1.3,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {stat.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -368,6 +379,10 @@ export function HeroSection() {
 
       <style jsx>{`
         @media (max-width: 768px) {
+          .hero-section {
+            height: auto !important;
+            min-height: 100vh !important;
+          }
           .hero-glow {
             width: 300px !important;
             height: 300px !important;
@@ -375,6 +390,13 @@ export function HeroSection() {
           }
           .hero-secondary-btn {
             display: none !important;
+          }
+          .hero-bottom-row {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+          }
+          .hero-stats {
+            margin-top: 24px !important;
           }
         }
       `}</style>
