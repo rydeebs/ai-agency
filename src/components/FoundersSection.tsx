@@ -9,7 +9,7 @@ const founders = [
     title: 'Co-Founder & CEO',
     image: '/images/founder-1.png',
     hoverImage: '/images/founder-1-hover.png',
-    credentials: '12+ years building ML systems at Google and Meta. Led AI ops for a $2B fintech exit. Stanford CS.',
+    credentials: 'Growth strategist driving conversion optimization at airSlate. Innovation consultant and former Chief of Staff at Pepper. Advisor to Action Against Hunger USA.',
     funFact: 'Conquers mountains on weekends',
   },
   {
@@ -17,7 +17,7 @@ const founders = [
     title: 'Co-Founder & CTO',
     image: '/images/founder-2.png',
     hoverImage: '/images/founder-2-hover.png',
-    credentials: 'Former Head of AI Engineering at Stripe. Built automation platforms serving 50M+ users. MIT PhD.',
+    credentials: 'VP at CAN-USA and NYC DOB Licensed Special Rigger. 6+ years leading complex projects at Trident Contracting. Former TCS Business Analyst. Fluent in Polish, Spanish & Mandarin.',
     funFact: 'Rides sharks for fun',
   },
   {
@@ -25,7 +25,7 @@ const founders = [
     title: 'Co-Founder & COO',
     image: '/images/founder-3.png',
     hoverImage: '/images/founder-3-hover.png',
-    credentials: '10+ years scaling ops at Uber and DoorDash. Deployed AI workflows that cut costs by $40M annually.',
+    credentials: 'GTM Engineer at ShipBob scaling global solutions. Former Supply Chain Ops at OpenStore & Flexport. 4 years as Operations Manager at Amazon building high-performance teams.',
     funFact: 'Gator wrangler extraordinaire',
   },
 ];
