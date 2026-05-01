@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Navbar } from "./Navbar";
 import { ClientLogoBanner } from "./ClientLogoBanner";
@@ -344,29 +343,6 @@ export function HeroSection() {
                 ))}
               </div>
             </div>
-          </div>
-
-          {/* Founder image — right side */}
-          <div
-            style={{
-              position: "absolute",
-              right: "80px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              zIndex: 1,
-            }}
-          >
-            <Image
-              src="/images/founder.png"
-              alt="Founder"
-              width={380}
-              height={380}
-              style={{
-                borderRadius: "20px",
-                objectFit: "cover",
-              }}
-              priority
-            />
           </div>
 
           {/* Glowing lime element — right side */}
