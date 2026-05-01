@@ -2,19 +2,19 @@ import Image from 'next/image';
 
 const founders = [
   {
-    name: 'Raj Patel',
+    name: 'Gokul Sundar',
     title: 'Co-Founder & CEO',
     image: '/images/founder-1.png',
     credentials: '12+ years building ML systems at Google and Meta. Led AI ops for a $2B fintech exit. Stanford CS.',
   },
   {
-    name: 'Marcus Chen',
+    name: 'Pawel Chrzanowski',
     title: 'Co-Founder & CTO',
     image: '/images/founder-2.png',
     credentials: 'Former Head of AI Engineering at Stripe. Built automation platforms serving 50M+ users. MIT PhD.',
   },
   {
-    name: 'Jake Morrison',
+    name: 'Ryan DeBerardinis',
     title: 'Co-Founder & COO',
     image: '/images/founder-3.png',
     credentials: '10+ years scaling ops at Uber and DoorDash. Deployed AI workflows that cut costs by $40M annually.',
