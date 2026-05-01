@@ -1,5 +1,3 @@
-// Scrolling client logo banner — pill-shaped logos with infinite marquee
-
 const logos = [
   { name: "Meridian Auto", subtitle: "60% TIME SAVED" },
   { name: "ScaleForce" },
@@ -17,9 +15,9 @@ function LogoPill({ name, subtitle }: { name: string; subtitle?: string }) {
       style={{
         border: "1px solid rgba(170, 172, 180, 0.6)",
         borderRadius: "1440px",
-        height: "96px",
-        minWidth: "200px",
-        padding: "0 32px",
+        height: "clamp(64px, 12vw, 96px)",
+        minWidth: "clamp(140px, 25vw, 200px)",
+        padding: "0 clamp(16px, 4vw, 32px)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -30,7 +28,7 @@ function LogoPill({ name, subtitle }: { name: string; subtitle?: string }) {
     >
       <span
         style={{
-          fontSize: subtitle ? "14px" : "18px",
+          fontSize: subtitle ? "clamp(11px, 2vw, 14px)" : "clamp(14px, 2.5vw, 18px)",
           fontWeight: 700,
           color: "rgba(255,255,255,0.85)",
           fontFamily: "var(--font-dm-sans), sans-serif",
@@ -44,7 +42,7 @@ function LogoPill({ name, subtitle }: { name: string; subtitle?: string }) {
       {subtitle && (
         <span
           style={{
-            fontSize: "10px",
+            fontSize: "clamp(8px, 1.5vw, 10px)",
             color: "rgba(255,255,255,0.4)",
             fontFamily: "var(--font-dm-sans), sans-serif",
             letterSpacing: "0.5px",
@@ -60,13 +58,12 @@ function LogoPill({ name, subtitle }: { name: string; subtitle?: string }) {
 }
 
 export function ClientLogoBanner() {
-  // Duplicate for seamless loop
   const doubled = [...logos, ...logos];
 
   return (
     <div
       style={{
-        height: "96px",
+        height: "clamp(64px, 12vw, 96px)",
         overflow: "hidden",
         width: "100%",
         marginTop: "auto",
@@ -75,7 +72,7 @@ export function ClientLogoBanner() {
       <div
         style={{
           display: "flex",
-          gap: "16px",
+          gap: "clamp(8px, 2vw, 16px)",
           width: "fit-content",
           animation: "marquee 35s linear infinite",
         }}

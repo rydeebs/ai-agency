@@ -38,51 +38,51 @@ export function FAQSection() {
       
       <div
         style={{
-          padding: '128px 60px',
+          padding: 'clamp(64px, 12vw, 128px) clamp(20px, 5vw, 60px)',
           maxWidth: '1440px',
           margin: '0 auto',
           position: 'relative',
         }}
       >
         <div
+          className="faq-grid"
           style={{
-            display: 'grid',
-            gridTemplateColumns: '45% 50%',
-            gap: '80px',
-            alignItems: 'start',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'clamp(32px, 6vw, 80px)',
           }}
         >
           {/* Left column */}
-          <div>
+          <div style={{ maxWidth: '600px' }}>
             <span
               style={{
-                fontSize: '12px',
+                fontSize: 'clamp(10px, 2vw, 12px)',
                 letterSpacing: '2px',
                 textTransform: 'uppercase',
                 color: '#5D616A',
                 fontWeight: 600,
                 display: 'block',
-                marginBottom: '16px',
+                marginBottom: 'clamp(12px, 2vw, 16px)',
               }}
             >
               FAQ
             </span>
             <h2
               style={{
-                fontSize: '84px',
+                fontSize: 'clamp(36px, 8vw, 84px)',
                 fontFamily: 'var(--font-darker-grotesque)',
                 fontWeight: 500,
                 color: '#17181B',
-                margin: '0 0 24px 0',
-                lineHeight: '75.6px',
-                letterSpacing: '-1.7px',
+                margin: '0 0 clamp(16px, 3vw, 24px) 0',
+                lineHeight: 0.95,
+                letterSpacing: 'clamp(-0.5px, -0.02em, -1.7px)',
               }}
             >
               Frequently asked questions
             </h2>
             <p
               style={{
-                fontSize: '16px',
+                fontSize: 'clamp(14px, 2.5vw, 16px)',
                 color: '#5D616A',
                 lineHeight: 1.7,
                 margin: 0,
@@ -110,7 +110,7 @@ export function FAQSection() {
                 key={faq.q}
                 style={{
                   borderBottom: '1px solid #DEDEDE',
-                  padding: '24px 0',
+                  padding: 'clamp(16px, 3vw, 24px) 0',
                 }}
               >
                 {/* Question header */}
@@ -132,7 +132,7 @@ export function FAQSection() {
                 >
                   <span
                     style={{
-                      fontSize: '18px',
+                      fontSize: 'clamp(15px, 3vw, 18px)',
                       fontWeight: 600,
                       color: '#17181B',
                     }}
@@ -141,14 +141,14 @@ export function FAQSection() {
                   </span>
                   <span
                     style={{
-                      width: '32px',
-                      height: '32px',
+                      width: 'clamp(28px, 5vw, 32px)',
+                      height: 'clamp(28px, 5vw, 32px)',
                       borderRadius: '50%',
                       backgroundColor: '#D3F463',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '20px',
+                      fontSize: 'clamp(16px, 3vw, 20px)',
                       fontWeight: 400,
                       color: '#17181B',
                       flexShrink: 0,
@@ -169,7 +169,7 @@ export function FAQSection() {
                 >
                   <p
                     style={{
-                      fontSize: '16px',
+                      fontSize: 'clamp(14px, 2.5vw, 16px)',
                       color: '#5D616A',
                       lineHeight: 1.7,
                       paddingTop: '12px',
@@ -184,6 +184,17 @@ export function FAQSection() {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @media (min-width: 1024px) {
+          .faq-grid {
+            display: grid !important;
+            grid-template-columns: 45% 50% !important;
+            gap: 80px !important;
+            align-items: start !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

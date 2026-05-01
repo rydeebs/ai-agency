@@ -10,7 +10,6 @@ export function WhatWeDoSection() {
     'Ongoing Support & Iteration',
   ];
 
-  // Duplicate for seamless loop
   const tickerItems = [...services, ...services];
 
   return (
@@ -24,18 +23,19 @@ export function WhatWeDoSection() {
       
       <div
         style={{
-          padding: '128px 60px',
+          padding: 'clamp(64px, 12vw, 128px) clamp(20px, 5vw, 60px)',
           maxWidth: '1440px',
           margin: '0 auto',
           position: 'relative',
         }}
       >
         <div
+          className="what-we-do-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))',
             gap: '16px',
-            height: '640px',
+            minHeight: 'clamp(400px, 60vw, 640px)',
           }}
         >
           {/* LEFT — Dark card */}
@@ -43,12 +43,12 @@ export function WhatWeDoSection() {
             style={{
               backgroundColor: '#2A2B30',
               borderRadius: '16px',
-              padding: '48px',
-              height: '100%',
+              padding: 'clamp(24px, 5vw, 48px)',
+              minHeight: 'clamp(350px, 50vw, 500px)',
               overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column',
-              gap: '24px',
+              gap: 'clamp(16px, 3vw, 24px)',
               boxSizing: 'border-box',
               position: 'relative',
             }}
@@ -57,7 +57,7 @@ export function WhatWeDoSection() {
             <div className="grid-bg-dark" style={{ borderRadius: '16px' }} />
             <span
               style={{
-                fontSize: '12px',
+                fontSize: 'clamp(10px, 2vw, 12px)',
                 textTransform: 'uppercase',
                 letterSpacing: '2px',
                 color: 'rgba(255,255,255,0.5)',
@@ -70,13 +70,13 @@ export function WhatWeDoSection() {
 
             <h2
               style={{
-                fontSize: '64px',
+                fontSize: 'clamp(32px, 7vw, 64px)',
                 fontFamily: 'var(--font-darker-grotesque, "Darker Grotesque", sans-serif)',
                 fontWeight: 500,
                 color: 'white',
                 lineHeight: 1.1,
                 margin: 0,
-                letterSpacing: '-1.3px',
+                letterSpacing: 'clamp(-0.5px, -0.02em, -1.3px)',
               }}
             >
               We don&apos;t just consult —{' '}
@@ -89,16 +89,16 @@ export function WhatWeDoSection() {
             <div
               style={{
                 overflow: 'hidden',
-                height: '280px',
+                height: 'clamp(180px, 30vw, 280px)',
                 flex: 1,
-                marginTop: '16px',
+                marginTop: 'clamp(8px, 2vw, 16px)',
               }}
             >
               <div
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '12px',
+                  gap: 'clamp(8px, 2vw, 12px)',
                   animation: 'ticker-scroll 12s linear infinite',
                 }}
               >
@@ -108,9 +108,9 @@ export function WhatWeDoSection() {
                     style={{
                       border: '1px solid rgba(255,255,255,0.3)',
                       borderRadius: '100px',
-                      padding: '12px 24px',
-                      fontSize: '20px',
-                      lineHeight: '30px',
+                      padding: 'clamp(8px, 2vw, 12px) clamp(16px, 3vw, 24px)',
+                      fontSize: 'clamp(14px, 3vw, 20px)',
+                      lineHeight: 'clamp(20px, 4vw, 30px)',
                       color: 'rgba(255,255,255,0.8)',
                       fontFamily: 'var(--font-dm-sans, DM Sans, sans-serif)',
                       fontWeight: 400,
@@ -130,7 +130,7 @@ export function WhatWeDoSection() {
             style={{
               borderRadius: '16px',
               overflow: 'hidden',
-              height: '100%',
+              minHeight: 'clamp(250px, 40vw, 640px)',
               position: 'relative',
               backgroundColor: '#1E1E1E',
             }}

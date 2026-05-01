@@ -6,7 +6,7 @@ export function CTASection() {
       className="section_cta"
       style={{
         backgroundColor: '#EFEFEF',
-        padding: '0 60px 80px',
+        padding: '0 clamp(20px, 5vw, 60px) clamp(40px, 8vw, 80px)',
         maxWidth: '1440px',
         margin: '0 auto',
       }}
@@ -15,9 +15,9 @@ export function CTASection() {
       <div
         style={{
           position: 'relative',
-          borderRadius: '20px',
+          borderRadius: 'clamp(12px, 3vw, 20px)',
           overflow: 'hidden',
-          minHeight: '500px',
+          minHeight: 'clamp(350px, 50vw, 500px)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -69,16 +69,16 @@ export function CTASection() {
             zIndex: 3,
             textAlign: 'center',
             color: 'white',
-            padding: '80px',
+            padding: 'clamp(40px, 8vw, 80px) clamp(20px, 5vw, 80px)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '24px',
+            gap: 'clamp(16px, 3vw, 24px)',
           }}
         >
           <h2
             style={{
-              fontSize: 'clamp(40px, 6vw, 80px)',
+              fontSize: 'clamp(28px, 7vw, 80px)',
               fontFamily: 'var(--font-darker-grotesque)',
               fontWeight: 500,
               color: 'white',
@@ -93,10 +93,11 @@ export function CTASection() {
 
           <p
             style={{
-              fontSize: '20px',
+              fontSize: 'clamp(14px, 3vw, 20px)',
               color: 'rgba(255,255,255,0.7)',
               margin: 0,
               maxWidth: '600px',
+              lineHeight: 1.6,
             }}
           >
             Book a 30-minute call. We&apos;ll audit one of your workflows live 
@@ -110,8 +111,8 @@ export function CTASection() {
               backgroundColor: '#D3F463',
               color: '#17181B',
               borderRadius: '8px',
-              padding: '20px 40px',
-              fontSize: '18px',
+              padding: 'clamp(14px, 3vw, 20px) clamp(24px, 5vw, 40px)',
+              fontSize: 'clamp(14px, 3vw, 18px)',
               fontWeight: 700,
               textDecoration: 'none',
               display: 'inline-flex',

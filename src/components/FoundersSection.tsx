@@ -48,11 +48,11 @@ function FounderCard({ founder, index }: { founder: typeof founders[0]; index: n
       {/* Image container with hover effects */}
       <div
         style={{
-          width: '220px',
-          height: '220px',
+          width: 'clamp(140px, 25vw, 220px)',
+          height: 'clamp(140px, 25vw, 220px)',
           borderRadius: isHovered ? '20px' : '50%',
           overflow: 'hidden',
-          marginBottom: '24px',
+          marginBottom: 'clamp(16px, 3vw, 24px)',
           border: `4px solid ${isHovered ? '#D3F463' : 'rgba(211, 244, 99, 0.5)'}`,
           boxShadow: isHovered 
             ? '0 0 40px rgba(211, 244, 99, 0.4), 0 20px 60px rgba(0,0,0,0.5)' 
@@ -103,7 +103,7 @@ function FounderCard({ founder, index }: { founder: typeof founders[0]; index: n
       {/* Name with hover effect */}
       <h3
         style={{
-          fontSize: '28px',
+          fontSize: 'clamp(20px, 4vw, 28px)',
           fontFamily: 'var(--font-darker-grotesque)',
           fontWeight: 500,
           color: isHovered ? '#D3F463' : 'white',
@@ -118,7 +118,7 @@ function FounderCard({ founder, index }: { founder: typeof founders[0]; index: n
       {/* Title */}
       <p
         style={{
-          fontSize: '14px',
+          fontSize: 'clamp(11px, 2vw, 14px)',
           color: '#D3F463',
           fontFamily: 'var(--font-dm-sans)',
           fontWeight: 600,
@@ -134,8 +134,9 @@ function FounderCard({ founder, index }: { founder: typeof founders[0]; index: n
 
       {/* Credentials / Fun fact swap */}
       <p
+        className="founder-credentials"
         style={{
-          fontSize: '14px',
+          fontSize: 'clamp(12px, 2vw, 14px)',
           color: isHovered ? 'rgba(211, 244, 99, 0.8)' : 'rgba(255,255,255,0.5)',
           fontFamily: 'var(--font-dm-sans)',
           lineHeight: 1.6,
@@ -157,7 +158,7 @@ export function FoundersSection() {
       id="team"
       style={{
         backgroundColor: '#0F1012',
-        padding: '80px',
+        padding: 'clamp(40px, 8vw, 80px) clamp(20px, 5vw, 80px)',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -176,8 +177,8 @@ export function FoundersSection() {
         <div
           style={{
             backgroundColor: '#17181B',
-            borderRadius: '20px',
-            padding: '80px',
+            borderRadius: 'clamp(12px, 3vw, 20px)',
+            padding: 'clamp(32px, 8vw, 80px)',
             position: 'relative',
             overflow: 'hidden',
           }}
@@ -188,17 +189,17 @@ export function FoundersSection() {
           <div
             style={{
               textAlign: 'center',
-              marginBottom: '32px',
+              marginBottom: 'clamp(20px, 4vw, 32px)',
             }}
           >
             <span
               style={{
                 display: 'block',
                 textTransform: 'uppercase',
-                fontSize: '12px',
+                fontSize: 'clamp(10px, 2vw, 12px)',
                 letterSpacing: '2px',
                 color: 'rgba(255,255,255,0.5)',
-                marginBottom: '20px',
+                marginBottom: 'clamp(12px, 3vw, 20px)',
                 fontFamily: 'var(--font-dm-sans)',
                 fontWeight: 500,
               }}
@@ -207,7 +208,7 @@ export function FoundersSection() {
             </span>
             <h2
               style={{
-                fontSize: 'clamp(48px, 6vw, 80px)',
+                fontSize: 'clamp(36px, 8vw, 80px)',
                 fontFamily: 'var(--font-darker-grotesque)',
                 fontWeight: 500,
                 color: 'white',
@@ -224,14 +225,15 @@ export function FoundersSection() {
           {/* Subtitle */}
           <p
             style={{
-              fontSize: '18px',
+              fontSize: 'clamp(14px, 3vw, 18px)',
               color: 'rgba(255,255,255,0.6)',
               textAlign: 'center',
-              marginBottom: '64px',
+              marginBottom: 'clamp(40px, 8vw, 64px)',
               fontFamily: 'var(--font-dm-sans)',
               maxWidth: '700px',
               marginLeft: 'auto',
               marginRight: 'auto',
+              lineHeight: 1.6,
             }}
           >
             We&apos;re builders who got tired of watching companies fumble AI adoption. 
@@ -241,10 +243,11 @@ export function FoundersSection() {
 
           {/* Founders grid */}
           <div
+            className="founders-grid"
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '48px',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))',
+              gap: 'clamp(32px, 6vw, 48px)',
               position: 'relative',
               zIndex: 1,
             }}
@@ -255,6 +258,17 @@ export function FoundersSection() {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @media (max-width: 640px) {
+          .founder-credentials {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+        }
+      `}</style>
     </section>
   )
 }

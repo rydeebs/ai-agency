@@ -1,3 +1,5 @@
+"use client";
+
 interface Card {
   bg: string;
   heading: string;
@@ -44,17 +46,6 @@ const cards: Card[] = [
   },
 ];
 
-// Returns a slightly darker shade of the bg color for the right half accent area
-function getAccentBg(hex: string): string {
-  const map: Record<string, string> = {
-    '#D8F66F': '#C4E45A',
-    '#8D96FD': '#7A84EA',
-    '#FF7D84': '#EC6A71',
-    '#FFE176': '#EDD063',
-  };
-  return map[hex] ?? hex;
-}
-
 export function StickyCardsSection() {
   return (
     <section
@@ -66,7 +57,7 @@ export function StickyCardsSection() {
       
       <div
         style={{
-          padding: '128px 60px',
+          padding: 'clamp(64px, 12vw, 128px) clamp(20px, 5vw, 60px)',
           maxWidth: '1440px',
           margin: '0 auto',
           position: 'relative',
@@ -74,27 +65,26 @@ export function StickyCardsSection() {
         }}
       >
         <div
+          className="sticky-cards-grid"
           style={{
-            display: 'grid',
-            gridTemplateColumns: '35% 65%',
-            gap: '60px',
-            alignItems: 'start',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'clamp(32px, 6vw, 60px)',
           }}
         >
-          {/* LEFT — sticky heading */}
+          {/* Heading section */}
           <div
+            className="sticky-heading"
             style={{
-              position: 'sticky',
-              top: '100px',
-              height: 'fit-content',
               display: 'flex',
               flexDirection: 'column',
-              gap: '24px',
+              gap: 'clamp(16px, 3vw, 24px)',
+              maxWidth: '600px',
             }}
           >
             <span
               style={{
-                fontSize: '12px',
+                fontSize: 'clamp(10px, 2vw, 12px)',
                 textTransform: 'uppercase' as const,
                 letterSpacing: '2px',
                 color: 'rgba(23,24,27,0.5)',
@@ -107,13 +97,13 @@ export function StickyCardsSection() {
 
             <h2
               style={{
-                fontSize: '84px',
+                fontSize: 'clamp(36px, 8vw, 84px)',
                 fontFamily: 'var(--font-darker-grotesque, "Darker Grotesque", sans-serif)',
                 fontWeight: 500,
                 color: '#17181B',
-                lineHeight: '75.6px',
+                lineHeight: 0.95,
                 margin: 0,
-                letterSpacing: '-1.7px',
+                letterSpacing: 'clamp(-0.5px, -0.02em, -1.7px)',
               }}
             >
               AI that ships,{' '}
@@ -122,7 +112,7 @@ export function StickyCardsSection() {
 
             <p
               style={{
-                fontSize: '18px',
+                fontSize: 'clamp(14px, 3vw, 18px)',
                 fontFamily: 'var(--font-dm-sans, DM Sans, sans-serif)',
                 color: 'rgba(23,24,27,0.6)',
                 lineHeight: 1.6,
@@ -135,58 +125,57 @@ export function StickyCardsSection() {
             </p>
           </div>
 
-          {/* RIGHT — stacking cards */}
+          {/* Cards container */}
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '24px',
-              paddingBottom: '200px',
+              gap: 'clamp(16px, 3vw, 24px)',
             }}
           >
             {cards.map((card, index) => (
               <div
                 key={index}
+                className="sticky-card"
                 style={{
-                  position: 'sticky',
-                  top: `${100 + index * 24}px`,
-                  height: '260px',
-                  borderRadius: '20px',
+                  minHeight: 'clamp(200px, 35vw, 260px)',
+                  borderRadius: 'clamp(12px, 3vw, 20px)',
                   display: 'flex',
+                  flexDirection: 'row',
                   overflow: 'hidden',
                   backgroundColor: card.bg,
                   boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
-                  zIndex: index + 1,
                 }}
               >
                 {/* Left half — text content */}
                 <div
                   style={{
-                    width: '55%',
-                    padding: '40px',
+                    flex: 1,
+                    padding: 'clamp(20px, 5vw, 40px)',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
-                    gap: '12px',
+                    gap: 'clamp(8px, 2vw, 12px)',
                     backgroundColor: card.bg,
                   }}
                 >
                   <h3
                     style={{
-                      fontSize: '42px',
+                      fontSize: 'clamp(24px, 5vw, 42px)',
                       fontFamily: 'var(--font-darker-grotesque, "Darker Grotesque", sans-serif)',
                       fontWeight: 500,
                       color: card.textColor,
                       margin: 0,
-                      lineHeight: '42px',
-                      letterSpacing: '-0.8px',
+                      lineHeight: 1,
+                      letterSpacing: 'clamp(-0.3px, -0.02em, -0.8px)',
                     }}
                   >
                     {card.heading}
                   </h3>
                   <p
+                    className="card-text"
                     style={{
-                      fontSize: '16px',
+                      fontSize: 'clamp(13px, 2.5vw, 16px)',
                       fontFamily: 'var(--font-dm-sans, DM Sans, sans-serif)',
                       color: 'rgba(23,24,27,0.7)',
                       margin: 0,
@@ -197,8 +186,9 @@ export function StickyCardsSection() {
                   </p>
                 </div>
 
-                {/* Right half — video */}
+                {/* Right half — video (hidden on mobile) */}
                 <div
+                  className="card-video"
                   style={{
                     width: '45%',
                     position: 'relative',
@@ -224,6 +214,41 @@ export function StickyCardsSection() {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @media (min-width: 1024px) {
+          .sticky-cards-grid {
+            display: grid !important;
+            grid-template-columns: 35% 65% !important;
+            gap: 60px !important;
+            align-items: start !important;
+          }
+          .sticky-heading {
+            position: sticky !important;
+            top: 100px !important;
+            height: fit-content !important;
+            max-width: 100% !important;
+          }
+          .sticky-card {
+            position: sticky !important;
+            top: calc(100px + var(--index, 0) * 24px) !important;
+            z-index: calc(1 + var(--index, 0)) !important;
+          }
+          .sticky-card:nth-child(1) { --index: 0; }
+          .sticky-card:nth-child(2) { --index: 1; }
+          .sticky-card:nth-child(3) { --index: 2; }
+          .sticky-card:nth-child(4) { --index: 3; }
+          .sticky-card:nth-child(5) { --index: 4; }
+        }
+        @media (max-width: 768px) {
+          .card-video {
+            display: none !important;
+          }
+          .sticky-card {
+            flex-direction: column !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

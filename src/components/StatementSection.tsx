@@ -12,7 +12,7 @@ export function StatementSection() {
       
       <div
         style={{
-          padding: '128px 60px',
+          padding: 'clamp(64px, 12vw, 128px) clamp(20px, 5vw, 60px)',
           maxWidth: '1440px',
           margin: '0 auto',
           position: 'relative',
@@ -21,13 +21,13 @@ export function StatementSection() {
       >
         <h2
           style={{
-            fontSize: '84px',
+            fontSize: 'clamp(32px, 8vw, 84px)',
             fontFamily: 'var(--font-darker-grotesque, "Darker Grotesque", sans-serif)',
             fontWeight: 500,
             color: '#17181B',
             lineHeight: 1.1,
             margin: '0 auto',
-            letterSpacing: '-1.7px',
+            letterSpacing: 'clamp(-0.5px, -0.02em, -1.7px)',
             maxWidth: '1100px',
           }}
         >

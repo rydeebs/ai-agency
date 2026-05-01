@@ -102,11 +102,12 @@ export function HeroSection() {
   return (
     <>
       <section
+        className="hero-section"
         style={{
-          height: "780px",
+          minHeight: "100vh",
           overflow: "hidden",
           position: "relative",
-          padding: "16px",
+          padding: "clamp(8px, 2vw, 16px)",
           backgroundColor: "#EFEFEF",
         }}
       >
@@ -118,6 +119,7 @@ export function HeroSection() {
             position: "relative",
             overflow: "hidden",
             height: "100%",
+            minHeight: "calc(100vh - clamp(16px, 4vw, 32px))",
           }}
         >
           {/* Grid background with fade */}
@@ -135,13 +137,14 @@ export function HeroSection() {
               maxWidth: "1440px",
               margin: "0 auto",
               height: "100%",
-              padding: "0 60px",
-              paddingTop: "80px",
-              paddingBottom: "48px",
+              padding: "0 clamp(20px, 5vw, 60px)",
+              paddingTop: "clamp(100px, 15vw, 120px)",
+              paddingBottom: "clamp(32px, 5vw, 48px)",
               position: "relative",
               zIndex: 1,
               display: "flex",
               flexDirection: "column",
+              minHeight: "calc(100vh - clamp(16px, 4vw, 32px))",
             }}
           >
             {/* Spacer to push content to vertical center */}
@@ -160,11 +163,11 @@ export function HeroSection() {
                 style={{
                   fontFamily:
                     'var(--font-darker-grotesque), "Darker Grotesque", sans-serif',
-                  fontSize: "clamp(56px, 7vw, 96px)",
+                  fontSize: "clamp(40px, 10vw, 96px)",
                   fontWeight: 500,
                   color: "white",
                   lineHeight: 1,
-                  letterSpacing: "-2px",
+                  letterSpacing: "clamp(-1px, -0.02em, -2px)",
                   margin: 0,
                   textAlign: "left",
                 }}
@@ -179,10 +182,10 @@ export function HeroSection() {
               {/* Subheadline */}
               <p
                 style={{
-                  fontSize: "18px",
+                  fontSize: "clamp(14px, 3vw, 18px)",
                   color: "rgba(255,255,255,0.7)",
                   lineHeight: 1.6,
-                  marginTop: "24px",
+                  marginTop: "clamp(16px, 3vw, 24px)",
                   marginBottom: "0",
                   maxWidth: "500px",
                   fontFamily: "var(--font-dm-sans), sans-serif",
@@ -197,7 +200,7 @@ export function HeroSection() {
                 style={{
                   height: "28px",
                   overflow: "hidden",
-                  margin: "32px 0",
+                  margin: "clamp(20px, 4vw, 32px) 0",
                 }}
               >
                 <div
@@ -227,7 +230,7 @@ export function HeroSection() {
                       </span>
                       <span
                         style={{
-                          fontSize: "16px",
+                          fontSize: "clamp(14px, 2.5vw, 16px)",
                           color: "rgba(255,255,255,0.85)",
                           fontFamily: "var(--font-dm-sans), sans-serif",
                           whiteSpace: "nowrap",
@@ -240,30 +243,16 @@ export function HeroSection() {
                 </div>
               </div>
 
-            </div>
-            
-            {/* Spacer to push buttons to bottom */}
-            <div style={{ flex: 1 }} />
-            
-            {/* Bottom row: CTA Buttons + Stats aligned */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-end",
-                width: "100%",
-              }}
-            >
-              {/* CTA Buttons */}
-              <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+              {/* CTA Buttons - moved inside content for mobile */}
+              <div className="hero-cta-mobile" style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
                 <Link
                   href="#contact"
                   style={{
                     backgroundColor: "#D3F463",
                     color: "#17181B",
                     borderRadius: "8px",
-                    padding: "20px 32px",
-                    fontSize: "18px",
+                    padding: "clamp(14px, 3vw, 20px) clamp(20px, 4vw, 32px)",
+                    fontSize: "clamp(14px, 3vw, 18px)",
                     fontWeight: 700,
                     fontFamily: "var(--font-dm-sans), sans-serif",
                     display: "inline-flex",
@@ -277,12 +266,13 @@ export function HeroSection() {
                 </Link>
                 <Link
                   href="#why-us"
+                  className="hero-secondary-btn"
                   style={{
                     backgroundColor: "transparent",
                     color: "white",
                     borderRadius: "8px",
-                    padding: "20px 32px",
-                    fontSize: "18px",
+                    padding: "clamp(14px, 3vw, 20px) clamp(20px, 4vw, 32px)",
+                    fontSize: "clamp(14px, 3vw, 18px)",
                     fontWeight: 500,
                     fontFamily: "var(--font-dm-sans), sans-serif",
                     display: "inline-flex",
@@ -296,58 +286,63 @@ export function HeroSection() {
                   See How It Works
                 </Link>
               </div>
-              
-              {/* Stats row */}
-              <div
-                style={{
-                  display: "flex",
-                  gap: "40px",
-                  alignItems: "flex-end",
-                }}
-              >
-                {stats.map((stat) => (
-                  <div
-                    key={stat.label}
+            </div>
+            
+            {/* Spacer to push stats to bottom */}
+            <div style={{ flex: 1 }} />
+            
+            {/* Stats row - at bottom */}
+            <div
+              className="hero-stats"
+              style={{
+                display: "flex",
+                gap: "clamp(20px, 5vw, 40px)",
+                alignItems: "flex-end",
+                flexWrap: "wrap",
+                marginTop: "32px",
+              }}
+            >
+              {stats.map((stat) => (
+                <div
+                  key={stat.label}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "4px",
+                  }}
+                >
+                  <span
                     style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "4px",
-                      minWidth: stat.number === "12 Weeks" ? "160px" : "140px",
+                      fontFamily:
+                        'var(--font-darker-grotesque), "Darker Grotesque", sans-serif',
+                      fontSize: "clamp(32px, 8vw, 48px)",
+                      fontWeight: 500,
+                      color: "#D3F463",
+                      lineHeight: 1,
+                      letterSpacing: "-1px",
                     }}
                   >
-                    <span
-                      style={{
-                        fontFamily:
-                          'var(--font-darker-grotesque), "Darker Grotesque", sans-serif',
-                        fontSize: "48px",
-                        fontWeight: 500,
-                        color: "#D3F463",
-                        lineHeight: 1,
-                        letterSpacing: "-1px",
-                      }}
-                    >
-                      {stat.number}
-                    </span>
-                    <span
-                      style={{
-                        fontSize: "13px",
-                        color: "rgba(255,255,255,0.5)",
-                        fontFamily: "var(--font-dm-sans), sans-serif",
-                        lineHeight: 1.3,
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {stat.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
+                    {stat.number}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "clamp(11px, 2vw, 13px)",
+                      color: "rgba(255,255,255,0.5)",
+                      fontFamily: "var(--font-dm-sans), sans-serif",
+                      lineHeight: 1.3,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {stat.label}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Glowing lime element — right side */}
           <div
-            className="animate-spin-slow"
+            className="animate-spin-slow hero-glow"
             style={{
               position: "absolute",
               right: "-100px",
@@ -367,9 +362,22 @@ export function HeroSection() {
       </section>
 
       {/* Client logo banner — below the hero section */}
-      <div style={{ backgroundColor: "#EFEFEF", padding: "0 16px" }}>
+      <div style={{ backgroundColor: "#EFEFEF", padding: "0 clamp(8px, 2vw, 16px)" }}>
         <ClientLogoBanner />
       </div>
+
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .hero-glow {
+            width: 300px !important;
+            height: 300px !important;
+            right: -150px !important;
+          }
+          .hero-secondary-btn {
+            display: none !important;
+          }
+        }
+      `}</style>
     </>
   );
 }
