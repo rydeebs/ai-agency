@@ -1,0 +1,149 @@
+import type { WhatWeDoContent } from "./types";
+
+interface Props {
+  content: WhatWeDoContent;
+}
+
+export function WhatWeDoVariant({ content }: Props) {
+  const tickerItems = [...content.services, ...content.services];
+
+  return (
+    <section
+      id="services"
+      style={{
+        backgroundColor: "#EFEFEF",
+        position: "relative",
+        overflow: "hidden",
+      }}
+      className="section_what_we_do"
+    >
+      <div className="grid-bg-light" />
+
+      <div
+        style={{
+          padding: "clamp(64px, 10vw, 100px) clamp(20px, 5vw, 60px)",
+          maxWidth: "1440px",
+          margin: "0 auto",
+          position: "relative",
+        }}
+      >
+        <div
+          className="what-we-do-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 400px), 1fr))",
+            gap: "16px",
+            height: "clamp(450px, 60vw, 620px)",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#2A2B30",
+              borderRadius: "16px",
+              padding: "clamp(28px, 4vw, 44px)",
+              height: "100%",
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+              gap: "clamp(14px, 2vw, 22px)",
+              boxSizing: "border-box",
+              position: "relative",
+            }}
+          >
+            <div className="grid-bg-dark" style={{ borderRadius: "16px" }} />
+            <span
+              style={{
+                fontSize: "clamp(10px, 2vw, 12px)",
+                textTransform: "uppercase",
+                letterSpacing: "2px",
+                color: "rgba(255,255,255,0.5)",
+                fontFamily: "var(--font-dm-sans, DM Sans, sans-serif)",
+                fontWeight: 500,
+              }}
+            >
+              {content.eyebrow}
+            </span>
+
+            <h2
+              style={{
+                fontSize: "clamp(32px, 5.5vw, 58px)",
+                fontFamily:
+                  'var(--font-darker-grotesque, "Darker Grotesque", sans-serif)',
+                fontWeight: 500,
+                color: "white",
+                lineHeight: 1.1,
+                margin: 0,
+                letterSpacing: "clamp(-0.5px, -0.02em, -1.3px)",
+              }}
+            >
+              {content.headline}{" "}
+              <span style={{ color: "#D3F463" }}>{content.highlight}</span>
+            </h2>
+
+            <div
+              style={{
+                overflow: "hidden",
+                height: "clamp(160px, 25vw, 240px)",
+                flex: 1,
+                marginTop: "clamp(4px, 1vw, 8px)",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "clamp(6px, 1.5vw, 10px)",
+                  animation: "ticker-scroll 12s linear infinite",
+                }}
+              >
+                {tickerItems.map((service, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      border: "1px solid rgba(255,255,255,0.3)",
+                      borderRadius: "100px",
+                      padding: "clamp(6px, 1.5vw, 10px) clamp(14px, 2.5vw, 20px)",
+                      fontSize: "clamp(13px, 2.5vw, 18px)",
+                      lineHeight: "clamp(18px, 3vw, 26px)",
+                      color: "rgba(255,255,255,0.8)",
+                      fontFamily: "var(--font-dm-sans, DM Sans, sans-serif)",
+                      fontWeight: 400,
+                      whiteSpace: "nowrap",
+                      width: "fit-content",
+                    }}
+                  >
+                    {service}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div
+            style={{
+              borderRadius: "16px",
+              overflow: "hidden",
+              height: "100%",
+              position: "relative",
+              backgroundColor: "#1E1E1E",
+            }}
+          >
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+              }}
+            >
+              <source src={content.videoSrc} type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
