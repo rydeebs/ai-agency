@@ -192,6 +192,7 @@ export const accountingFinanceContent: LandingContent = {
     description:
       "Book a 30-minute discovery call. We'll walk through one of your highest-leakage workflows and show you exactly what's automatable.",
     ctaLabel: "Book a discovery call",
+    videoSrc: "/videos/cta-background-accounting.mp4",
   },
   leadForm: {
     eyebrow: "GET A DISCOVERY CALL",
