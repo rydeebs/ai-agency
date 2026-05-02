@@ -35,7 +35,7 @@ export function WhatWeDoSection() {
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))',
             gap: '16px',
-            height: 'clamp(350px, 45vw, 480px)',
+            height: 'clamp(400px, 55vw, 560px)',
           }}
         >
           {/* LEFT — Dark card */}
@@ -43,12 +43,12 @@ export function WhatWeDoSection() {
             style={{
               backgroundColor: '#2A2B30',
               borderRadius: '16px',
-              padding: 'clamp(24px, 4vw, 40px)',
+              padding: 'clamp(28px, 4vw, 44px)',
               height: '100%',
               overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column',
-              gap: 'clamp(12px, 2vw, 20px)',
+              gap: 'clamp(14px, 2vw, 22px)',
               boxSizing: 'border-box',
               position: 'relative',
             }}
@@ -70,7 +70,7 @@ export function WhatWeDoSection() {
 
             <h2
               style={{
-                fontSize: 'clamp(28px, 5vw, 52px)',
+                fontSize: 'clamp(32px, 5.5vw, 58px)',
                 fontFamily: 'var(--font-darker-grotesque, "Darker Grotesque", sans-serif)',
                 fontWeight: 500,
                 color: 'white',
@@ -89,7 +89,7 @@ export function WhatWeDoSection() {
             <div
               style={{
                 overflow: 'hidden',
-                height: 'clamp(140px, 20vw, 200px)',
+                height: 'clamp(160px, 25vw, 240px)',
                 flex: 1,
                 marginTop: 'clamp(4px, 1vw, 8px)',
               }}

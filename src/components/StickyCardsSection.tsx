@@ -125,12 +125,14 @@ export function StickyCardsSection() {
             </p>
           </div>
 
-          {/* Cards container */}
+          {/* Cards container - paddingBottom gives cards room to scroll & stack */}
           <div
+            className="cards-container"
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: 'clamp(16px, 3vw, 24px)',
+              gap: '24px',
+              paddingBottom: 'clamp(100px, 20vw, 200px)',
             }}
           >
             {cards.map((card, index) => (
@@ -138,7 +140,10 @@ export function StickyCardsSection() {
                 key={index}
                 className="sticky-card"
                 style={{
-                  minHeight: 'clamp(200px, 35vw, 260px)',
+                  position: 'sticky',
+                  top: `calc(80px + ${index} * 24px)`,
+                  zIndex: index + 1,
+                  minHeight: 'clamp(220px, 35vw, 260px)',
                   borderRadius: 'clamp(12px, 3vw, 20px)',
                   display: 'flex',
                   flexDirection: 'row',
@@ -229,23 +234,10 @@ export function StickyCardsSection() {
             height: fit-content !important;
             max-width: 100% !important;
           }
-          .sticky-card {
-            position: sticky !important;
-            top: calc(100px + var(--index, 0) * 24px) !important;
-            z-index: calc(1 + var(--index, 0)) !important;
-          }
-          .sticky-card:nth-child(1) { --index: 0; }
-          .sticky-card:nth-child(2) { --index: 1; }
-          .sticky-card:nth-child(3) { --index: 2; }
-          .sticky-card:nth-child(4) { --index: 3; }
-          .sticky-card:nth-child(5) { --index: 4; }
         }
         @media (max-width: 768px) {
           .card-video {
             display: none !important;
-          }
-          .sticky-card {
-            flex-direction: column !important;
           }
         }
       `}</style>
