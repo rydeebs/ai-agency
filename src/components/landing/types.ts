@@ -1,4 +1,4 @@
-export type Vertical = "ai-101" | "accounting-finance" | "gtm-operations";
+export type Vertical = "ai-101" | "accounting-finance" | "operations";
 
 export interface LandingMeta {
   title: string;
