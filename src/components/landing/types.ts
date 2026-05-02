@@ -18,6 +18,10 @@ export interface HeroContent {
   secondaryCta?: { label: string; href: string };
   features: string[];
   stats: Array<{ number: string; label: string }>;
+  /** Optional override for the hero text column max width (default 640px) */
+  headlineMaxWidth?: string;
+  /** Optional override for the headline font-size CSS value (default clamp(40px, 10vw, 96px)) */
+  headlineFontSize?: string;
 }
 
 export interface StatementContent {

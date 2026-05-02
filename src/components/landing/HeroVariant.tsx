@@ -139,7 +139,7 @@ export function HeroVariant({ content }: Props) {
 
             <div
               style={{
-                maxWidth: "640px",
+                maxWidth: content.headlineMaxWidth ?? "640px",
                 display: "flex",
                 flexDirection: "column",
               }}
@@ -148,7 +148,7 @@ export function HeroVariant({ content }: Props) {
                 style={{
                   fontFamily:
                     'var(--font-darker-grotesque), "Darker Grotesque", sans-serif',
-                  fontSize: "clamp(40px, 10vw, 96px)",
+                  fontSize: content.headlineFontSize ?? "clamp(40px, 10vw, 96px)",
                   fontWeight: 500,
                   color: "white",
                   lineHeight: 1,

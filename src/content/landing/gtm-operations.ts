@@ -14,6 +14,8 @@ export const gtmOperationsContent: LandingContent = {
   hero: {
     headlineLines: ["More booked jobs.", "Less time on"],
     highlightLine: "the phone.",
+    headlineMaxWidth: "820px",
+    headlineFontSize: "clamp(36px, 7vw, 76px)",
     subheadline:
       "We build AI-powered GTM systems for service-industry SMBs — paving, HVAC, roofing, landscaping, commercial cleaning. Find more leads, respond faster, and close more without hiring another rep.",
     primaryCta: { label: "Get a free GTM audit ↗", href: "#contact" },
@@ -31,7 +33,7 @@ export const gtmOperationsContent: LandingContent = {
     ],
   },
   statement: {
-    line1: "Your phone shouldn't run your business.",
+    line1: "Speed wins jobs. Slow loses them.",
     line2: "AI handles the chase. You close the deal.",
     line2Color: "#8D96FD",
   },
