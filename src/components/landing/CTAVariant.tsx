@@ -31,6 +31,7 @@ export function CTAVariant({ content, ctaHref = "#contact" }: Props) {
         }}
       >
         <video
+          key={content.videoSrc ?? "/videos/cta-background.mp4"}
           autoPlay
           loop
           muted
@@ -45,14 +46,17 @@ export function CTAVariant({ content, ctaHref = "#contact" }: Props) {
             zIndex: 0,
           }}
         >
-          <source src="/videos/cta-background.mp4" type="video/mp4" />
+          <source
+            src={content.videoSrc ?? "/videos/cta-background.mp4"}
+            type="video/mp4"
+          />
         </video>
 
         <div
           style={{
             position: "absolute",
             inset: 0,
-            backgroundColor: "rgba(0,0,0,0.4)",
+            backgroundColor: `rgba(0,0,0,${content.overlayOpacity ?? 0.4})`,
             zIndex: 1,
           }}
         />

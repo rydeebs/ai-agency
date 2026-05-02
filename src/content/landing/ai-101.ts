@@ -192,6 +192,8 @@ export const ai101Content: LandingContent = {
     description:
       "AI literacy is becoming a baseline skill. Start with Level 1 today — no credit card, no commitment.",
     ctaLabel: "Start with Level 1",
+    videoSrc: "/videos/cta-background-ai101.mp4",
+    overlayOpacity: 0.35,
   },
   leadForm: {
     eyebrow: "GET STARTED",

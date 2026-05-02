@@ -90,6 +90,10 @@ export interface CTAContent {
   headlineLine2: string;
   description: string;
   ctaLabel: string;
+  /** Optional override for the background video (default /videos/cta-background.mp4) */
+  videoSrc?: string;
+  /** Optional override for the dark overlay opacity (0-1, default 0.4) */
+  overlayOpacity?: number;
 }
 
 export interface LeadFormContent {
