@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { LandingPageTemplate } from "@/components/landing/LandingPageTemplate";
-import { ai101Content } from "@/content/landing/ai-101";
+import { ai101Content } from "@/content/landing/101";
 
 export const metadata: Metadata = {
   title: ai101Content.meta.title,
@@ -28,6 +28,6 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Ai101Page() {
+export default function OneOhOnePage() {
   return <LandingPageTemplate content={ai101Content} />;
 }

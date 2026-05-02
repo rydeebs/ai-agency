@@ -1,12 +1,12 @@
 import type { LandingContent } from "@/components/landing/types";
 
-export const accountingFinanceContent: LandingContent = {
-  vertical: "accounting-finance",
+export const firmsContent: LandingContent = {
+  vertical: "firms",
   meta: {
     title: "AI for Accounting & Finance Firms | NewRevGen",
     description:
       "Adopt AI inside your existing practice — without replatforming. We embed with accounting and finance firms to free billable hours, lift margin, and modernize legacy workflows.",
-    canonical: "https://newrevegen.com/accounting-finance",
+    canonical: "https://newrevegen.com/firms",
     ogTitle: "AI for Firms Still Running on Legacy Workflows",
     ogDescription:
       "Reconciliation, close, audit prep, advisory deliverables — automated inside the systems you already use. Built for firms, by people who've worked inside them.",

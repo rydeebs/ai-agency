@@ -1,12 +1,12 @@
 import type { LandingContent } from "@/components/landing/types";
 
 export const ai101Content: LandingContent = {
-  vertical: "ai-101",
+  vertical: "101",
   meta: {
     title: "AI 101 — Get Fluent in AI From Zero | NewRevGen",
     description:
       "Go from AI-curious to AI-confident. Structured Level 1 → Level 3 program covering ChatGPT, Claude, Gemini, and image generation tools. No technical background required.",
-    canonical: "https://newrevegen.com/ai-101",
+    canonical: "https://newrevegen.com/101",
     ogTitle: "AI 101 — From Zero to Fluent in Three Levels",
     ogDescription:
       "ChatGPT, Claude, Gemini, and AI image tools — explained plainly, taught practically. Built for professionals who don't want to be left behind.",
