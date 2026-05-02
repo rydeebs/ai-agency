@@ -35,7 +35,7 @@ export function WhatWeDoSection() {
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))',
             gap: '16px',
-            height: 'clamp(400px, 55vw, 560px)',
+            height: 'clamp(450px, 60vw, 620px)',
           }}
         >
           {/* LEFT — Dark card */}

@@ -26,7 +26,7 @@ const cards: Card[] = [
   {
     bg: '#FFE176',
     heading: 'Embedded, not external',
-    text: "We work inside your team, not from a consulting tower. Slack channels, standups, the whole thing.",
+    text: "We work inside your team — not from a consulting tower.",
     textColor: '#17181B',
     video: '/videos/cards/embedded.mp4',
   },
@@ -143,7 +143,7 @@ export function StickyCardsSection() {
                   position: 'sticky',
                   top: `calc(80px + ${index} * 24px)`,
                   zIndex: index + 1,
-                  minHeight: 'clamp(220px, 35vw, 260px)',
+                  height: 'clamp(240px, 32vw, 280px)',
                   borderRadius: 'clamp(12px, 3vw, 20px)',
                   display: 'flex',
                   flexDirection: 'row',
