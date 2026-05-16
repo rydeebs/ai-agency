@@ -171,8 +171,8 @@ export function HeroSection() {
                   textAlign: "left",
                 }}
               >
-                More booked jobs for{" "}
-                <span style={{ color: "#D3F463" }}>contractors.</span>
+                Work smarter, improve time use, {" "}
+                <span style={{ color: "#D3F463" }}>and scale your business.</span>
               </h1>
               
               {/* Subheadline */}
