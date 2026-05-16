@@ -12,12 +12,12 @@ export const operationsContent: LandingContent = {
       "AI revenue systems built around how contractors actually operate: calls, estimates, dispatch, crews, reviews, and follow-up.",
   },
   hero: {
-    headlineLines: ["More booked jobs.", "Fewer missed"],
-    highlightLine: "opportunities.",
+    headlineLines: ["More booked", "jobs for"],
+    highlightLine: "contractors.",
     headlineMaxWidth: "820px",
     headlineFontSize: "clamp(36px, 7vw, 76px)",
     subheadline:
-      "We build practical AI systems for paving, garage door, concrete, roofing, HVAC, and service companies that miss calls, lose estimates, and pay for tools that do not talk to each other.",
+      "We build and implement practical AI systems for construction and service industry companies that miss calls, lose estimates, and waste money on tools that do not talk to each other.",
     primaryCta: { label: "Get a free revenue leak audit ↗", href: "#contact" },
     secondaryCta: { label: "Book a 20-min call", href: "#contact" },
     features: [

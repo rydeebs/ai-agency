@@ -190,8 +190,8 @@ export function HeroSection() {
                   fontFamily: "var(--font-dm-sans), sans-serif",
                 }}
               >
-                We build practical AI systems for paving, garage door, roofing, HVAC, concrete,
-                and service companies that miss calls, lose estimates, and waste money on tools
+                We build and implement practical AI systems for construction and service
+                industry companies that miss calls, lose estimates, and waste money on tools
                 that do not talk to each other.
               </p>
 

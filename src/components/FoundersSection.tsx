@@ -13,20 +13,20 @@ const founders = [
     funFact: 'Conquers mountains on weekends',
   },
   {
-    name: 'Pawel Chrzanowski',
-    title: 'Co-Founder & CTO',
-    image: '/images/founder-2.png',
-    hoverImage: '/images/founder-2-hover.png',
-    credentials: 'VP at CAN-USA and NYC DOB Licensed Special Rigger. 6+ years leading complex projects at Trident Contracting. Former TCS Business Analyst. Fluent in Polish, Spanish & Mandarin.',
-    funFact: 'Rides sharks for fun',
-  },
-  {
     name: 'Ryan DeBerardinis',
     title: 'Co-Founder & COO',
     image: '/images/founder-3.png',
     hoverImage: '/images/founder-3-hover.png',
     credentials: 'GTM Engineer at ShipBob scaling global solutions. Former Supply Chain Ops at OpenStore & Flexport. 4 years as Operations Manager at Amazon building high-performance teams.',
     funFact: 'Gator wrangler extraordinaire',
+  },
+  {
+    name: 'Pawel Chrzanowski',
+    title: 'Co-Founder & CMO',
+    image: '/images/founder-2.png',
+    hoverImage: '/images/founder-2-hover.png',
+    credentials: 'VP at CAN-USA and NYC DOB Licensed Special Rigger. 6+ years leading complex projects at Trident Contracting. Former TCS Business Analyst. Fluent in Polish, Spanish & Mandarin.',
+    funFact: 'Rides sharks for fun',
   },
 ];
 
