@@ -3,9 +3,9 @@
 import Image from "next/image";
 
 const navLinksCol1 = [
-  { label: 'AI Transformation', href: '#why-us' },
-  { label: 'Services', href: '#services' },
-  { label: 'Pricing', href: '#pricing' },
+  { label: 'Why Us', href: '#why-us' },
+  { label: 'What We Fix', href: '#services' },
+  { label: 'Pilot', href: '#pricing' },
 ];
 
 const navLinksCol2 = [
@@ -61,7 +61,7 @@ export function Footer() {
                 fontFamily: 'var(--font-dm-sans, DM Sans, sans-serif)',
               }}
             >
-              Your AI transformation partner. We build, you scale.
+              AI revenue systems for contractors and service businesses.
             </p>
           </div>
 
@@ -150,7 +150,7 @@ export function Footer() {
                 whiteSpace: 'nowrap',
               }}
             >
-              Let&apos;s talk ↗
+              Free audit ↗
             </a>
           </div>
         </div>

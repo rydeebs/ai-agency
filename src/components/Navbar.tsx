@@ -8,9 +8,9 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { label: "AI Transformation", href: "#why-us" },
-    { label: "Services", href: "#services" },
-    { label: "Pricing", href: "#pricing" },
+    { label: "Why Us", href: "#why-us" },
+    { label: "What We Fix", href: "#services" },
+    { label: "Pilot", href: "#pricing" },
     { label: "About", href: "#team" },
   ];
 
@@ -127,7 +127,7 @@ export function Navbar() {
               whiteSpace: "nowrap",
             }}
           >
-            Schedule Call ↗
+            Free Audit ↗
           </Link>
         </div>
 

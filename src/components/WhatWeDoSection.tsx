@@ -1,13 +1,13 @@
 export function WhatWeDoSection() {
   const services = [
-    'Workflow Automation',
-    'AI Tool Selection & Setup',
-    'Hands-On Team Workshops',
-    'Process Re-engineering',
-    'Custom GPT & Agent Builds',
-    'Data Pipeline Integration',
-    'Leadership Alignment',
-    'Ongoing Support & Iteration',
+    'Missed-Call Text-Back',
+    'AI Receptionist Setup',
+    'Instant Lead Response',
+    'Estimate Follow-Up',
+    'Dormant Quote Reactivation',
+    'CRM Cleanup',
+    'Review Request Automation',
+    'Owner Dashboards',
   ];
 
   const tickerItems = [...services, ...services];
@@ -65,7 +65,7 @@ export function WhatWeDoSection() {
                 fontWeight: 500,
               }}
             >
-              HOW WE WORK
+              WHERE WE FIX THE LEAKS
             </span>
 
             <h2
@@ -79,9 +79,9 @@ export function WhatWeDoSection() {
                 letterSpacing: 'clamp(-0.5px, -0.02em, -1.3px)',
               }}
             >
-              We don&apos;t just consult —{' '}
+              Built around how contractors{' '}
               <span style={{ color: '#D3F463' }}>
-                we build alongside you.
+                actually sell jobs.
               </span>
             </h2>
 

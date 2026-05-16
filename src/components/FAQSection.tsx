@@ -4,24 +4,24 @@ import { useState } from 'react';
 
 const faqs = [
   {
-    q: 'How is this different from hiring an AI consultant?',
-    a: "Consultants give you a report and leave. We sit in your Slack, join your standups, and build alongside your team until the systems are live and your people know how to run them. When we're done, you don't need us anymore — that's the point.",
+    q: 'Do you actually work with construction and service businesses?',
+    a: "Yes. We are focused on owner-led contractors and field-service companies: paving, garage door, concrete, roofing, HVAC, plumbing, landscaping, commercial cleaning, and similar trades. The systems are built around calls, estimates, dispatch, crews, reviews, and follow-up.",
   },
   {
-    q: 'What kind of results can we expect?',
-    a: "It depends on where you're starting, but most teams see their first automation live within 2-3 weeks. Typical outcomes include 30-50% reduction in manual task time, faster customer response, and team members who actually enjoy using AI instead of fearing it.",
+    q: 'Where do you usually find revenue first?',
+    a: "Usually in missed calls, slow lead response, open estimates that never get followed up, and old quotes sitting untouched in the CRM. Those leaks are easy to measure because the lead already exists. We are not asking you to spend more on ads before fixing the follow-up.",
   },
   {
-    q: 'Do you work with companies our size?',
-    a: "We work best with teams of 20-500 people. Big enough to have real operational complexity, small enough that we can move fast without getting stuck in enterprise procurement limbo.",
+    q: 'What size company is the best fit?',
+    a: "We are best for companies doing roughly $1M-$15M in annual revenue with steady inbound leads, at least one office/admin person, and a real need to tighten sales, scheduling, follow-up, and reporting. If you are brand new with no lead flow yet, we are probably too early.",
   },
   {
-    q: 'What if our team isn\'t technical?',
-    a: "That's actually most of our clients. We specialize in making AI accessible to ops teams, sales orgs, HR departments — people who know their workflows cold but haven't touched code. By the end, they're building their own automations.",
+    q: 'What tools do you work with?',
+    a: "Jobber, ServiceTitan, Housecall Pro, FieldEdge, ServiceFusion, HubSpot, GoHighLevel, Pipedrive, Google Workspace, phone systems, web forms, spreadsheets, and most field-service stacks. If your setup is messy, that is usually where the value starts.",
   },
   {
-    q: 'How long does an engagement typically last?',
-    a: "Our standard partnership is 12 weeks: discovery, implementation, training, and handoff. Some teams bring us back for new initiatives, but the goal is always to make you self-sufficient. We also offer 2-week quick-start sprints for teams who want to test the waters.",
+    q: 'How fast can we see something live?',
+    a: "A missed-call, instant-response, or estimate follow-up workflow can usually go live inside 2-3 weeks. Bigger CRM cleanup, reporting, outbound, and tool consolidation projects take longer, but we like starting with one workflow that proves the revenue case quickly.",
   },
 ];
 
@@ -78,7 +78,7 @@ export function FAQSection() {
                 letterSpacing: 'clamp(-0.5px, -0.02em, -1.7px)',
               }}
             >
-              Frequently asked questions
+              Questions owners ask us
             </h2>
             <p
               style={{
@@ -97,7 +97,7 @@ export function FAQSection() {
                   textDecoration: 'underline',
                 }}
               >
-                Book a Call ↗
+                Book an Audit Call ↗
               </a>{' '}
               right now.
             </p>

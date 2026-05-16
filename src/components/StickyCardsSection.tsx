@@ -11,36 +11,36 @@ interface Card {
 const cards: Card[] = [
   {
     bg: '#D8F66F',
-    heading: 'Kill the busywork',
-    text: "Reports that took hours now take minutes. Data entry that drained your team? Gone.",
+    heading: 'Answer every lead',
+    text: "Calls, forms, and texts get an instant response before the customer calls the next contractor.",
     textColor: '#17181B',
     video: '/videos/cards/kill-busywork.mp4',
   },
   {
     bg: '#FF7D84',
-    heading: 'Better margins, same headcount',
-    text: "Do more with who you have. No layoffs, no burnout — just smarter operations.",
+    heading: 'Keep estimates warm',
+    text: "Every open quote gets a smart follow-up cadence, so good opportunities do not disappear after one bid.",
     textColor: '#17181B',
     video: '/videos/cards/better-margins.mp4',
   },
   {
     bg: '#FFE176',
-    heading: 'Embedded, not external',
-    text: "We work inside your team — not from a consulting tower.",
+    heading: 'Clean up the stack',
+    text: "We connect the tools you already use and cut the software that is costing you without helping the office.",
     textColor: '#17181B',
     video: '/videos/cards/embedded.mp4',
   },
   {
     bg: '#8D96FD',
-    heading: 'We train, you own',
-    text: "Your team learns as we build. When we leave, the knowledge stays.",
+    heading: 'Give owners real numbers',
+    text: "Booked jobs, response time, quote status, close rate, and lead sources in one dashboard you can actually read.",
     textColor: '#17181B',
     video: '/videos/cards/train-own.mp4',
   },
   {
     bg: '#D8F66F',
-    heading: 'Built to evolve',
-    text: "AI moves fast. We build systems that adapt as tools improve — no rebuild required.",
+    heading: 'Train the office',
+    text: "Your dispatcher, admin, estimator, or sales rep learns the workflow as we build it, so it keeps running.",
     textColor: '#17181B',
     video: '/videos/cards/built-evolve.mp4',
   },
@@ -92,7 +92,7 @@ export function StickyCardsSection() {
                 fontWeight: 500,
               }}
             >
-              WHY TEAMS CHOOSE US
+              WHY CONTRACTORS CHOOSE US
             </span>
 
             <h2
@@ -106,8 +106,8 @@ export function StickyCardsSection() {
                 letterSpacing: 'clamp(-0.5px, -0.02em, -1.7px)',
               }}
             >
-              AI that ships,{' '}
-              <span style={{ color: '#8D96FD' }}>not AI theater.</span>
+              More booked work,{' '}
+              <span style={{ color: '#8D96FD' }}>less office drag.</span>
             </h2>
 
             <p
@@ -119,9 +119,9 @@ export function StickyCardsSection() {
                 margin: 0,
               }}
             >
-              Most AI initiatives die in pilot purgatory. We&apos;re not here to run 
-              experiments — we&apos;re here to deploy systems that your team actually uses 
-              every single day.
+              We are not here to sell you another shiny app. We find where jobs are leaking,
+              wire AI into your current phones, forms, CRM, and follow-up, then prove the
+              system is helping your team book work.
             </p>
           </div>
 

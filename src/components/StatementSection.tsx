@@ -31,10 +31,10 @@ export function StatementSection() {
             maxWidth: '1100px',
           }}
         >
-          Artificial Intelligence is changing the rules of business right now.
+          You are already paying for the leads.
           <br />
           <span style={{ color: '#8D96FD' }}>
-            Companies that wait will fall behind.
+            We help make sure they turn into booked work.
           </span>
         </h2>
       </div>

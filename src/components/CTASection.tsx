@@ -86,9 +86,9 @@ export function CTASection() {
               lineHeight: 1.1,
             }}
           >
-            Stop talking about AI.
+            Stop losing jobs
             <br />
-            <span style={{ color: '#D3F463' }}>Start implementing it.</span>
+            <span style={{ color: '#D3F463' }}>after the lead comes in.</span>
           </h2>
 
           <p
@@ -100,8 +100,8 @@ export function CTASection() {
               lineHeight: 1.6,
             }}
           >
-            Book a 30-minute call. We&apos;ll audit one of your workflows live 
-            and show you exactly what&apos;s possible — no pitch deck, no fluff.
+            Book a 30-minute revenue leak audit. We&apos;ll look at your calls, estimates,
+            CRM, and software stack, then show you the first AI workflow worth building.
           </p>
 
           {/* Button */}
@@ -119,7 +119,7 @@ export function CTASection() {
               alignItems: 'center',
             }}
           >
-            Book a Free Audit Call ↗
+            Get My Free Audit ↗
           </a>
         </div>
       </div>

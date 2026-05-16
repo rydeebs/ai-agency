@@ -15,8 +15,9 @@ const darkerGrotesque = Darker_Grotesque({
 });
 
 export const metadata: Metadata = {
-  title: "NexRevGen - AI That Actually Ships",
-  description: "We embed with your team to build AI systems that work. Workflow automation, custom GPT agents, and hands-on training. No consultants, no slide decks — just results.",
+  title: "NexRevGen - AI Revenue Systems for Contractors",
+  description:
+    "AI systems for construction and service businesses that recover missed calls, follow up on estimates, book more jobs, and cut wasted software spend.",
   icons: {
     icon: "/seo/favicon.png",
   },

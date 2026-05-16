@@ -1,10 +1,10 @@
 export function PricingSection() {
   const featureTags = [
-    'Embedded AI team',
-    '6-week sprints',
-    'Weekly syncs',
-    'Live workshops',
-    'Slack support',
+    'Free revenue leak audit',
+    '30-day pilot',
+    'Built on your current tools',
+    'Owner-facing reporting',
+    'No long-term lock-in',
   ];
 
   return (
@@ -32,7 +32,7 @@ export function PricingSection() {
             marginBottom: 'clamp(12px, 2vw, 16px)',
           }}
         >
-          ENGAGEMENT OPTIONS
+          HOW WE WORK WITH OWNERS
         </span>
 
         {/* Heading */}
@@ -48,8 +48,8 @@ export function PricingSection() {
             maxWidth: '700px',
           }}
         >
-          Flexible models{' '}
-          <span style={{ color: '#8D96FD' }}>that fit how you work.</span>
+          Start with the leak{' '}
+          <span style={{ color: '#8D96FD' }}>closest to revenue.</span>
         </h2>
 
         {/* Feature tags */}
@@ -105,7 +105,7 @@ export function PricingSection() {
                 margin: '0 0 12px 0',
               }}
             >
-              Full Integration Partnership
+              Contractor Revenue System
             </h3>
             <p
               style={{
@@ -115,8 +115,9 @@ export function PricingSection() {
                 margin: '0 0 clamp(20px, 4vw, 32px) 0',
               }}
             >
-              We embed with your team for 12 weeks. Discovery, implementation, training, 
-              and handoff — everything you need to run AI independently.
+              We audit your lead flow, missed calls, estimate follow-up, CRM, and software
+              stack. Then we build the AI workflows that help your office book more jobs
+              without adding another full-time hire.
             </p>
 
             {/* Price */}
@@ -132,7 +133,7 @@ export function PricingSection() {
               >
                 Custom Scope
               </span>
-              <p style={{ fontSize: 'clamp(12px, 2vw, 14px)', color: '#5D616A', marginTop: '8px' }}>Based on team size and complexity</p>
+              <p style={{ fontSize: 'clamp(12px, 2vw, 14px)', color: '#5D616A', marginTop: '8px' }}>Based on lead volume, trade, and current stack</p>
             </div>
 
             {/* Book a Call button */}
@@ -152,7 +153,7 @@ export function PricingSection() {
                 boxSizing: 'border-box',
               }}
             >
-              Book a Discovery Call ↗
+              Get a Revenue Leak Audit ↗
             </a>
           </div>
 
@@ -180,7 +181,7 @@ export function PricingSection() {
                 WHAT&apos;S INCLUDED
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {['Full workflow audit & opportunity map', 'Custom automation builds', 'Live team training sessions', 'Documentation & playbooks'].map((item, i) => (
+                {['Missed-call and lead-response audit', 'Estimate follow-up automation', 'CRM cleanup and tool consolidation', 'Owner dashboard with booked-job metrics'].map((item, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ color: '#D3F463', fontSize: '12px' }}>✓</span>
                     <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: 'clamp(12px, 2.5vw, 14px)' }}>{item}</span>
@@ -206,7 +207,7 @@ export function PricingSection() {
                   margin: '0 0 8px 0',
                 }}
               >
-                Quick Start Sprint
+                30-Day Pilot
               </p>
               <p
                 style={{
@@ -216,8 +217,8 @@ export function PricingSection() {
                   margin: '0 0 20px 0',
                 }}
               >
-                Not ready for a full engagement? Start with a 2-week sprint focused on 
-                one high-impact workflow.
+                Want proof first? We launch one high-impact workflow, usually missed-call
+                text-back or estimate follow-up, and measure the lift before expanding.
               </p>
               <a
                 href="#contact"

@@ -6,16 +6,16 @@ import { Navbar } from "./Navbar";
 import { ClientLogoBanner } from "./ClientLogoBanner";
 
 const stats = [
-  { number: "3x", label: "faster team output" },
-  { number: "40%", label: "reduction in manual tasks" },
-  { number: "6 Weeks", label: "to full AI integration" },
+  { number: "30 Days", label: "to first booked-job wins" },
+  { number: "24/7", label: "lead capture and follow-up" },
+  { number: "1 Stack", label: "cleaner tools and reporting" },
 ];
 
 const features = [
-  "Embedded AI leadership",
-  "Custom implementation roadmap",
-  "Live team workshops",
-  "Continuous optimization",
+  "Missed-call text-back",
+  "Estimate follow-up automation",
+  "AI receptionist and lead routing",
+  "CRM cleanup and owner dashboards",
 ];
 
 interface GridHighlight {
@@ -171,11 +171,11 @@ export function HeroSection() {
                   textAlign: "left",
                 }}
               >
-                Transform
+                More booked
                 <br />
-                your Business
+                jobs for
                 <br />
-                <span style={{ color: "#D3F463" }}>with AI.</span>
+                <span style={{ color: "#D3F463" }}>contractors.</span>
               </h1>
               
               {/* Subheadline */}
@@ -190,8 +190,9 @@ export function HeroSection() {
                   fontFamily: "var(--font-dm-sans), sans-serif",
                 }}
               >
-                Stop drowning in AI hype. We embed directly with your team to build real systems 
-                that cut costs, accelerate output, and free your people to do meaningful work.
+                We build practical AI systems for paving, garage door, roofing, HVAC, concrete,
+                and service companies that miss calls, lose estimates, and waste money on tools
+                that do not talk to each other.
               </p>
 
               {/* Vertical auto-scrolling feature ticker */}
@@ -277,7 +278,7 @@ export function HeroSection() {
                     transition: "opacity 0.2s ease",
                   }}
                 >
-                  Schedule Strategy Call ↗
+                  Get a Revenue Leak Audit ↗
                 </Link>
                 <Link
                   href="#why-us"
@@ -298,7 +299,7 @@ export function HeroSection() {
                     transition: "border-color 0.2s ease",
                   }}
                 >
-                  See How It Works
+                  See What We Fix
                 </Link>
               </div>
               
