@@ -152,7 +152,7 @@ export function HeroSection() {
             {/* Left content column - vertically centered */}
             <div
               style={{
-                maxWidth: "640px",
+                maxWidth: "780px",
                 display: "flex",
                 flexDirection: "column",
               }}
@@ -171,10 +171,7 @@ export function HeroSection() {
                   textAlign: "left",
                 }}
               >
-                More booked
-                <br />
-                jobs for
-                <br />
+                More booked jobs for{" "}
                 <span style={{ color: "#D3F463" }}>contractors.</span>
               </h1>
               
