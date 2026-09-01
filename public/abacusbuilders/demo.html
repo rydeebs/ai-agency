@@ -1,0 +1,870 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abacus Sequence Manager</title>
+<meta name="description" content="An interactive estimate follow-up tool for Abacus Builders: assign contacts to a remodel or restoration sequence and preview each one fully populated.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;450;500;600&display=swap">
+<style>
+  :root{
+    --paper:#F1F2EF;--surface:#FBFBF9;--surface-2:#F6F7F3;
+    --ink:#1A2027;--ink-soft:#55606B;--ink-faint:#828C95;
+    --line:#DCDED8;--line-soft:#E7E8E2;
+    --indigo:#2E4A6E;--indigo-soft:#e7edf4;
+    --brass:#8F6626;--brass-tint:#f0e9db;
+    --rust:#A6432A;--rust-tint:#f2e2db;
+    --accent:var(--indigo);--accent-tint:var(--indigo-soft);
+    --shadow:0 1px 2px rgba(26,32,39,.04),0 8px 28px rgba(26,32,39,.06);
+    --shadow-soft:0 1px 2px rgba(26,32,39,.03);
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --paper:#12161B;--surface:#1A1F26;--surface-2:#161B21;
+    --ink:#E9EAE4;--ink-soft:#A2ABB4;--ink-faint:#79828B;
+    --line:#2A313A;--line-soft:#232A32;
+    --indigo:#89ABD4;--indigo-soft:#1e2a38;
+    --brass:#CB9C56;--brass-tint:#2b2417;
+    --rust:#DA7C5F;--rust-tint:#2e1d17;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+    --shadow-soft:0 1px 2px rgba(0,0,0,.25);
+  }}
+  :root[data-theme="dark"]{
+    --paper:#12161B;--surface:#1A1F26;--surface-2:#161B21;
+    --ink:#E9EAE4;--ink-soft:#A2ABB4;--ink-faint:#79828B;
+    --line:#2A313A;--line-soft:#232A32;
+    --indigo:#89ABD4;--indigo-soft:#1e2a38;
+    --brass:#CB9C56;--brass-tint:#2b2417;
+    --rust:#DA7C5F;--rust-tint:#2e1d17;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+    --shadow-soft:0 1px 2px rgba(0,0,0,.25);
+  }
+
+  *{box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);margin:0;
+    font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-weight:450;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+  .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint)}
+  h1,h2,h3,h4{font-family:"Fraunces",Georgia,serif;font-weight:600;text-wrap:balance;line-height:1.12;margin:0}
+
+  /* merge spans */
+  .mf{transition:background .15s,color .15s,border-color .15s}
+  body.tpl .mf{font-family:"IBM Plex Mono",monospace;font-size:.85em;background:var(--indigo-soft);color:var(--indigo);padding:1px 5px;border-radius:4px;font-weight:500;white-space:nowrap}
+  body:not(.tpl) .mf{color:var(--ink);font-weight:500;border-bottom:1.5px solid var(--accent);padding-bottom:.5px}
+
+  /* form controls */
+  select{font-family:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
+    border:1px solid var(--line);border-radius:8px;padding:8px 30px 8px 11px;cursor:pointer;
+    appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%238a939c' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat:no-repeat;background-position:right 10px center}
+  select:focus-visible{outline:2px solid var(--indigo);outline-offset:1px}
+  button{font-family:inherit;cursor:pointer}
+  button:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+
+  /* header */
+  .masthead{border-bottom:1px solid var(--line);background:var(--surface-2)}
+  .titleblock{display:grid;grid-template-columns:1.55fr 1fr;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:34px 0 0;background:var(--surface);box-shadow:var(--shadow)}
+  .tb-main{padding:30px 32px}
+  .tb-main h1{font-size:clamp(28px,4.6vw,42px);letter-spacing:-.01em;margin:14px 0 0}
+  .tb-main .sub{color:var(--ink-soft);margin:14px 0 0;max-width:46ch;font-size:15.5px}
+  .prepared{padding:22px 0 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .stamp{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--indigo);border:1px solid var(--indigo);border-radius:6px;padding:5px 10px}
+  .prepared .by{color:var(--ink-faint);font-size:13px}
+  .tb-meta{border-left:1px solid var(--line);background:repeating-linear-gradient(0deg,transparent,transparent 27px,var(--line-soft) 27px,var(--line-soft) 28px);padding:26px;display:flex;flex-direction:column;gap:14px;justify-content:center}
+  .tb-row{display:flex;flex-direction:column;gap:3px}
+  .tb-row .k{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+  .tb-row .v{font-size:14px;font-weight:500}
+
+  /* intro */
+  .intro{padding:34px 0 4px}
+  .lede{font-family:"Fraunces",Georgia,serif;font-size:clamp(18px,2.3vw,22px);line-height:1.45;font-weight:400;max-width:44ch;margin:0}
+  .intro p.body{color:var(--ink-soft);font-size:15px;max-width:60ch;margin:16px 0 0}
+
+  /* manager */
+  .manager{margin:30px 0 0;border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--shadow);overflow:hidden}
+  .mgr-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:18px 22px;border-bottom:1px solid var(--line-soft)}
+  .mgr-head h2{font-size:19px}
+  .mgr-head .hint{display:block;margin-top:5px;color:var(--ink-faint);font-size:12.5px;max-width:52ch}
+  .tbl-scroll{overflow-x:auto}
+  table.contacts{width:100%;border-collapse:collapse;min-width:640px}
+  table.contacts th{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);font-weight:500;text-align:left;padding:11px 18px;border-bottom:1px solid var(--line-soft)}
+  table.contacts td{padding:12px 18px;border-bottom:1px solid var(--line-soft);font-size:14px;vertical-align:middle}
+  table.contacts tr:last-child td{border-bottom:0}
+  tr.crow{cursor:pointer;transition:background .12s}
+  tr.crow:hover{background:var(--surface-2)}
+  tr.crow.sel{background:var(--indigo-soft)}
+  .cname{display:flex;align-items:center;gap:10px}
+  .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+  .dot.A{background:var(--brass)}.dot.B{background:var(--rust)}
+  .cname .nm{font-weight:500}
+  .cname .nb{display:block;font-size:12px;color:var(--ink-faint)}
+  td.detail{color:var(--ink-soft);font-size:13px;font-variant-numeric:tabular-nums}
+  .assign{min-width:150px}
+  .prev-btn{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;letter-spacing:.03em;color:var(--indigo);background:transparent;border:1px solid var(--line);border-radius:7px;padding:6px 11px;transition:all .12s;white-space:nowrap}
+  .prev-btn:hover{border-color:var(--indigo);background:var(--indigo-soft)}
+  tr.crow.sel .prev-btn{border-color:var(--indigo);background:var(--surface)}
+
+  /* preview bar (sticky) */
+  .pbar{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--paper) 90%,transparent);backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid var(--line);margin-top:44px}
+  .pbar .wrap{display:flex;align-items:center;gap:14px;padding:12px 24px;flex-wrap:wrap}
+  .pbar .lab{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+  #previewPick{font-size:14px;font-weight:500;min-width:250px}
+  .tbadge{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;letter-spacing:.04em;padding:6px 11px;border-radius:7px}
+  .tbadge.A{color:var(--brass);background:var(--brass-tint)}
+  .tbadge.B{color:var(--rust);background:var(--rust-tint)}
+  .tbadge.T{color:var(--indigo);background:var(--indigo-soft)}
+  .facts{display:flex;gap:7px;flex-wrap:wrap;margin-left:auto}
+  .factchip{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-variant-numeric:tabular-nums}
+
+  /* track */
+  .track{margin:26px 0 0}
+  .track-a{--accent:var(--brass);--accent-tint:var(--brass-tint)}
+  .track-b{--accent:var(--rust);--accent-tint:var(--rust-tint)}
+  .track-head{display:flex;gap:18px;align-items:flex-start;padding-bottom:8px;border-bottom:2px solid var(--accent)}
+  .track-num{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;color:var(--accent);border:1.5px solid var(--accent);border-radius:8px;padding:8px 11px;line-height:1;flex-shrink:0;margin-top:4px}
+  .track-head h2{font-size:clamp(22px,3vw,28px);letter-spacing:-.01em}
+  .track-head .t-sub{color:var(--ink-soft);font-size:14.5px;margin:8px 0 0;max-width:62ch}
+  .track-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .chip{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.04em;background:var(--accent-tint);color:var(--accent);border-radius:999px;padding:5px 11px;font-weight:500}
+
+  .timeline{margin-top:14px}
+  .touch{display:grid;grid-template-columns:118px 1fr;position:relative}
+  .rail{position:relative;padding-top:26px}
+  .rail::before{content:"";position:absolute;left:15px;top:0;bottom:-2px;width:2px;background:var(--line)}
+  .touch:first-child .rail::before{top:26px}
+  .touch:last-child .rail::before{bottom:auto;height:34px}
+  .node{position:absolute;left:6px;top:26px;width:20px;height:20px;border-radius:50%;background:var(--surface);border:2px solid var(--accent);z-index:2}
+  .node::after{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--accent)}
+  .day{font-family:"IBM Plex Mono",monospace;position:absolute;left:40px;top:24px;font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.02em}
+  .day small{display:block;color:var(--ink-faint);font-weight:400;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;margin-top:1px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:14px 0 18px;box-shadow:var(--shadow-soft)}
+  .card-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .ch{font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:6px;line-height:1}
+  .ch-email{background:var(--accent);color:#fff}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ch-email{color:#161b21}}
+  :root[data-theme="dark"] .ch-email{color:#161b21}
+  .ch-sms{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+  .ch-call{background:var(--accent-tint);color:var(--accent);border:1px dashed var(--accent)}
+  .goal{font-size:14px;color:var(--ink-soft);font-weight:500}
+  .card-day{display:none;font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;color:var(--accent);letter-spacing:.04em}
+  .subj{border-left:2px solid var(--accent);padding:2px 0 2px 14px;margin:0 0 14px}
+  .subj .lab{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:5px}
+  .subj .opt{font-size:15px;font-weight:500;margin:0 0 3px}
+  .subj .opt:last-child{margin-bottom:0}
+  .subj .prev{font-size:12.5px;color:var(--ink-faint);margin:6px 0 0;font-style:italic}
+  .subj .script{font-weight:450;font-size:14px;line-height:1.6}
+  .msg{background:var(--surface-2);border:1px solid var(--line-soft);border-radius:9px;padding:15px 17px;font-size:14px;line-height:1.62}
+  .msg.sms{background:var(--accent-tint);border-color:transparent}
+  .msg p{margin:0 0 11px}.msg p:last-child{margin-bottom:0}
+  .msg ul{margin:0 0 11px;padding-left:18px}.msg li{margin:0 0 5px}
+  .msg .sig{color:var(--ink-soft);font-size:13px}
+  .cta{display:inline-flex;align-items:center;gap:7px;margin-top:13px;font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:500;letter-spacing:.03em;color:var(--accent);border:1px solid var(--accent);border-radius:7px;padding:7px 13px}
+  .cta::before{content:"▸";font-size:11px}
+  .why{display:flex;gap:9px;margin-top:14px;padding-top:13px;border-top:1px dashed var(--line);font-size:13px;color:var(--ink-soft);line-height:1.55}
+  .why b{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:600;flex-shrink:0;padding-top:2px}
+  .after{grid-column:2;margin:0 0 8px;padding:14px 18px;border-radius:10px;background:var(--accent-tint);font-size:13.5px}
+  .after b{color:var(--accent)}
+
+  /* run it */
+  .runit{margin:56px 0 0;border-top:1px solid var(--line);padding-top:34px}
+  .runit h2{font-size:24px;margin-bottom:6px}
+  .runit .r-sub{color:var(--ink-soft);font-size:14.5px;margin:0 0 24px}
+  .r-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+  .r-card{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:18px 20px;box-shadow:var(--shadow-soft)}
+  .r-card h4{font-size:15px;margin-bottom:9px;display:flex;align-items:center;gap:8px}
+  .r-card h4::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--indigo);flex-shrink:0}
+  .r-card ul{margin:0;padding-left:16px}
+  .r-card li{font-size:13.5px;color:var(--ink-soft);margin-bottom:7px;line-height:1.5}
+  .r-card li:last-child{margin-bottom:0}
+  .r-card p{font-size:13.5px;color:var(--ink-soft);margin:0}
+  .bench{margin-top:16px;overflow-x:auto}
+  .bench table{width:100%;border-collapse:collapse;font-size:13px;min-width:420px}
+  .bench th,.bench td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--line-soft)}
+  .bench th{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);font-weight:500}
+  .bench td.num{font-variant-numeric:tabular-nums;color:var(--ink-soft)}
+
+  .colophon{margin:44px 0 60px;padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+  .colophon .brand{font-family:"Fraunces",serif;font-size:16px;font-weight:600}
+  .colophon .meta{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-faint);letter-spacing:.03em}
+
+  /* workflow strip */
+  .workflow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0 0}
+  .wf{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow-soft)}
+  .wf .n{font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;color:var(--indigo);letter-spacing:.1em}
+  .wf h4{font-size:15px;margin:7px 0 5px}
+  .wf p{font-size:12.5px;color:var(--ink-soft);margin:0;line-height:1.5}
+  .wf.agent{background:var(--indigo-soft);border-color:transparent}
+  .wf.agent .n{color:var(--indigo)}
+
+  /* add button + form */
+  .addbtn{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:500;color:var(--indigo);background:var(--indigo-soft);border:1px solid var(--line);border-radius:8px;padding:9px 14px;white-space:nowrap;transition:border-color .12s}
+  .addbtn:hover{border-color:var(--indigo)}
+  .addform{border-top:1px solid var(--line-soft);padding:20px 22px;background:var(--surface-2)}
+  .addgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .fld{display:flex;flex-direction:column;gap:5px}
+  .fld.full{grid-column:1 / -1}
+  .fld label{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+  .fld input{font-family:inherit;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 11px;width:100%}
+  .fld input:focus-visible{outline:2px solid var(--indigo);outline-offset:1px}
+  .fld .help{font-size:11px;color:var(--ink-faint)}
+  .addform .a-only,.addform .b-only{display:none}
+  .addform[data-track="A"] .a-only{display:flex}
+  .addform[data-track="B"] .b-only{display:flex}
+  .addactions{display:flex;gap:10px;margin-top:16px;align-items:center;flex-wrap:wrap}
+  .btn-primary{font-family:"IBM Plex Mono",monospace;font-size:12.5px;font-weight:500;color:#fff;background:var(--indigo);border:0;border-radius:8px;padding:10px 17px}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn-primary{color:#12161B}}
+  :root[data-theme="dark"] .btn-primary{color:#12161B}
+  .btn-ghost{font-family:"IBM Plex Mono",monospace;font-size:12.5px;background:transparent;border:1px solid var(--line);color:var(--ink-soft);border-radius:8px;padding:10px 15px}
+  .btn-ghost:hover{border-color:var(--ink-faint)}
+  .addnote{font-size:12px;color:var(--ink-faint);margin-left:auto}
+  .row-acts{display:flex;gap:6px;justify-content:flex-end;align-items:center}
+  .rm{background:transparent;border:0;color:var(--ink-faint);font-size:14px;line-height:1;padding:6px 8px;border-radius:6px}
+  .rm:hover{color:var(--rust);background:var(--rust-tint)}
+  @media (max-width:720px){.workflow{grid-template-columns:1fr}.addgrid{grid-template-columns:1fr}.addnote{margin-left:0;width:100%}}
+
+  @media (max-width:720px){
+    .titleblock{grid-template-columns:1fr}
+    .tb-meta{border-left:0;border-top:1px solid var(--line)}
+    .touch{grid-template-columns:1fr}
+    .rail{display:none}
+    .card{margin:10px 0 14px}
+    .after{grid-column:1}
+    .card-day{display:inline-flex;margin-right:2px}
+    .facts{margin-left:0;width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+  html{scroll-behavior:smooth}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="wrap">
+    <div class="titleblock">
+      <div class="tb-main">
+        <span class="eyebrow">Estimate Follow-Up · Interactive</span>
+        <h1>Sequence Manager</h1>
+        <p class="sub">Add an open bid, assign it a track, and an automation agent runs the whole follow-up — every email, text, and call reminder, on cadence. Preview exactly what each homeowner receives.</p>
+        <div class="prepared">
+          <span class="stamp">NexRevGen</span>
+          <span class="by">Prepared for Abacus Builders &amp; General Contractors</span>
+        </div>
+      </div>
+      <div class="tb-meta">
+        <div class="tb-row"><span class="k">Client</span><span class="v">Abacus Builders</span></div>
+        <div class="tb-row"><span class="k">Market</span><span class="v">Boston Metro · Residential</span></div>
+        <div class="tb-row"><span class="k">Templates</span><span class="v">A · Remodel &nbsp; B · Restoration</span></div>
+        <div class="tb-row"><span class="k">Channels</span><span class="v">Email · SMS · Phone</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="intro">
+    <p class="lede">Two follow-up tracks, one place to run them — because a $200k remodel and a house fire don't get chased the same way.</p>
+    <p class="body">You don't run these sends by hand. Drop a new bid into the list, assign it a track, and an <b>automation agent takes it from there</b> — personalizing and sending each email, text, and call reminder on schedule, pausing the instant a homeowner replies, and handing the warm reply back to you. The cadence below is exactly what it executes.</p>
+    <div class="workflow">
+      <div class="wf"><span class="n">STEP 01</span><h4>Add the bid</h4><p>Enter the contact &amp; project the moment the estimate goes out — one row in the list below.</p></div>
+      <div class="wf"><span class="n">STEP 02</span><h4>Assign a track</h4><p>Pick Remodel or Restoration. That's the only decision a person makes.</p></div>
+      <div class="wf agent"><span class="n">STEP 03 · AGENT</span><h4>Agent runs the sequence</h4><p>It sends every touch on cadence, stops on a reply, and flags the hand-off. You just take the calls.</p></div>
+    </div>
+  </section>
+
+  <!-- MANAGER -->
+  <section class="manager">
+    <div class="mgr-head">
+      <div>
+        <h2>Open bids &amp; sequence assignments</h2>
+        <span class="hint">Add a bid, assign a track — the agent handles every send from there. Click a row to preview.</span>
+      </div>
+      <button type="button" class="addbtn" id="addBtn">＋ Add contact / project</button>
+    </div>
+    <div class="tbl-scroll">
+      <table class="contacts">
+        <thead>
+          <tr><th>Contact</th><th>Project</th><th>Detail</th><th>Assigned sequence</th><th></th></tr>
+        </thead>
+        <tbody id="crows"></tbody>
+      </table>
+    </div>
+    <form class="addform" id="addForm" data-track="A" hidden>
+      <div class="addgrid">
+        <div class="fld"><label for="f-track">Sequence</label>
+          <select id="f-track">
+            <option value="A">Track A · Remodel</option>
+            <option value="B">Track B · Restoration</option>
+          </select></div>
+        <div class="fld"><label for="f-name">Contact name</label><input id="f-name" placeholder="e.g. Jane &amp; Sam Ortiz" autocomplete="off"></div>
+        <div class="fld"><label for="f-first">First name (used in messages)</label><input id="f-first" placeholder="e.g. Jane" autocomplete="off"></div>
+        <div class="fld"><label for="f-hood">Neighborhood</label><input id="f-hood" placeholder="e.g. Charlestown" autocomplete="off"></div>
+        <div class="fld"><label for="f-proj">Project</label><input id="f-proj" placeholder="e.g. kitchen &amp; bath remodel" autocomplete="off">
+          <span class="help a-only">Reads in copy as "the [project]".</span><span class="help b-only">One word — reads as "[project] damage" (fire, water, storm).</span></div>
+        <div class="fld a-only"><label for="f-amt">Estimate amount</label><input id="f-amt" placeholder="e.g. $180,000" autocomplete="off"></div>
+        <div class="fld a-only"><label for="f-win">Start window</label><input id="f-win" placeholder="e.g. spring 2026" autocomplete="off"></div>
+        <div class="fld b-only full"><label for="f-adj">Insurance adjuster</label><input id="f-adj" placeholder="e.g. Karen Whitfield" autocomplete="off"></div>
+        <div class="fld"><label for="f-rep">Estimator (sender)</label><input id="f-rep" value="Joe Deveau" autocomplete="off"></div>
+        <div class="fld"><label for="f-phone">Callback number</label><input id="f-phone" value="(617) 555-0148" autocomplete="off"></div>
+      </div>
+      <div class="addactions">
+        <button type="submit" class="btn-primary">Add to list</button>
+        <button type="button" class="btn-ghost" id="addCancel">Cancel</button>
+        <span class="addnote">Once added, the agent starts the sequence automatically.</span>
+      </div>
+    </form>
+  </section>
+</div>
+
+<!-- STICKY PREVIEW BAR -->
+<div class="pbar">
+  <div class="wrap">
+    <span class="lab">Previewing</span>
+    <select id="previewPick" aria-label="Choose what to preview"></select>
+    <span class="tbadge" id="tbadge">Track A</span>
+    <span class="facts" id="facts"></span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ================= TRACK A ================= -->
+  <section class="track track-a" id="track-A">
+    <div class="track-head">
+      <span class="track-num">A</span>
+      <div>
+        <h2>Multi-Stage Remodel &amp; Design-Build</h2>
+        <p class="t-sub">Full gut renovations, design-build, and ground-up. A calm, high-consideration decision — every touch adds value or removes a worry, never just "checking in." Clock starts the day the proposal lands.</p>
+        <div class="track-meta">
+          <span class="chip">8 touches · 60 days</span>
+          <span class="chip">then quarterly nurture</span>
+          <span class="chip">Day 0 = proposal delivered</span>
+        </div>
+      </div>
+    </div>
+    <div class="timeline">
+
+      <div class="touch">
+        <div class="rail"><span class="node"></span><span class="day">DAY 0<small>same day</small></span></div>
+        <div class="card">
+          <div class="card-top"><span class="ch ch-email">Email</span><span class="card-day">Day 0 ·</span><span class="goal">Deliver the proposal &amp; frame the process</span></div>
+          <div class="subj"><span class="lab">Subject — pick one</span>
+            <p class="opt">Your <span class="mf" data-k="project">kitchen &amp; primary-bath remodel</span> proposal — and what happens next</p>
+            <p class="opt"><span class="mf" data-k="first">Meredith</span>, your Abacus estimate is ready</p>
+            <p class="prev">Preview: Everything in one place, plus the three phases we'd walk through together.</p>
+          </div>
+          <div class="msg">
+            <p>Hi <span class="mf" data-k="first">Meredith</span>,</p>
+            <p>Thanks for having us out to your <span class="mf" data-k="neighborhood">Back Bay</span> home — it was a pleasure walking the space with you. Your detailed proposal for the <span class="mf" data-k="project">kitchen &amp; primary-bath remodel</span> is attached, at <span class="mf" data-k="amount">$214,000</span>.</p>
+            <p>A project like this runs in three stages, and I've laid the estimate out the same way so you can see exactly where every dollar goes:</p>
+            <ul><li><b>Design &amp; permitting</b> — drawings, approvals, and the historic-district review your block requires</li>
+              <li><b>Build</b> — demolition through rough-in, on a fixed schedule you'll have in writing</li>
+              <li><b>Finish</b> — the millwork, tile, and details that make it yours</li></ul>
+            <p>There's no rush on your end — most homeowners take a few weeks to live with the plan. When you're ready, I'm glad to walk any line of it with you.</p>
+            <p>Would a 20-minute call this week be useful to talk through the phasing?</p>
+            <p class="sig">Best,<br><span class="mf" data-k="rep">Joe Deveau</span> · Abacus Builders &amp; General Contractors</p>
+          </div>
+          <span class="cta">Book a 20-minute walkthrough call</span>
+          <div class="why"><b>Why</b><span>Anchors the price inside a clear process, removes any urgency-pressure, and offers one easy, low-commitment next step.</span></div>
+        </div>
+      </div>
+
+      <div class="touch">
+        <div class="rail"><span class="node"></span><span class="day">DAY 2<small>+2 days</small></span></div>
+        <div class="card">
+          <div class="card-top"><span class="ch ch-sms">SMS</span><span class="card-day">Day 2 ·</span><span class="goal">Catch easy questions early</span></div>
+          <div class="msg sms"><p>Hi <span class="mf" data-k="first">Meredith</span>, it's <span class="mf" data-k="repFirst">Joe</span> at Abacus. Just making sure the proposal for your <span class="mf" data-k="project">kitchen &amp; primary-bath remodel</span> came through okay — any first questions I can answer? Happy to jump on a quick call whenever works.</p></div>
+          <div class="why"><b>Why</b><span>A short, human nudge at 48 hours surfaces small questions before they harden into reasons to stall.</span></div>
+        </div>
+      </div>
+
+      <div class="touch">
+        <div class="rail"><span class="node"></span><span class="day">DAY 5<small>+3 days</small></span></div>
+        <div class="card">
+          <div class="card-top"><span class="ch ch-email">Email</span><span class="card-day">Day 5 ·</span><span class="goal">Answer the real objection: disruption</span></div>
+          <div class="subj"><span class="lab">Subject — pick one</span>
+            <p class="opt">Living through a gut renovation (it's easier than you think)</p>
+            <p class="opt">How we keep a <span class="mf" data-k="neighborhood">Back Bay</span> remodel on schedule</p>
+            <p class="prev">Preview: A few things homeowners always ask us — answered before you have to.</p>
+          </div>
+          <div class="msg">
+            <p>Hi <span class="mf" data-k="first">Meredith</span>,</p>
+            <p>When you're weighing a project this size, the questions usually aren't about price — they're about disruption. "Can we stay in the house? How long is the kitchen out? What if the city slows the permit down?"</p>
+            <p>Fair questions. Here's how we handle the ones we hear most:</p>
+            <ul><li><b>Timeline</b> — you get a phase-by-phase schedule before we start, and a weekly update on where we are against it.</li>
+              <li><b>Permitting</b> — we handle the Boston ISD filings and historic-district approvals ourselves, and start them early since they're the slowest part of a <span class="mf" data-k="neighborhood">Back Bay</span> project.</li>
+              <li><b>Living on-site</b> — we dust-wall the work zone and keep a working bath and kitchen space wherever the layout allows.</li></ul>
+            <p>We recently wrapped a full gut on a home not far from yours — glad to share photos and connect you with the owners for a reference.</p>
+            <p>Any of this on your mind? Just reply.</p>
+            <p class="sig"><span class="mf" data-k="rep">Joe Deveau</span></p>
+          </div>
+          <span class="cta">See a recent project nearby</span>
+          <div class="why"><b>Why</b><span>Educates on the true objection (disruption, not cost) and offers proof plus a reference — the highest-trust asset a builder has.</span></div>
+        </div>
+      </div>
+
+      <div class="touch">
+        <div class="rail"><span class="node"></span><span class="day">DAY 10<small>+5 days</small></span></div>
+        <div class="card">
+          <div class="card-top"><span class="ch ch-call">Call / VM</span><span class="card-day">Day 10 ·</span><span class="goal">A real voice — offer to refine, not to sell</span></div>
+          <div class="subj"><span class="lab">Voicemail script</span>
+            <p class="opt script">"Hi <span class="mf" data-k="first">Meredith</span>, it's <span class="mf" data-k="repFirst">Joe</span> from Abacus Builders. I know a <span class="mf" data-k="project">kitchen &amp; primary-bath remodel</span> is a big decision and you're probably still weighing it — so no pressure at all. I mostly wanted to offer: if it'd help to walk the space again, or tighten up any part of the scope or budget, I'm glad to come back out. Reach me at <span class="mf" data-k="phone">(617) 555-0148</span>, or just reply to my last email. Talk soon."</p>
+          </div>
+          <div class="why"><b>Why</b><span>A live voice at day 10 reads as a partner, not a salesperson, and "walk it again / refine scope" re-opens the conversation without discounting.</span></div>
+        </div>
+      </div>
+
+      <div class="touch">
+        <div class="rail"><span class="node"></span><span class="day">DAY 18<small>+8 days</small></span></div>
+        <div class="card">
+          <div class="card-top"><span class="ch ch-email">Email</span><span class="card-day">Day 18 ·</span><span class="goal">Kill the budget-creep fear + social proof</span></div>
+          <div class="subj"><span class="lab">Subject — pick one</span>
+            <p class="opt">The part of a remodel most people worry about</p>
+            <p class="opt">No surprise change-orders — here's how</p>
+            <p class="prev">Preview: What our clients say about the budget staying the budget.</p>
+          </div>
+          <div class="msg">
+            <p>Hi <span class="mf" data-k="first">Meredith</span>,</p>
+            <p>The fear we hear most about big remodels: the number at the start isn't the number at the end.</p>
+            <p>That's usually a process problem, not a construction one. Here's how we hold the line:</p>
+            <ul><li><b>Real allowances</b> — set with actual selections, not guesses, so you're not signing a blank check on tile and fixtures.</li>
+              <li><b>Changes in writing</b> — any change is priced and approved before a tool moves. You're never surprised on an invoice.</li>
+              <li><b>Shared budget</b> — you see the same running numbers we do, every week.</li></ul>
+            <p>I'll skip the pitch and let a client say it: <i>"They finished within a few hundred dollars of the original estimate on a six-figure gut. I didn't think that was possible."</i> — Homeowner, Back Bay.</p>
+            <p>Your proposal at <span class="mf" data-k="amount">$214,000</span> is built the same way. When you're ready to talk timing, I can show you our next open <span class="mf" data-k="startWindow">spring 2026</span> slot.</p>
+            <p class="sig"><span class="mf" data-k="rep">Joe Deveau</span></p>
+          </div>
+          <span class="cta">Talk through your start window</span>
+          <div class="why"><b>Why</b><span>Meets the #1 high-ticket objection (budget creep) with mechanism + proof, then introduces gentle scheduling scarcity.</span></div>
+        </div>
+      </div>
+
+      <div class="touch">
+        <div class="rail"><span class="node"></span><span class="day">DAY 30<small>+12 days</small></span></div>
+        <div class="card">
+          <div class="card-top"><span class="ch ch-sms">SMS</span><span class="card-day">Day 30 ·</span><span class="goal">Turn a check-in into a small commitment</span></div>
+          <div class="msg sms"><p>Hi <span class="mf" data-k="first">Meredith</span>, <span class="mf" data-k="repFirst">Joe</span> at Abacus. Still thinking through the <span class="mf" data-k="project">kitchen &amp; primary-bath remodel</span>? No rush — but our <span class="mf" data-k="startWindow">spring 2026</span> calendar is starting to fill, and I'd rather hold a spot for you than not. Want me to pencil you in while you decide?</p></div>
+          <div class="why"><b>Why</b><span>Replaces a passive "checking in" with a small, reversible ask (holding a slot) that builds momentum without pressure.</span></div>
+        </div>
+      </div>
+
+      <div class="touch">
+        <div class="rail"><span class="node"></span><span class="day">DAY 45<small>+15 days</small></span></div>
+        <div class="card">
+          <div class="card-top"><span class="ch ch-email">Email</span><span class="card-day">Day 45 ·</span><span class="goal">Seasonal timing + reassure nothing's lost</span></div>
+          <div class="subj"><span class="lab">Subject — pick one</span>
+            <p class="opt">Getting ahead of the <span class="mf" data-k="startWindow">spring 2026</span> rush</p>
+            <p class="opt">Your project file is still open</p>
+            <p class="prev">Preview: A quick note on timing before calendars tighten up.</p>
+          </div>
+          <div class="msg">
+            <p>Hi <span class="mf" data-k="first">Meredith</span>,</p>
+            <p>Just a friendly note — our busiest booking stretch is right before <span class="mf" data-k="startWindow">spring 2026</span>, and lead times for design and permitting get longer the closer we get.</p>
+            <p>If your <span class="mf" data-k="project">kitchen &amp; primary-bath remodel</span> is still something you'd like to do this year, now's the right moment to lock the <b>design-and-permitting stage</b> — even if the build itself is months out. That's the part that protects your timeline.</p>
+            <p>Everything we discussed is still on file at <span class="mf" data-k="amount">$214,000</span> — nothing to redo. Whenever you're ready, we pick up right where we left off.</p>
+            <p>Want me to send the simple first step to reserve your place in the schedule?</p>
+            <p class="sig"><span class="mf" data-k="rep">Joe Deveau</span></p>
+          </div>
+          <span class="cta">Reserve your place in the schedule</span>
+          <div class="why"><b>Why</b><span>Frames acting now as protecting <i>their</i> timeline, not a sales push — and reassures no work is lost, lowering the cost of re-engaging.</span></div>
+        </div>
+      </div>
+
+      <div class="touch">
+        <div class="rail"><span class="node"></span><span class="day">DAY 60<small>+15 days</small></span></div>
+        <div class="card">
+          <div class="card-top"><span class="ch ch-email">Email</span><span class="card-day">Day 60 ·</span><span class="goal">Graceful close &amp; opt-in to long nurture</span></div>
+          <div class="subj"><span class="lab">Subject — pick one</span>
+            <p class="opt">Should I keep your file open?</p>
+            <p class="opt">One last note on your <span class="mf" data-k="project">kitchen &amp; primary-bath remodel</span></p>
+            <p class="prev">Preview: No pressure either way — just want to respect your inbox.</p>
+          </div>
+          <div class="msg">
+            <p>Hi <span class="mf" data-k="first">Meredith</span>,</p>
+            <p>I don't want to keep landing in your inbox if the timing isn't right — so this is my last note for now.</p>
+            <p>Your proposal stays on file, and there's no expiration on it. If a <span class="mf" data-k="project">kitchen &amp; primary-bath remodel</span> is still on your someday list, I'll check in about once a quarter with something genuinely useful — a project like yours we've finished, a permitting change in <span class="mf" data-k="neighborhood">Back Bay</span>, that kind of thing. If you'd rather I didn't, just say the word.</p>
+            <p>And whenever you're ready — this year or next — we'd be glad to build it.</p>
+            <p class="sig"><span class="mf" data-k="rep">Joe Deveau</span></p>
+          </div>
+          <span class="cta">Reply "keep in touch" or "not now"</span>
+          <div class="why"><b>Why</b><span>A respectful close preserves the relationship, earns an explicit opt-in for nurture, and often prompts a "sorry — life got busy, let's talk" reply.</span></div>
+        </div>
+      </div>
+
+      <div class="touch">
+        <div class="rail" aria-hidden="true"></div>
+        <div class="after"><b>After Day 60 — quarterly nurture.</b> One genuinely useful email each quarter: a finished project near them, a <span class="mf" data-k="neighborhood">Back Bay</span> permitting update, a seasonal planning tip. Re-enter the active track the moment they reply or ask for a revised number.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= TRACK B ================= -->
+  <section class="track track-b" id="track-B" hidden>
+    <div class="track-head">
+      <span class="track-num">B</span>
+      <div>
+        <h2>Insurance &amp; Restoration</h2>
+        <p class="t-sub">Fire, flood, and storm damage. An urgent, emotional decision made under stress — the builder who guides the homeowner through the claim fastest usually wins. Empathy first, then speed. Clock starts the day the scope is delivered.</p>
+        <div class="track-meta">
+          <span class="chip">7 touches · 14 days</span>
+          <span class="chip">claim-guiding</span>
+          <span class="chip">Day 0 = scope delivered</span>
+        </div>
+      </div>
+    </div>
+    <div class="timeline">
+
+      <div class="touch">
+        <div class="rail"><span class="node"></span><span class="day">DAY 0<small>within hours</small></span></div>
+        <div class="card">
+          <div class="card-top"><span class="ch ch-email">Email</span><span class="ch ch-sms">+ SMS</span><span class="card-day">Day 0 ·</span><span class="goal">Reassure, send scope, own the insurance side</span></div>
+          <div class="subj"><span class="lab">Subject — pick one</span>
+            <p class="opt">Your restoration scope + the next 48 hours</p>
+            <p class="opt">We're on it, <span class="mf" data-k="first">Marcus</span> — here's the plan</p>
+            <p class="prev">Preview: What we'll do, and how we'll handle your insurance with you.</p>
+          </div>
+          <div class="msg">
+            <p>Hi <span class="mf" data-k="first">Marcus</span>,</p>
+            <p>First — I'm sorry you're dealing with this. Coming home to <span class="mf" data-k="project">fire</span> damage is a lot, and our job is to make the rebuild the easy part.</p>
+            <p>Attached is the detailed scope from today's visit, written the way your insurer needs to see it. A few things we've already lined up for you:</p>
+            <ul><li>We can start <b>emergency stabilization right away</b> to stop any further damage.</li>
+              <li>We <b>document everything</b> — photos, measurements, moisture readings — so nothing gets missed on your claim.</li>
+              <li>When your adjuster comes out, we can <b>be there to walk it with them</b>, so the estimate reflects the real scope.</li></ul>
+            <p>You don't have to sort the insurance side out alone. Reply or call me at <span class="mf" data-k="phone">(617) 555-0148</span> and we'll map out the next few days together.</p>
+            <p class="sig"><span class="mf" data-k="rep">Joe Deveau</span> · Abacus Builders — Fire, Flood &amp; Restoration</p>
+          </div>
+          <div class="msg sms" style="margin-top:12px"><p><b>Same-day text:</b> Hi <span class="mf" data-k="first">Marcus</span>, it's <span class="mf" data-k="repFirst">Joe</span> at Abacus. Just emailed your restoration scope + our plan for the next couple days. We can start stabilization right away — call me anytime at <span class="mf" data-k="phone">(617) 555-0148</span>.</p></div>
+          <div class="why"><b>Why</b><span>Speed + empathy in the first hours wins restoration jobs; leading with "we handle the insurance with you" is the single biggest edge over a competitor.</span></div>
+        </div>
+      </div>
+
+      <div class="touch">
+        <div class="rail"><span class="node"></span><span class="day">DAY 1<small>+1 day</small></span></div>
+        <div class="card">
+          <div class="card-top"><span class="ch ch-call">Call</span><span class="card-day">Day 1 ·</span><span class="goal">Check in as a person; pin the two urgent actions</span></div>
+          <div class="subj"><span class="lab">Call script</span>
+            <p class="opt script">"Hi <span class="mf" data-k="first">Marcus</span>, it's <span class="mf" data-k="repFirst">Joe</span> from Abacus. I wanted to check in as a person, not just send another email — how are you holding up? … I know it's overwhelming, and the good news is you don't have to make every decision today. The one thing worth doing now is stabilization, so the damage doesn't spread while the claim gets going. Can I get a crew out today or tomorrow? And whenever your adjuster is scheduled, tell me the time — I'll be there with you."</p>
+          </div>
+          <div class="why"><b>Why</b><span>A human call the day after a disaster builds trust no email can — and locks in the two time-sensitive moves: stabilization and the adjuster meeting.</span></div>
+        </div>
+      </div>
+
+      <div class="touch">
+        <div class="rail"><span class="node"></span><span class="day">DAY 2<small>+1 day</small></span></div>
+        <div class="card">
+          <div class="card-top"><span class="ch ch-email">Email</span><span class="card-day">Day 2 ·</span><span class="goal">The differentiator: how you handle insurance</span></div>
+          <div class="subj"><span class="lab">Subject — pick one</span>
+            <p class="opt">How we work with your insurance company</p>
+            <p class="opt">Making your claim as painless as possible</p>
+            <p class="prev">Preview: Supplements, documentation, direct billing — in plain English.</p>
+          </div>
+          <div class="msg">
+            <p>Hi <span class="mf" data-k="first">Marcus</span>,</p>
+            <p>The rebuild is the part we control. The claim is the part that stresses people out — so here's exactly how we take that weight off you:</p>
+            <ul><li><b>We speak their language.</b> Our scope is written in the same format and pricing your carrier uses — fewer back-and-forths, faster approvals.</li>
+              <li><b>We handle supplements.</b> If we open a wall and find damage the first estimate missed (it happens often), we document it and file the supplement with <span class="mf" data-k="adjuster">Karen Whitfield</span> — you don't chase anyone.</li>
+              <li><b>We can bill your carrier directly.</b> In most cases you're responsible only for your deductible, and we coordinate the rest.</li></ul>
+            <p>Your adjuster was hired to protect the insurer's interests. Think of us as the team protecting yours.</p>
+            <p>Questions on any of it? Just reply — happy to explain how it'd work on your specific claim.</p>
+            <p class="sig"><span class="mf" data-k="rep">Joe Deveau</span></p>
+          </div>
+          <span class="cta">Ask about your specific claim</span>
+          <div class="why"><b>Why</b><span>Homeowners fear the insurance maze more than the construction. Owning it is the true differentiator — it makes Abacus the obvious choice.</span></div>
+        </div>
+      </div>
+
+      <div class="touch">
+        <div class="rail"><span class="node"></span><span class="day">DAY 4<small>+2 days</small></span></div>
+        <div class="card">
+          <div class="card-top"><span class="ch ch-sms">SMS</span><span class="card-day">Day 4 ·</span><span class="goal">Stay attached to the adjuster visit</span></div>
+          <div class="msg sms"><p>Hi <span class="mf" data-k="first">Marcus</span>, <span class="mf" data-k="repFirst">Joe</span> at Abacus. Has your adjuster been scheduled yet? Give me the date/time and I'll meet them on-site with you, so nothing gets left off the estimate. Also — is the stabilization holding up okay?</p></div>
+          <div class="why"><b>Why</b><span>Keeps Abacus present for the pivotal claim moment (the adjuster visit) and signals ongoing care for the property.</span></div>
+        </div>
+      </div>
+
+      <div class="touch">
+        <div class="rail"><span class="node"></span><span class="day">DAY 7<small>+3 days</small></span></div>
+        <div class="card">
+          <div class="card-top"><span class="ch ch-email">Email</span><span class="card-day">Day 7 ·</span><span class="goal">Legitimate urgency: the cost of waiting</span></div>
+          <div class="subj"><span class="lab">Subject — pick one</span>
+            <p class="opt">The risk of waiting on <span class="mf" data-k="project">fire</span> damage</p>
+            <p class="opt">Why timing matters more than most people realize</p>
+            <p class="prev">Preview: Mold and structural issues start quietly — here's the window.</p>
+          </div>
+          <div class="msg">
+            <p>Hi <span class="mf" data-k="first">Marcus</span>,</p>
+            <p>I don't want to add pressure to an already hard week — but I'd be doing you a disservice if I didn't mention this.</p>
+            <p>With <span class="mf" data-k="project">fire</span> damage, the first week or two is the window that matters. After that:</p>
+            <ul><li>Trapped moisture starts to grow <b>mold</b>, turning a repair into a remediation.</li>
+              <li>Materials that could have dried out instead warp or rot and have to be replaced.</li>
+              <li>Insurers can question damage that was <b>left to worsen</b>.</li></ul>
+            <p>Acting now usually means a smaller, cleaner claim and a faster return to normal. We have a crew available and can begin the moment you and your adjuster give the word.</p>
+            <p>Want me to hold that crew for you this week?</p>
+            <p class="sig"><span class="mf" data-k="rep">Joe Deveau</span></p>
+          </div>
+          <span class="cta">Hold a crew this week</span>
+          <div class="why"><b>Why</b><span>Real, homeowner-protective urgency (secondary damage + claim risk) that justifies acting now without feeling like a hard sell.</span></div>
+        </div>
+      </div>
+
+      <div class="touch">
+        <div class="rail"><span class="node"></span><span class="day">DAY 10<small>+3 days</small></span></div>
+        <div class="card">
+          <div class="card-top"><span class="ch ch-call">Call / VM</span><span class="card-day">Day 10 ·</span><span class="goal">Be the ally who can unstick the claim</span></div>
+          <div class="subj"><span class="lab">Voicemail script</span>
+            <p class="opt script">"Hi <span class="mf" data-k="first">Marcus</span>, <span class="mf" data-k="repFirst">Joe</span> from Abacus checking in. I know insurance timelines can drag, and I don't want you stuck in limbo. If your claim's been approved, we can lock a start date and get your home back to normal. If it hasn't, tell me where it's stuck — I've untangled a lot of these and might be able to help move it along. Give me a call at <span class="mf" data-k="phone">(617) 555-0148</span>."</p>
+          </div>
+          <div class="why"><b>Why</b><span>Positions Abacus as the ally who can move a stalled claim — keeping them close during the approval wait, when competitors go quiet.</span></div>
+        </div>
+      </div>
+
+      <div class="touch">
+        <div class="rail"><span class="node"></span><span class="day">DAY 14<small>+4 days</small></span></div>
+        <div class="card">
+          <div class="card-top"><span class="ch ch-email">Email</span><span class="card-day">Day 14 ·</span><span class="goal">Caring close + a real deadline to act on</span></div>
+          <div class="subj"><span class="lab">Subject — pick one</span>
+            <p class="opt">Keeping your restoration file open</p>
+            <p class="opt">A note on your claim deadline</p>
+            <p class="prev">Preview: Whenever you're ready to rebuild, we're ready.</p>
+          </div>
+          <div class="msg">
+            <p>Hi <span class="mf" data-k="first">Marcus</span>,</p>
+            <p>I'll ease off your inbox for now — but two things before I do:</p>
+            <p><b>First, keep an eye on your claim deadline.</b> Most policies give you a limited window to begin repairs after a loss. If yours is approaching and work hasn't started, tell me and we'll prioritize you.</p>
+            <p><b>Second, your scope and pricing stay on file.</b> Whenever the claim clears and you're ready, we can mobilize quickly and get your home back to the way it should be.</p>
+            <p>You've been through enough with this — when you're ready for the rebuild, we'll make it the smooth part.</p>
+            <p class="sig"><span class="mf" data-k="rep">Joe Deveau</span></p>
+          </div>
+          <span class="cta">Reply when you're ready to mobilize</span>
+          <div class="why"><b>Why</b><span>A caring close that surfaces a genuine deadline (a real reason to re-engage) and reassures that Abacus can move fast once the claim clears.</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- RUN IT -->
+  <section class="runit">
+    <h2>Running it</h2>
+    <p class="r-sub">The rules that keep the cadence feeling personal, not automated.</p>
+    <div class="r-grid">
+      <div class="r-card"><h4>Enter &amp; exit</h4><ul>
+        <li><b>Enter</b> the moment a proposal or scope is sent.</li>
+        <li><b>Pause</b> the instant they reply or book a call — switch to a real conversation.</li>
+        <li><b>Exit</b> on win or a clear no. Track A's "no reply" ending rolls into quarterly nurture.</li></ul></div>
+      <div class="r-card"><h4>Don't over-touch</h4><ul>
+        <li>One live person owns each thread — texts and calls come from the estimator, not a system.</li>
+        <li>Skip a touch if you've just spoken; never stack an SMS and a call the same day.</li>
+        <li>If they went silent after a warm call, shorten — don't pile on.</li></ul></div>
+      <div class="r-card"><h4>Texting, done right</h4><p>Only text homeowners who gave you a mobile and expect to hear from you — standard for anyone who requested a bid. Keep an easy opt-out ("reply STOP") and honor it immediately. (TCPA basics.)</p></div>
+      <div class="r-card"><h4>What good looks like</h4>
+        <div class="bench"><table><thead><tr><th>Signal</th><th>Track A</th><th>Track B</th></tr></thead>
+          <tbody>
+            <tr><td>Email open</td><td class="num">35–50%</td><td class="num">55–70%</td></tr>
+            <tr><td>Reply / call-back</td><td class="num">8–15%</td><td class="num">20–35%</td></tr>
+            <tr><td>Re-engaged bids</td><td class="num">10–20%</td><td class="num">25–40%</td></tr>
+          </tbody></table></div>
+        <p style="margin-top:10px;font-size:12px;color:var(--ink-faint)">Directional benchmarks for warm estimate follow-up — restoration runs hotter because the need is urgent. Track your own baseline and beat it.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="colophon">
+    <span class="brand">NexRevGen</span>
+    <span class="meta">Sequence manager demo · prepared for Abacus Builders · sample contacts are illustrative</span>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var TOKENS={first:"{{FirstName}}",repFirst:"{{RepName}}",rep:"{{RepName}}",neighborhood:"{{Neighborhood}}",project:"{{ProjectType}}",amount:"{{EstimateAmount}}",startWindow:"{{StartWindow}}",adjuster:"{{AdjusterName}}",phone:"[number]"};
+
+    var contacts=[
+      {id:"c1",track:"A",name:"Meredith Callahan",projectLabel:"Kitchen & bath remodel",
+       vals:{first:"Meredith",neighborhood:"Back Bay",project:"kitchen & primary-bath remodel",amount:"$214,000",startWindow:"spring 2026",adjuster:"your adjuster",rep:"Joe Deveau",repFirst:"Joe",phone:"(617) 555-0148"}},
+      {id:"c2",track:"A",name:"David & Priya Shah",projectLabel:"Full-home gut reno",
+       vals:{first:"David",neighborhood:"South End",project:"full-home gut renovation",amount:"$486,000",startWindow:"fall 2026",adjuster:"your adjuster",rep:"Joe Deveau",repFirst:"Joe",phone:"(617) 555-0148"}},
+      {id:"c3",track:"A",name:"Tom Feeney",projectLabel:"Addition & roof deck",
+       vals:{first:"Tom",neighborhood:"Beacon Hill",project:"third-floor addition & roof deck",amount:"$172,500",startWindow:"spring 2026",adjuster:"your adjuster",rep:"Joe Deveau",repFirst:"Joe",phone:"(617) 555-0148"}},
+      {id:"c4",track:"B",name:"Marcus Hale",projectLabel:"Fire restoration",
+       vals:{first:"Marcus",neighborhood:"South End",project:"fire",amount:"—",startWindow:"—",adjuster:"Karen Whitfield",rep:"Joe Deveau",repFirst:"Joe",phone:"(617) 555-0148"}},
+      {id:"c5",track:"B",name:"Grace Liu",projectLabel:"Water / flood restoration",
+       vals:{first:"Grace",neighborhood:"South Boston",project:"water",amount:"—",startWindow:"—",adjuster:"Ray Donnelly",rep:"Joe Deveau",repFirst:"Joe",phone:"(617) 555-0148"}},
+      {id:"c6",track:"B",name:"The Okafor family",projectLabel:"Storm restoration",
+       vals:{first:"Ada",neighborhood:"Back Bay",project:"storm",amount:"—",startWindow:"—",adjuster:"Nia Bennett",rep:"Joe Deveau",repFirst:"Joe",phone:"(617) 555-0148"}}
+    ];
+
+    var STORE="abacus_seq_contacts_v2";
+    (function(){try{var s=JSON.parse(localStorage.getItem(STORE));if(Array.isArray(s)&&s.length&&s[0].vals)contacts=s;}catch(e){}})();
+    function persist(){try{localStorage.setItem(STORE,JSON.stringify(contacts));}catch(e){}}
+
+    var body=document.body,tbody=document.getElementById("crows"),pick=document.getElementById("previewPick");
+    var tbadge=document.getElementById("tbadge"),facts=document.getElementById("facts");
+    var trackA=document.getElementById("track-A"),trackB=document.getElementById("track-B");
+    var spans=document.querySelectorAll(".mf");
+    var active=contacts.length?contacts[0].id:"tplA";
+
+    function byId(id){for(var i=0;i<contacts.length;i++)if(contacts[i].id===id)return contacts[i];return null;}
+
+    function fillFrom(source,tokenMode){
+      spans.forEach(function(el){
+        var k=el.getAttribute("data-k");
+        el.textContent = tokenMode ? (TOKENS[k]||el.textContent) : (source[k]!==undefined?source[k]:"");
+      });
+    }
+
+    function showTrack(t){
+      trackA.hidden=(t!=="A"); trackB.hidden=(t!=="B");
+    }
+
+    function renderFacts(c){
+      facts.innerHTML="";
+      var items=[];
+      if(c.track==="A"){items=[c.vals.neighborhood,c.vals.amount,c.vals.startWindow];}
+      else{items=[c.vals.neighborhood,"Adjuster: "+c.vals.adjuster];}
+      items.forEach(function(x){if(!x||x==="—")return;var s=document.createElement("span");s.className="factchip";s.textContent=x;facts.appendChild(s);});
+    }
+
+    function apply(){
+      if(active==="tplA"||active==="tplB"){
+        var t=active==="tplA"?"A":"B";
+        body.classList.add("tpl");
+        showTrack(t);
+        fillFrom({},true);
+        tbadge.textContent="Template · Track "+t;tbadge.className="tbadge T";
+        facts.innerHTML="";
+        markRows(null);
+        return;
+      }
+      var c=byId(active); if(!c)return;
+      body.classList.remove("tpl");
+      showTrack(c.track);
+      fillFrom(c.vals,false);
+      tbadge.textContent="Track "+c.track+(c.track==="A"?" · Remodel":" · Restoration");
+      tbadge.className="tbadge "+c.track;
+      renderFacts(c);
+      markRows(c.id);
+    }
+
+    function markRows(id){
+      var rows=tbody.querySelectorAll("tr.crow");
+      rows.forEach(function(r){r.classList.toggle("sel",r.getAttribute("data-id")===id);});
+    }
+
+    function buildPick(){
+      pick.innerHTML="";
+      var gA=document.createElement("optgroup");gA.label="Remodel contacts (Track A)";
+      var gB=document.createElement("optgroup");gB.label="Restoration contacts (Track B)";
+      contacts.forEach(function(c){
+        var o=document.createElement("option");o.value=c.id;o.textContent=c.name+" — "+c.projectLabel;
+        (c.track==="A"?gA:gB).appendChild(o);
+      });
+      var gT=document.createElement("optgroup");gT.label="Blank templates (show fields)";
+      var oa=document.createElement("option");oa.value="tplA";oa.textContent="Track A — Remodel (fields)";
+      var ob=document.createElement("option");ob.value="tplB";ob.textContent="Track B — Restoration (fields)";
+      gT.appendChild(oa);gT.appendChild(ob);
+      if(gA.children.length)pick.appendChild(gA);
+      if(gB.children.length)pick.appendChild(gB);
+      pick.appendChild(gT);
+      pick.value=active;
+    }
+
+    function buildTable(){
+      tbody.innerHTML="";
+      contacts.forEach(function(c){
+        var tr=document.createElement("tr");tr.className="crow";tr.setAttribute("data-id",c.id);
+
+        var td1=document.createElement("td");
+        var wrap=document.createElement("div");wrap.className="cname";
+        var dot=document.createElement("span");dot.className="dot "+c.track;
+        var nmwrap=document.createElement("div");
+        var nm=document.createElement("span");nm.className="nm";nm.textContent=c.name;
+        var nb=document.createElement("span");nb.className="nb";nb.textContent=c.vals.neighborhood;
+        nmwrap.appendChild(nm);nmwrap.appendChild(nb);
+        wrap.appendChild(dot);wrap.appendChild(nmwrap);td1.appendChild(wrap);
+
+        var td2=document.createElement("td");td2.textContent=c.projectLabel;
+
+        var td3=document.createElement("td");td3.className="detail";
+        td3.textContent=(c.track==="A")?c.vals.amount:("Adj. "+c.vals.adjuster);
+
+        var td4=document.createElement("td");
+        var sel=document.createElement("select");sel.className="assign";sel.setAttribute("aria-label","Assign sequence for "+c.name);
+        [["A","Track A · Remodel"],["B","Track B · Restoration"]].forEach(function(p){
+          var o=document.createElement("option");o.value=p[0];o.textContent=p[1];if(c.track===p[0])o.selected=true;sel.appendChild(o);
+        });
+        sel.addEventListener("click",function(e){e.stopPropagation();});
+        sel.addEventListener("change",function(){
+          c.track=sel.value;dot.className="dot "+c.track;
+          td3.textContent=(c.track==="A")?c.vals.amount:("Adj. "+c.vals.adjuster);
+          persist();buildPick();
+          if(active===c.id)apply();
+        });
+        td4.appendChild(sel);
+
+        var td5=document.createElement("td");
+        var acts=document.createElement("div");acts.className="row-acts";
+        var btn=document.createElement("button");btn.className="prev-btn";btn.textContent="Preview ▸";
+        btn.addEventListener("click",function(e){e.stopPropagation();select(c.id);});
+        var rm=document.createElement("button");rm.className="rm";rm.textContent="✕";rm.title="Remove";rm.setAttribute("aria-label","Remove "+c.name);
+        rm.addEventListener("click",function(e){e.stopPropagation();removeContact(c.id);});
+        acts.appendChild(btn);acts.appendChild(rm);td5.appendChild(acts);
+
+        tr.appendChild(td1);tr.appendChild(td2);tr.appendChild(td3);tr.appendChild(td4);tr.appendChild(td5);
+        tr.addEventListener("click",function(){select(c.id);});
+        tbody.appendChild(tr);
+      });
+    }
+
+    function select(id,noScroll){
+      active=id;pick.value=id;apply();
+      if(!noScroll){var bar=document.querySelector(".pbar");if(bar)bar.scrollIntoView({block:"start"});}
+    }
+
+    pick.addEventListener("change",function(){select(pick.value,true);});
+
+    function removeContact(id){
+      contacts=contacts.filter(function(c){return c.id!==id;});
+      persist();
+      if(active===id)active=contacts.length?contacts[0].id:"tplA";
+      buildTable();buildPick();apply();
+    }
+
+    // ----- Add contact / project -----
+    var addForm=document.getElementById("addForm"),addBtn=document.getElementById("addBtn"),
+        addCancel=document.getElementById("addCancel"),fTrack=document.getElementById("f-track");
+    function val(id){var el=document.getElementById(id);return el?el.value.trim():"";}
+    function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
+    function labelFor(track,p){var s=cap(p);return track==="B"?s+" restoration":s;}
+
+    addBtn.addEventListener("click",function(){
+      addForm.hidden=!addForm.hidden;
+      if(!addForm.hidden){addForm.dataset.track=fTrack.value;document.getElementById("f-name").focus();addForm.scrollIntoView({block:"nearest"});}
+    });
+    addCancel.addEventListener("click",function(){addForm.hidden=true;addForm.reset();fTrack.value="A";addForm.dataset.track="A";});
+    fTrack.addEventListener("change",function(){addForm.dataset.track=fTrack.value;});
+
+    addForm.addEventListener("submit",function(e){
+      e.preventDefault();
+      var track=fTrack.value;
+      var name=val("f-name")||"New contact";
+      var first=val("f-first")||name.split(" ")[0];
+      var project=val("f-proj")||(track==="A"?"remodel":"fire");
+      var rep=val("f-rep")||"Joe Deveau";
+      var c={id:"u"+Date.now(),track:track,name:name,projectLabel:labelFor(track,project),
+        vals:{first:first,neighborhood:val("f-hood")||"—",project:project,
+          amount:track==="A"?(val("f-amt")||"—"):"—",
+          startWindow:track==="A"?(val("f-win")||"—"):"—",
+          adjuster:track==="B"?(val("f-adj")||"your adjuster"):"your adjuster",
+          rep:rep,repFirst:rep.split(" ")[0],phone:val("f-phone")||"(617) 555-0148"}};
+      contacts.push(c);persist();buildTable();buildPick();
+      addForm.hidden=true;addForm.reset();fTrack.value="A";addForm.dataset.track="A";
+      select(c.id);
+    });
+
+    buildTable();buildPick();apply();
+  })();
+</script>
+</body>
+</html>
