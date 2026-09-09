@@ -1,0 +1,548 @@
+import { authTables } from "@convex-dev/auth/server";
+import { defineSchema, defineTable } from "convex/server";
+import { v } from "convex/values";
+
+// Deal stages carried over from upstream.
+export const dealStage = v.union(
+  v.literal("QUALIFIED"),
+  v.literal("MEETING"),
+  v.literal("PROPOSAL"),
+  v.literal("NEGOTIATION"),
+  v.literal("CLOSED_WON"),
+  v.literal("CLOSED_LOST"),
+);
+
+export const activityType = v.union(
+  v.literal("NOTE"),
+  v.literal("CALL"),
+  v.literal("EMAIL"),
+  v.literal("MEETING"),
+  v.literal("TASK"),
+  v.literal("STAGE_CHANGE"),
+  v.literal("ENRICHMENT"),
+);
+
+export const enrichmentStatus = v.union(
+  v.literal("NONE"),
+  v.literal("RESEARCHING"),
+  v.literal("ENRICHED"),
+  v.literal("FAILED"),
+);
+
+export const leadAssessmentTool = v.union(
+  v.literal("revenue-leak-scorecard"),
+  v.literal("missed-call-calculator"),
+  v.literal("estimate-follow-up-gap"),
+  v.literal("seller-independence-check"),
+  v.literal("website-revenue-audit"),
+);
+
+// Evidence bands from the upstream evidence ledger. Strong evidence writes to
+// the record, weak evidence becomes a suggestion a human settles.
+export const evidenceBand = v.union(
+  v.literal("CONFIRMED"),
+  v.literal("PROBABLE"),
+  v.literal("POSSIBLE"),
+  v.literal("WEAK"),
+);
+
+export default defineSchema({
+  // Convex Auth's session/account tables. The users table is extended below
+  // so the same identity is also the CRM owner shown in record pickers.
+  ...authTables,
+
+  // Single tenant, on purpose. One row.
+  workspace: defineTable({
+    name: v.string(),
+    demoMode: v.boolean(),
+    // Sign-in allow list. Empty means nobody signs in, the safe direction to
+    // fail. Unused while demoMode is true.
+    allowedSignIn: v.array(v.string()),
+    reportingCurrency: v.string(),
+    agentModel: v.string(),
+    lastResetAt: v.number(),
+    // Which provider outbound notifications use. Resend is the default;
+    // AgentMail adds a persistent inbox agents can also receive on. Optional
+    // so existing rows keep working; undefined means "resend".
+    emailProvider: v.optional(
+      v.union(
+        v.literal("resend"),
+        v.literal("agentmail"),
+        v.literal("gmail"),
+      ),
+    ),
+    // Compose email configuration: the from identity and a signature that
+    // appends to every outbound message. All optional; sends fall back to
+    // a generic from line until these are set.
+    emailFromName: v.optional(v.string()),
+    emailFromAddress: v.optional(v.string()),
+    emailSignature: v.optional(v.string()),
+    // Which model provider the chat surfaces use. All optional keys; the
+    // reply names the missing key when the chosen provider is not configured.
+    aiProvider: v.optional(
+      v.union(
+        v.literal("openai"),
+        v.literal("anthropic"),
+        v.literal("openrouter"),
+        v.literal("deepseek"),
+        v.literal("grok"),
+      ),
+    ),
+    // Sidebar personalization: item ids in display order, and ids hidden by
+    // the Settings page. Both reset with the demo like everything else.
+    sidebarOrder: v.optional(v.array(v.string())),
+    sidebarHidden: v.optional(v.array(v.string())),
+    // Slack integration. Everything optional and off by default; the env
+    // vars (SLACK_WEBHOOK_URL, SLACK_BOT_TOKEN, SLACK_SIGNING_SECRET) live on
+    // the deployment, these rows hold the workspace preferences.
+    slackEnabled: v.optional(v.boolean()),
+    slackNotifyRecords: v.optional(v.boolean()),
+    slackNotifyDeals: v.optional(v.boolean()),
+    slackNotifyTasks: v.optional(v.boolean()),
+    slackNotifyAgent: v.optional(v.boolean()),
+    // Channel ID (bot token mode) plus the display name for the settings UI.
+    // Webhook mode ignores both: the channel is baked into the URL.
+    slackChannelId: v.optional(v.string()),
+    slackChannelName: v.optional(v.string()),
+    // The /crm agent bot toggle, and an optional email domain that widens
+    // the Slack user match beyond the exact team member emails.
+    slackBotEnabled: v.optional(v.boolean()),
+    slackAllowedEmailDomain: v.optional(v.string()),
+  }),
+
+  // Workspace members. Demo seeds these; with Convex Auth enabled this table
+  // maps to authenticated users.
+  users: defineTable({
+    name: v.string(),
+    email: v.string(),
+    role: v.union(v.literal("owner"), v.literal("member")),
+    avatarUrl: v.optional(v.string()),
+    // Convex Auth user fields. Password auth uses email; the remaining fields
+    // stay optional so OAuth or verified-email methods can be added later.
+    image: v.optional(v.string()),
+    emailVerificationTime: v.optional(v.number()),
+    phone: v.optional(v.string()),
+    phoneVerificationTime: v.optional(v.number()),
+    isAnonymous: v.optional(v.boolean()),
+  })
+    .index("email", ["email"])
+    .index("phone", ["phone"]),
+
+  // One connected Gmail mailbox for this deliberately single-owner CRM.
+  // Refresh tokens are encrypted before they reach the database.
+  gmailConnections: defineTable({
+    email: v.string(),
+    encryptedRefreshToken: v.string(),
+    tokenIv: v.string(),
+    grantedScopes: v.array(v.string()),
+    connectedAt: v.number(),
+    updatedAt: v.number(),
+  }).index("by_email", ["email"]),
+
+  // Short-lived, single-use OAuth state. Only an authenticated owner can
+  // create one; the public Google callback consumes it transactionally.
+  gmailOAuthStates: defineTable({
+    stateHash: v.string(),
+    expiresAt: v.number(),
+  })
+    .index("by_stateHash", ["stateHash"])
+    .index("by_expiresAt", ["expiresAt"]),
+
+  companies: defineTable({
+    name: v.string(),
+    segment: v.optional(v.string()),
+    domain: v.optional(v.string()),
+    phone: v.optional(v.string()),
+    address: v.optional(v.string()),
+    city: v.optional(v.string()),
+    state: v.optional(v.string()),
+    postalCode: v.optional(v.string()),
+    rating: v.optional(v.number()),
+    reviews: v.optional(v.number()),
+    reviewsLink: v.optional(v.string()),
+    industry: v.optional(v.string()),
+    description: v.optional(v.string()),
+    logoUrl: v.optional(v.string()),
+    ownerId: v.optional(v.id("users")),
+    primaryContactId: v.optional(v.id("contacts")),
+    enrichmentStatus: enrichmentStatus,
+    lastActivityAt: v.optional(v.number()),
+  })
+    .index("by_domain", ["domain"])
+    .index("by_name", ["name"])
+    .index("by_segment", ["segment"])
+    .index("by_industry", ["industry"])
+    .searchIndex("search_name", { searchField: "name" }),
+
+  contacts: defineTable({
+    name: v.string(),
+    email: v.optional(v.string()),
+    phone: v.optional(v.string()),
+    title: v.optional(v.string()),
+    companyId: v.optional(v.id("companies")),
+    ownerId: v.optional(v.id("users")),
+    avatarUrl: v.optional(v.string()),
+    outreachOptedOut: v.optional(v.boolean()),
+    lastActivityAt: v.optional(v.number()),
+  })
+    .index("by_company", ["companyId"])
+    .index("by_email", ["email"])
+    .searchIndex("search_name", { searchField: "name" }),
+
+  // Permissioned website assessments are durable lead records and the source
+  // for a future anonymized benchmark. Raw answers/results stay serialized so
+  // tool-specific schemas can evolve; the six comparable dimensions are
+  // materialized explicitly and only when the respondent opts in.
+  leadAssessments: defineTable({
+    submissionId: v.string(),
+    brandCode: v.string(),
+    source: v.string(),
+    toolSlug: leadAssessmentTool,
+    email: v.string(),
+    companyName: v.string(),
+    websiteUrl: v.optional(v.string()),
+    companyId: v.optional(v.id("companies")),
+    contactId: v.optional(v.id("contacts")),
+    responsesJson: v.string(),
+    resultJson: v.string(),
+    benchmarkConsent: v.boolean(),
+    benchmarkMetrics: v.optional(
+      v.object({
+        missedCallRecovery: v.optional(v.number()),
+        responseTime: v.optional(v.number()),
+        estimateFollowUp: v.optional(v.number()),
+        crmCompleteness: v.optional(v.number()),
+        afterHoursCoverage: v.optional(v.number()),
+        ownerIndependence: v.optional(v.number()),
+      }),
+    ),
+    consentTermsAt: v.number(),
+    emailQueuedAt: v.number(),
+  })
+    .index("by_submissionId", ["submissionId"])
+    .index("by_toolSlug", ["toolSlug"])
+    .index("by_benchmarkConsent_and_toolSlug", ["benchmarkConsent", "toolSlug"]),
+
+  // Outreach campaigns are review-first. A campaign stores targeting and
+  // pacing; each recipient/step is an independent row so failures and stops
+  // never affect the rest of a send.
+  outreachCampaigns: defineTable({
+    name: v.string(),
+    status: v.union(
+      v.literal("DRAFT"),
+      v.literal("REVIEW"),
+      v.literal("ACTIVE"),
+      v.literal("PAUSED"),
+      v.literal("COMPLETE"),
+    ),
+    segment: v.optional(v.string()),
+    industry: v.optional(v.string()),
+    companyId: v.optional(v.id("companies")),
+    search: v.optional(v.string()),
+    randomSelection: v.optional(v.boolean()),
+    dailyLimit: v.number(),
+    followUpDays: v.array(v.number()),
+    instructions: v.string(),
+    createdAt: v.number(),
+  }),
+
+  outreachRecipients: defineTable({
+    campaignId: v.id("outreachCampaigns"),
+    contactId: v.id("contacts"),
+    step: v.number(),
+    status: v.union(
+      v.literal("PENDING"),
+      v.literal("GENERATING"),
+      v.literal("DRAFT"),
+      v.literal("APPROVED"),
+      v.literal("SCHEDULED"),
+      v.literal("SENT"),
+      v.literal("STOPPED"),
+      v.literal("FAILED"),
+    ),
+    subject: v.optional(v.string()),
+    body: v.optional(v.string()),
+    subjectVariant: v.optional(v.string()),
+    bodyVariant: v.optional(v.string()),
+    generatedAt: v.optional(v.number()),
+    approvedAt: v.optional(v.number()),
+    scheduledAt: v.optional(v.number()),
+    sentAt: v.optional(v.number()),
+    gmailMessageId: v.optional(v.string()),
+    repliedAt: v.optional(v.number()),
+    openedAt: v.optional(v.number()),
+    openCount: v.optional(v.number()),
+    bouncedAt: v.optional(v.number()),
+    bounceMessageId: v.optional(v.string()),
+    error: v.optional(v.string()),
+    stopReason: v.optional(v.string()),
+  })
+    .index("by_campaign", ["campaignId"])
+    .index("by_campaign_status", ["campaignId", "status"])
+    .index("by_contact", ["contactId"])
+    .index("by_scheduled", ["status", "scheduledAt"]),
+
+  deals: defineTable({
+    name: v.string(),
+    companyId: v.id("companies"),
+    stage: dealStage,
+    // Money is integer minor units. Round once, at the boundary.
+    amountMinor: v.number(),
+    currency: v.string(),
+    ownerId: v.optional(v.id("users")),
+    primaryContactId: v.optional(v.id("contacts")),
+    expectedCloseAt: v.optional(v.number()),
+    closedAt: v.optional(v.number()),
+  })
+    .index("by_company", ["companyId"])
+    .index("by_stage", ["stage"])
+    .index("by_owner", ["ownerId"])
+    .searchIndex("search_name", { searchField: "name" }),
+
+  // Timeline entries for companies, contacts, and deals.
+  activities: defineTable({
+    type: activityType,
+    body: v.string(),
+    companyId: v.optional(v.id("companies")),
+    contactId: v.optional(v.id("contacts")),
+    dealId: v.optional(v.id("deals")),
+    authorId: v.optional(v.id("users")),
+    // Tasks
+    dueAt: v.optional(v.number()),
+    completedAt: v.optional(v.number()),
+    // Stage changes
+    meta: v.optional(
+      v.object({
+        fromStage: v.optional(v.string()),
+        toStage: v.optional(v.string()),
+      }),
+    ),
+  })
+    .index("by_company", ["companyId"])
+    .index("by_contact", ["contactId"])
+    .index("by_deal", ["dealId"])
+    .index("by_type", ["type"]),
+
+  // Custom fields per entity, with an agentFilled flag and an agentBrief that
+  // tells the agent what to put in a field.
+  fieldDefinitions: defineTable({
+    entity: v.union(
+      v.literal("company"),
+      v.literal("contact"),
+      v.literal("deal"),
+    ),
+    key: v.string(),
+    label: v.string(),
+    type: v.union(
+      v.literal("text"),
+      v.literal("number"),
+      v.literal("select"),
+      v.literal("date"),
+    ),
+    options: v.optional(v.array(v.string())),
+    order: v.number(),
+    archived: v.boolean(),
+    agentFilled: v.boolean(),
+    agentBrief: v.optional(v.string()),
+  }).index("by_entity_and_key", ["entity", "key"]),
+
+  // Per-entity table preferences and record defaults, one row per entity.
+  // Column prefs are stored sparsely: only keys the user touched appear, and
+  // the array order is the display order. Unknown keys are ignored on read so
+  // renamed or archived fields degrade cleanly.
+  tableSettings: defineTable({
+    entity: v.union(
+      v.literal("company"),
+      v.literal("contact"),
+      v.literal("deal"),
+    ),
+    columns: v.array(
+      v.object({
+        key: v.string(),
+        label: v.optional(v.string()),
+        hidden: v.optional(v.boolean()),
+        pinned: v.optional(v.boolean()),
+      }),
+    ),
+    defaultOwnerId: v.optional(v.id("users")),
+    defaultIndustry: v.optional(v.string()),
+    defaultStage: v.optional(dealStage),
+    defaultCurrency: v.optional(v.string()),
+    autoEnrich: v.optional(v.boolean()),
+  }).index("by_entity", ["entity"]),
+
+  fieldValues: defineTable({
+    fieldId: v.id("fieldDefinitions"),
+    // The record this value belongs to, as a string id into companies,
+    // contacts, or deals.
+    entityId: v.string(),
+    value: v.string(),
+  })
+    .index("by_entityId", ["entityId"])
+    .index("by_field_and_entityId", ["fieldId", "entityId"]),
+
+  // The agent work queue. The queue is a table: claimDue is a mutation that
+  // reads by index and writes a lease, and Convex serializes mutations so two
+  // dispatchers claim disjoint work with no lock hint.
+  agentTasks: defineTable({
+    kind: v.union(
+      v.literal("ENRICH_COMPANY"),
+      v.literal("RECHECK_CONTACT"),
+      v.literal("BRIEF_OWNER"),
+      v.literal("CUSTOM"),
+    ),
+    // state is denormalized on purpose: indexes cannot express
+    // "where finishedAt is null", so state carries that as an indexed value.
+    state: v.union(v.literal("open"), v.literal("done"), v.literal("failed")),
+    reason: v.string(),
+    companyId: v.optional(v.id("companies")),
+    contactId: v.optional(v.id("contacts")),
+    dealId: v.optional(v.id("deals")),
+    priority: v.number(),
+    dueAt: v.number(),
+    leasedUntil: v.optional(v.number()),
+    attempts: v.number(),
+    startedAt: v.optional(v.number()),
+    finishedAt: v.optional(v.number()),
+    result: v.optional(v.string()),
+  })
+    .index("by_state_and_dueAt", ["state", "dueAt"])
+    .index("by_company", ["companyId"])
+    .index("by_contact", ["contactId"]),
+
+  // Agent builder: definitions are data, versions are rows, deploying is a
+  // pointer move. No build, no redeploy.
+  agentDefinitions: defineTable({
+    name: v.string(),
+    description: v.string(),
+    status: v.union(
+      v.literal("draft"),
+      v.literal("deployed"),
+      v.literal("paused"),
+      v.literal("archived"),
+    ),
+    currentVersionId: v.optional(v.id("agentVersions")),
+    trigger: v.object({
+      kind: v.union(
+        v.literal("manual"),
+        v.literal("schedule"),
+        v.literal("event"),
+      ),
+      cronspec: v.optional(v.string()),
+      event: v.optional(v.string()),
+    }),
+  }),
+
+  agentVersions: defineTable({
+    agentId: v.id("agentDefinitions"),
+    number: v.number(),
+    instructions: v.string(),
+    // The manifest names which of the compiled tools a version may call, so
+    // an agent built in the UI cannot invent a tool that does not exist.
+    toolNames: v.array(v.string()),
+    model: v.string(),
+    deployedAt: v.optional(v.number()),
+  }).index("by_agent_and_number", ["agentId", "number"]),
+
+  agentRuns: defineTable({
+    agentId: v.optional(v.id("agentDefinitions")),
+    taskId: v.optional(v.id("agentTasks")),
+    companyId: v.optional(v.id("companies")),
+    contactId: v.optional(v.id("contacts")),
+    status: v.union(
+      v.literal("running"),
+      v.literal("done"),
+      v.literal("failed"),
+    ),
+    startedAt: v.number(),
+    finishedAt: v.optional(v.number()),
+    steps: v.array(
+      v.object({
+        at: v.number(),
+        kind: v.union(
+          v.literal("plan"),
+          v.literal("tool"),
+          v.literal("observation"),
+          v.literal("discard"),
+          v.literal("write"),
+          v.literal("question"),
+        ),
+        text: v.string(),
+      }),
+    ),
+    inputTokens: v.optional(v.number()),
+    outputTokens: v.optional(v.number()),
+  })
+    .index("by_agent", ["agentId"])
+    .index("by_company", ["companyId"])
+    .index("by_contact", ["contactId"]),
+
+  // The evidence ledger. Tools report what they observed; the ledger prices
+  // the observation and decides the band. No tool accepts a confidence score.
+  facts: defineTable({
+    entityType: v.union(
+      v.literal("company"),
+      v.literal("contact"),
+      v.literal("deal"),
+    ),
+    entityId: v.string(),
+    field: v.string(),
+    value: v.string(),
+    evidenceKind: v.string(),
+    band: evidenceBand,
+    sourceUrl: v.optional(v.string()),
+    // Weak evidence becomes a suggestion a human settles.
+    settled: v.union(
+      v.literal("written"),
+      v.literal("pending"),
+      v.literal("accepted"),
+      v.literal("rejected"),
+    ),
+  }).index("by_entityId", ["entityId"]),
+
+  // Workspace-wide Ask chats, mapped to Agent component threads. Unlike
+  // chatThreads these are not tied to a record: archive and delete are
+  // first-class, like a chat app.
+  askThreads: defineTable({
+    threadId: v.string(),
+    title: v.string(),
+    archived: v.boolean(),
+    lastMessageAt: v.number(),
+  }).index("by_threadId", ["threadId"]),
+
+  // The activity log the Activity page renders, in the shape of the Convex
+  // dashboard logs: one row per notable function outcome. Bounded by the
+  // demo reset and the Clear button.
+  logEvents: defineTable({
+    kind: v.union(v.literal("M"), v.literal("A"), v.literal("C")),
+    fn: v.string(),
+    status: v.union(
+      v.literal("success"),
+      v.literal("error"),
+      v.literal("info"),
+    ),
+    message: v.string(),
+  }),
+
+  // Verified Slack users. The /crm bot maps a Slack user id to a workspace
+  // member by email (users.info via the bot token) and caches the match
+  // here. Rows older than 30 days re-verify so departed teammates age out.
+  slackIdentities: defineTable({
+    slackUserId: v.string(),
+    email: v.string(),
+    name: v.string(),
+    verifiedAt: v.number(),
+  }).index("by_slackUserId", ["slackUserId"]),
+
+  // Per-record agent chat threads, mapped to Agent component threads.
+  chatThreads: defineTable({
+    threadId: v.string(),
+    companyId: v.optional(v.id("companies")),
+    contactId: v.optional(v.id("contacts")),
+    dealId: v.optional(v.id("deals")),
+  })
+    .index("by_company", ["companyId"])
+    .index("by_contact", ["contactId"])
+    .index("by_deal", ["dealId"])
+    .index("by_threadId", ["threadId"]),
+});

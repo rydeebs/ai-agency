@@ -1,0 +1,72 @@
+{
+  "name": "trycrm-convex",
+  "private": true,
+  "license": "MIT",
+  "version": "2.6.0",
+  "description": "Comp AI CRM ported to Convex. One deployment: database, agent runtime, work queue, crons, file storage, and static hosting.",
+  "type": "module",
+  "scripts": {
+    "dev": "npm-run-all --parallel dev:frontend dev:backend",
+    "dev:frontend": "vite",
+    "dev:backend": "convex dev",
+    "build": "tsc -p tsconfig.app.json --noEmit && vite build",
+    "check-types": "tsc -p tsconfig.app.json --noEmit && tsc -p convex --noEmit",
+    "lint": "eslint .",
+    "deploy": "npx @convex-dev/static-hosting deploy",
+    "auth:keys": "node scripts/configure-auth-keys.mjs",
+    "auth:keys:prod": "node scripts/configure-auth-keys.mjs --prod",
+    "seed": "npx convex run demo:seedPublic"
+  },
+  "dependencies": {
+    "@agentmail/convex": "^0.1.0",
+    "@auth/core": "0.41.3",
+    "@ai-sdk/anthropic": "^3.0.107",
+    "@ai-sdk/deepseek": "^2.0.55",
+    "@ai-sdk/openai": "^3.0.0",
+    "@ai-sdk/xai": "^3.0.121",
+    "@context-dot-dev/convex": "latest",
+    "@convex-dev/auth": "0.0.95",
+    "@convex-dev/action-cache": "latest",
+    "@convex-dev/action-retrier": "latest",
+    "@convex-dev/agent": "0.6.4",
+    "@convex-dev/aggregate": "latest",
+    "@convex-dev/crons": "latest",
+    "@convex-dev/migrations": "latest",
+    "@convex-dev/rate-limiter": "latest",
+    "@convex-dev/resend": "latest",
+    "@convex-dev/static-hosting": "latest",
+    "@convex-dev/workflow": "latest",
+    "@convex-dev/workpool": "latest",
+    "@exalabs/convex-exa": "^0.1.1",
+    "@firecrawl/firecrawl-convex": "^0.1.1",
+    "@fontsource-variable/mona-sans": "^5.3.0",
+    "ai": "^6.0.35",
+    "convex": "^1.31.0",
+    "convex-helpers": "latest",
+    "jose": "^6.2.9",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@convex-dev/eslint-plugin": "^3.0.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "eslint": "^10.8.1",
+    "npm-run-all": "^4.1.5",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.9.0",
+    "typescript-eslint": "^8.66.0",
+    "vite": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "overrides": {
+    "undici": "^7.29.0"
+  }
+}
