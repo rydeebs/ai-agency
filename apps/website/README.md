@@ -5,6 +5,7 @@ The public NewRevGen marketing and lead-generation website. It is a Next.js 16 A
 ## Routes
 
 - `/` — primary contractor and service-business landing page
+- `/about` and `/contact` — company identity and contact trust routes
 - `/operations` — operations-focused contractor landing page
 - `/firms` — accounting and finance firm landing page
 - `/101` — AI literacy and training landing page
@@ -12,6 +13,8 @@ The public NewRevGen marketing and lead-generation website. It is a Next.js 16 A
 - `/tools` — directory for the five public revenue operations tools
 - `/tools/[slug]` — assessment, calculator, and website-audit experiences
 - `/privacy` and `/terms` — legal routes linked from every result gate
+- `/llms.txt` — agent-oriented site index and when-to-use guidance
+- `/*.md` and `Accept: text/markdown` — authored Markdown representations of public pages
 - `/api/tools/audit` — bounded public-page HTML audit with private-network blocking
 - `/api/tools/submit` — validates and recalculates results before handing leads to Convex
 
@@ -31,6 +34,7 @@ From the repository root:
 ```bash
 npm run dev:website
 npm run build --workspace=@newrevgen/website
+npm run test --workspace=@newrevgen/website
 npm run lint --workspace=@newrevgen/website
 npm run typecheck --workspace=@newrevgen/website
 ```

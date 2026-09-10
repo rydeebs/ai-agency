@@ -26,11 +26,16 @@ export async function generateMetadata({ params }: ToolRouteProps): Promise<Meta
     return {
       title: "Three-Point Website Revenue-Funnel Assessment | NewRevGen",
       description: "Find three practical revenue-leak signals on your business website.",
+      alternates: { canonical: "/tools/website-revenue-audit" },
     };
   }
   const tool = getAssessmentTool(slug);
   if (!tool) return {};
-  return { title: `${tool.title} | NewRevGen`, description: tool.description };
+  return {
+    title: `${tool.title} | NewRevGen`,
+    description: tool.description,
+    alternates: { canonical: `/tools/${tool.slug}` },
+  };
 }
 
 export default async function ToolRoute({ params }: ToolRouteProps) {

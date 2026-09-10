@@ -6,7 +6,7 @@ export const operationsContent: LandingContent = {
     title: "AI Revenue Systems for Contractors & Service Businesses | NewRevGen",
     description:
       "Recover missed calls, follow up on estimates, book more jobs, and cut wasted software spend with AI systems built for contractors and service businesses.",
-    canonical: "https://newrevegen.com/operations",
+    canonical: "https://newrevgen.com/operations",
     ogTitle: "Stop Losing Jobs After the Lead Comes In.",
     ogDescription:
       "AI revenue systems built around how contractors actually operate: calls, estimates, dispatch, crews, reviews, and follow-up.",

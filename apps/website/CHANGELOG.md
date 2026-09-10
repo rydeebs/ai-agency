@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Standards-aware HTML/Markdown content negotiation with `Vary: Accept`, q-value handling, direct `.md` alternates, and `406` responses
+- Agent-oriented `/llms.txt`, explicit `robots.txt`, and authored Markdown versions of indexed public pages
+- Recoverable HTML and Markdown 404 responses with links to machine-readable discovery files
+- Substantive `/about` and `/contact` trust pages
+- Homepage Organization and WebSite JSON-LD plus canonical and Open Graph metadata
+- Integration coverage for public routes, negotiation, metadata, structured data, trust content, and discovery files
+
+### Fixed
+- Corrected `newrevegen.com` canonical URL typos on vertical landing pages
+
 ## [0.2.0] - 2026-03-28
 
 ### Added

@@ -4,6 +4,7 @@ import { LegalPage } from "@/components/LegalPage";
 export const metadata: Metadata = {
   title: "Terms of Use | NewRevGen",
   description: "Terms governing use of the NewRevGen website and revenue operations tools.",
+  alternates: { canonical: "/terms" },
 };
 
 export default function TermsPage() {

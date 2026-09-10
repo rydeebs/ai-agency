@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: "Free Business AI Assessments | NewRevGen",
   description:
     "Use practical assessments and calculators to uncover revenue leaks, operational opportunities, owner dependence, and digital conversion gaps.",
+  alternates: { canonical: "/tools" },
 };
 
 const tools = [

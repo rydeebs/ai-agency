@@ -9,7 +9,8 @@ const navLinksCol1 = [
 ];
 
 const navLinksCol2 = [
-  { label: 'About Us', href: '/#team' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Contact', href: '/contact' },
   { label: 'Privacy', href: '/privacy' },
   { label: 'Terms', href: '/terms' },
 ];

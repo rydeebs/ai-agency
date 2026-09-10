@@ -5,6 +5,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://newrevgen.com";
   return [
     "",
+    "/about",
+    "/contact",
     "/operations",
     "/firms",
     "/101",
@@ -15,9 +17,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/terms",
   ].map((path) => ({
     url: `${baseUrl}${path}`,
-    lastModified: new Date("2026-09-08"),
+    lastModified: new Date("2026-09-10"),
     changeFrequency: path.startsWith("/tools") ? "monthly" : "yearly",
     priority: path === "" ? 1 : path === "/tools" ? 0.9 : 0.7,
   }));
 }
-

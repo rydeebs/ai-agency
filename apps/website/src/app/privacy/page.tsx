@@ -4,6 +4,7 @@ import { LegalPage } from "@/components/LegalPage";
 export const metadata: Metadata = {
   title: "Privacy Policy | NewRevGen",
   description: "How NewRevGen collects, uses, and protects information submitted through its website and revenue operations tools.",
+  alternates: { canonical: "/privacy" },
 };
 
 export default function PrivacyPage() {
@@ -39,4 +40,3 @@ export default function PrivacyPage() {
     </LegalPage>
   );
 }
-

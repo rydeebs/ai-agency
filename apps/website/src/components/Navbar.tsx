@@ -11,7 +11,7 @@ export function Navbar() {
     { label: "Why Us", href: "/#why-us" },
     { label: "Capabilities", href: "/#services" },
     { label: "Tools", href: "/tools" },
-    { label: "About", href: "/#team" },
+    { label: "About", href: "/about" },
   ];
 
   return (

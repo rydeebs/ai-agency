@@ -6,7 +6,7 @@ export const firmsContent: LandingContent = {
     title: "AI for Accounting & Finance Firms | NewRevGen",
     description:
       "Adopt AI inside your existing practice — without replatforming. We embed with accounting and finance firms to free billable hours, lift margin, and modernize legacy workflows.",
-    canonical: "https://newrevegen.com/firms",
+    canonical: "https://newrevgen.com/firms",
     ogTitle: "AI for Firms Still Running on Legacy Workflows",
     ogDescription:
       "Reconciliation, close, audit prep, advisory deliverables — automated inside the systems you already use. Built for firms, by people who've worked inside them.",
