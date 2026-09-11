@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, Darker_Grotesque } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -80,7 +81,10 @@ export default function RootLayout({
       lang="en"
       className={`${dmSans.variable} ${darkerGrotesque.variable}`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
