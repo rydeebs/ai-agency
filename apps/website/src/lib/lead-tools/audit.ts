@@ -3,7 +3,7 @@ import { isIP } from "node:net";
 import type { ResultFinding, ToolResult } from "./types";
 
 const MAX_REDIRECTS = 3;
-const MAX_HTML_BYTES = 1_000_000;
+const MAX_ANALYSIS_HTML_BYTES = 3_000_000;
 const REQUEST_TIMEOUT_MS = 10_000;
 
 function isPrivateIp(address: string): boolean {
@@ -66,9 +66,10 @@ async function validatePublicUrl(value: string): Promise<URL> {
 }
 
 async function readLimitedHtml(response: Response): Promise<string> {
-  const declaredLength = Number(response.headers.get("content-length") ?? 0);
-  if (declaredLength > MAX_HTML_BYTES) throw new Error("That page is too large to assess safely.");
   if (!response.body) return "";
+
+  // Content-Length can describe compressed bytes while fetch yields decoded bytes.
+  // Analyze a bounded prefix so compression-heavy pages remain useful without unbounded memory use.
   const reader = response.body.getReader();
   const decoder = new TextDecoder();
   let size = 0;
@@ -76,11 +77,15 @@ async function readLimitedHtml(response: Response): Promise<string> {
   while (true) {
     const { value, done } = await reader.read();
     if (done) break;
-    size += value.byteLength;
-    if (size > MAX_HTML_BYTES) {
+
+    const remainingBytes = MAX_ANALYSIS_HTML_BYTES - size;
+    if (value.byteLength > remainingBytes) {
+      html += decoder.decode(value.subarray(0, remainingBytes), { stream: true });
       await reader.cancel();
-      throw new Error("That page is too large to assess safely.");
+      break;
     }
+
+    size += value.byteLength;
     html += decoder.decode(value, { stream: true });
   }
   return html + decoder.decode();
