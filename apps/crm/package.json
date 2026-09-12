@@ -11,6 +11,7 @@
     "dev:backend": "convex dev",
     "build": "tsc -p tsconfig.app.json --noEmit && vite build",
     "check-types": "tsc -p tsconfig.app.json --noEmit && tsc -p convex --noEmit",
+    "test": "node --test tests/*.test.mjs",
     "lint": "eslint .",
     "deploy": "npx @convex-dev/static-hosting deploy",
     "auth:keys": "node scripts/configure-auth-keys.mjs",

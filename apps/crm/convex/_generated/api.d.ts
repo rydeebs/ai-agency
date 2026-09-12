@@ -27,6 +27,7 @@ import type * as email from "../email.js";
 import type * as enrichment from "../enrichment.js";
 import type * as fields from "../fields.js";
 import type * as gmail from "../gmail.js";
+import type * as gmailScopes from "../gmailScopes.js";
 import type * as http from "../http.js";
 import type * as imports from "../imports.js";
 import type * as leadAssessments from "../leadAssessments.js";
@@ -76,6 +77,7 @@ declare const fullApi: ApiFromModules<{
   enrichment: typeof enrichment;
   fields: typeof fields;
   gmail: typeof gmail;
+  gmailScopes: typeof gmailScopes;
   http: typeof http;
   imports: typeof imports;
   leadAssessments: typeof leadAssessments;

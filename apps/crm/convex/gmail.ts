@@ -8,10 +8,12 @@ import {
   internalQuery,
 } from "./_generated/server";
 import { authedQuery } from "./model/functions";
-
-const GMAIL_SEND_SCOPE = "https://www.googleapis.com/auth/gmail.send";
-const GMAIL_READ_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
-const GMAIL_SETTINGS_SCOPE = "https://www.googleapis.com/auth/gmail.settings.basic";
+import {
+  canReadGmailSignature,
+  gmailReadScope,
+  gmailSendScope,
+  gmailSettingsScope,
+} from "./gmailScopes";
 const OAUTH_STATE_TTL_MS = 10 * 60 * 1000;
 
 const realValue = (value: string | undefined): value is string =>
@@ -155,7 +157,7 @@ export const beginConnection = action({
     url.searchParams.set("client_id", clientId);
     url.searchParams.set("redirect_uri", redirectUri);
     url.searchParams.set("response_type", "code");
-    url.searchParams.set("scope", `openid email ${GMAIL_SEND_SCOPE} ${GMAIL_READ_SCOPE} ${GMAIL_SETTINGS_SCOPE}`);
+    url.searchParams.set("scope", `openid email ${gmailSendScope} ${gmailReadScope} ${gmailSettingsScope}`);
     url.searchParams.set("access_type", "offline");
     url.searchParams.set("include_granted_scopes", "true");
     url.searchParams.set("prompt", "consent");
@@ -352,7 +354,7 @@ export const completeConnection = internalAction({
     const encrypted = await encryptRefreshToken(refreshToken);
     const grantedScopes =
       typeof tokens.scope === "string" ? tokens.scope.split(/\s+/) : [];
-    if (!grantedScopes.includes(GMAIL_SEND_SCOPE)) {
+    if (!grantedScopes.includes(gmailSendScope)) {
       throw new Error("The Gmail send permission was not granted");
     }
     await ctx.runMutation(internal.gmail.saveConnection, {
@@ -461,8 +463,9 @@ export async function sendWithGmail(
   if (!connection) throw new Error("Connect Gmail in Settings before sending");
   const refreshToken = await decryptRefreshToken(connection);
   const accessToken = await refreshAccessToken(refreshToken);
-  if (!connection.grantedScopes.includes(GMAIL_SETTINGS_SCOPE)) throw new Error("Reconnect Gmail in Settings to allow the CRM to use your Gmail signature");
-  const signatureHtml = await gmailSignature(accessToken, connection.email);
+  const signatureHtml = canReadGmailSignature(connection.grantedScopes)
+    ? await gmailSignature(accessToken, connection.email)
+    : undefined;
   const raw = base64Url(
     new TextEncoder().encode(
       mimeMessage({
@@ -503,7 +506,7 @@ export const hasInboundReply = internalAction({
   returns: v.boolean(),
   handler: async (ctx, args) => {
     const connection = await ctx.runQuery(internal.gmail.getConnectionInternal, {});
-    if (!connection || !connection.grantedScopes.includes(GMAIL_READ_SCOPE)) return false;
+    if (!connection || !connection.grantedScopes.includes(gmailReadScope)) return false;
     const refreshToken = await decryptRefreshToken(connection);
     const accessToken = await refreshAccessToken(refreshToken);
     const after = Math.max(0, Math.floor(args.since / 1000));
@@ -524,7 +527,7 @@ export const findBouncedAddresses = internalAction({
   handler: async (ctx, args) => {
     const connection = await ctx.runQuery(internal.gmail.getConnectionInternal, {});
     if (!connection) return { emails: [], searched: 0, message: "No Gmail connection found" };
-    if (!connection.grantedScopes.includes(GMAIL_READ_SCOPE)) return { emails: [], searched: 0, message: "Gmail is connected without the read/inbox scope; reconnect Gmail in Settings" };
+    if (!connection.grantedScopes.includes(gmailReadScope)) return { emails: [], searched: 0, message: "Gmail is connected without the read/inbox scope; reconnect Gmail in Settings" };
     const refreshToken = await decryptRefreshToken(connection);
     const accessToken = await refreshAccessToken(refreshToken);
     // Match the delivery-failure language itself. Sender domains vary across
