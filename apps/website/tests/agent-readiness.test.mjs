@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { once } from "node:events";
+import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import net from "node:net";
 import path from "node:path";
@@ -167,6 +168,18 @@ test("every indexed public page serves HTML and an authored Markdown variant", a
       `${directMarkdownPath} direct Markdown content type`,
     );
   }
+});
+
+test("the root layout enables Vercel Analytics and Speed Insights", async () => {
+  const layout = await readFile(
+    path.join(websiteRoot, "src/app/layout.tsx"),
+    "utf8",
+  );
+
+  assert.match(layout, /from "@vercel\/analytics\/next"/);
+  assert.match(layout, /<Analytics \/>/);
+  assert.match(layout, /from "@vercel\/speed-insights\/next"/);
+  assert.match(layout, /<SpeedInsights \/>/);
 });
 
 test("content negotiation honors q-values, specificity, direct .md URLs, and 406", async () => {
