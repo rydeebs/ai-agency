@@ -222,6 +222,10 @@ npm run deploy
 
 That runs `npx @convex-dev/static-hosting deploy`, which does the whole thing in one shot: builds the frontend with the production Convex URL, deploys the Convex backend, and uploads the built files to Convex storage.
 
+Pushing CRM changes to GitHub does not publish them to the live app. After
+pushing, run `npm run deploy` from `apps/crm` to update the production dashboard,
+then refresh the browser to load the new frontend.
+
 Your site is then live at your deployment's `.convex.site` URL, which the Convex dashboard shows under Settings. The static hosting component handles SPA routing, hashed asset caching, and garbage collection of old builds. Deploys are atomic; clients subscribed through the deployment query can offer a refresh when a new build ships.
 
 For production auth, generate a separate signing and encryption key set after

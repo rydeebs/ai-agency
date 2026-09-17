@@ -28,6 +28,7 @@ export function Dashboard() {
         <Stat
           label="Closed won"
           value={summary ? formatMoney(summary.wonMinor, "USD") : "…"}
+          className="col-span-2 lg:col-span-1"
         />
         <Stat
           label="Companies"
@@ -124,9 +125,9 @@ export function Dashboard() {
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Stat({ label, value, className = "" }: { label: string; value: string; className?: string }) {
   return (
-    <Panel className="p-4">
+    <Panel className={`p-4 ${className}`}>
       <p className="text-xs text-neutral-500">{label}</p>
       <p className="mt-1 text-2xl font-semibold text-white">{value}</p>
     </Panel>
