@@ -16,7 +16,7 @@ export function Dashboard() {
         subtitle="Pipeline rollups are reactive aggregates; every card updates live."
       />
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
         <Stat
           label="Open pipeline"
           value={summary ? formatMoney(summary.openPipelineMinor, "USD") : "…"}
@@ -32,6 +32,10 @@ export function Dashboard() {
         <Stat
           label="Companies"
           value={summary ? String(summary.companyCount) : "…"}
+        />
+        <Stat
+          label="Contacts"
+          value={summary ? String(summary.contactCount) : "…"}
         />
       </div>
 
