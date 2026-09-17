@@ -16,6 +16,11 @@ export const NAV_ITEMS = [
   { id: "outreach", to: "/app/outreach", label: "Outreach" },
   { id: "outreach-metrics", to: "/app/outreach-metrics", label: "Outreach Metrics" },
   { id: "deals", to: "/app/deals", label: "Deals" },
+  {
+    id: "assessment-generator",
+    to: "/app/assessment-generator",
+    label: "Assessments",
+  },
   { id: "ask", to: "/app/ask", label: "Ask" },
   { id: "agents", to: "/app/agents", label: "Agents" },
   { id: "activity", to: "/app/activity", label: "Activity" },

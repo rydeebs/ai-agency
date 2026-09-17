@@ -160,6 +160,18 @@ CONVEX_LEAD_INGEST_SECRET=replace-with-the-same-value
 
 The endpoint upserts a company and contact, records the full assessment, adds a CRM timeline note, and queues the requested report through the workspace's selected email provider. To send from Google Workspace, configure Gmail as described above, connect the mailbox under **Settings → Email**, and select Gmail as the provider. Benchmark metrics are stored only after explicit respondent opt-in.
 
+### AI Tools Assessment generator
+
+The private CRM includes a manual generator at `/app/assessment-generator`.
+Upload or paste a text transcript (`.txt`, `.md`, `.vtt`, or `.srt`), add
+optional client context, and the workspace's selected AI provider returns a
+strict nine-page assessment. Review the unknowns and slide preview, then use
+**Download PDF** to render the NewRevGen-branded report locally in the browser.
+
+The generator does not persist the raw transcript or generated report. The
+transcript is sent only to the selected AI provider for that request, the model
+key remains in Convex, and no report is emailed automatically.
+
 ## Viewing backend data
 
 Open [dashboard.convex.dev](https://dashboard.convex.dev), choose the
@@ -249,6 +261,7 @@ writes check both a valid Convex Auth session and that allowlist.
 - Activity: a live dashboard-style log of function outcomes with pause, select one or all, and clear
 - Sidebar items reorder by drag and drop; Settings can hide items; the rail icon collapses the sidebar
 - Agent task queue with leasing, workpools, and scheduled rechecks that require a reason
+- Manual transcript-to-assessment generator with structured output, a nine-slide preview, and local PDF download
 - Agents that build agents: describe a process, get a versioned draft definition
 - Record chat with web research tools (Firecrawl, Exa, or Context.dev, any one key is enough) that answer honestly about missing keys
 - AI provider picker: OpenAI, Claude, OpenRouter, DeepSeek, or Grok, none configured by default

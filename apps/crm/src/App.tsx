@@ -6,6 +6,7 @@ import {
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Activity } from "./app/Activity";
 import { AppLayout } from "./app/AppLayout";
+import { AssessmentGenerator } from "./app/AssessmentGenerator";
 import { Agents } from "./app/Agents";
 import { Ask } from "./app/Ask";
 import { Companies } from "./app/Companies";
@@ -47,6 +48,7 @@ export default function App() {
             <Route path="contacts/:contactId" element={<ContactDetail />} />
             <Route path="deals" element={<Deals />} />
             <Route path="ask" element={<Ask />} />
+            <Route path="assessment-generator" element={<AssessmentGenerator />} />
             <Route path="activity" element={<Activity />} />
             <Route path="agents" element={<Agents />} />
             <Route path="settings/:section?" element={<Settings />} />

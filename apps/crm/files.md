@@ -43,6 +43,9 @@ Brief description of what each file does. Updated 2026-08-09 19:55 UTC.
 | `dashboard.ts` | Pipeline summary from aggregates, recent activity feed |
 | `agentTasks.ts` | The work queue: claim with leases, tick, execute through the workpool, rechecks with required reasons |
 | `agents.ts` | Agent builder: draft from a sentence, versioned instructions, deploy and pause |
+| `assessmentGenerator.ts` | Authenticated one-shot transcript analysis action that returns a strict nine-page assessment without persisting the transcript |
+| `assessmentGeneratorData.ts` | Internal authenticated provider-settings lookup used by the assessment action |
+| `assessmentReport.ts` | Assessment output schema, Convex return validator, transcript normalization, and prompt construction |
 | `enrichment.ts` | Context.dev brand lookup with action cache and rate limiter, writes facts and timeline entries |
 | `chat.ts` | Record chat on the agent component, with read_crm_history, search_the_web (Exa), and read_web_page (Firecrawl) tools; runs on the workspace's selected AI provider |
 | `ask.ts` | Workspace-wide Ask chat: threads with archive and delete, CRM overview tool, web research tools, streamed provider-aware generation, /task and /note slash commands with relative and explicit due date parsing |
@@ -93,6 +96,10 @@ Brief description of what each file does. Updated 2026-08-09 19:55 UTC.
 | `app/Ask.tsx` | Claude-style workspace chat: streamed replies, thread sub-sidebar with archive and delete, slash commands, time-aware greeting, provider notes |
 | `app/Activity.tsx` | Live function-outcome log with pause, select one or all, and clear, in the shape of the Convex dashboard |
 | `app/Agents.tsx` | Agent builder: describe a process, manage drafts, deploy, pause |
+| `app/AssessmentGenerator.tsx` | Manual transcript upload/paste workflow, assessment preview, unknowns review, and local PDF download |
+| `features/assessment/AssessmentSlides.tsx` | Data-driven nine-page NewRevGen assessment presentation used for preview and PDF capture |
+| `features/assessment/assessmentSlides.css` | Fixed 16:9 NewRevGen report layout and PDF-capture styling |
+| `lib/assessmentPdf.ts` | Browser-safe nine-page PDF assembly and filename normalization helpers |
 | `app/Settings.tsx` | Sub-sidebar settings pages under /app/settings/:section: Team, Companies, Contacts, Deals (per-entity defaults, columns, custom fields), Integrations (with the "Adding API keys" panel), Slack (master switch, event toggles, channel picker with search, test button, /crm bot), Email (provider toggle plus compose defaults), AI provider, Sidebar show/hide |
 | `app/EntitySettingsSection.tsx` | The per-entity settings body: new-record defaults panel, column list with inline rename plus show and pin toggles, custom fields manager with type-specific creation, option editing, archive and restore |
 | `pages/Landing.tsx` | Marketing page: hero with copy prompt and git clone one-liner, built-with, "What it actually does" bento with JSX mock UI blocks (agent builder with deployed agents, companies table, record chat, Slack message, web research tool calls, Ask slash commands, rechecks, activity log, BYOK key groups), demo video, demo notes as a bullet list with accent highlights and per-line docs links |
