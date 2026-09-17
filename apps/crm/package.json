@@ -3,7 +3,7 @@
   "private": true,
   "license": "MIT",
   "version": "2.6.0",
-  "description": "Comp AI CRM ported to Convex. One deployment: database, agent runtime, work queue, crons, file storage, and static hosting.",
+  "description": "Comp AI CRM ported to Convex. One deployment: database, agent runtime, work queue, scheduled functions, file storage, and static hosting.",
   "type": "module",
   "scripts": {
     "dev": "npm-run-all --parallel dev:frontend dev:backend",
@@ -31,7 +31,6 @@
     "@convex-dev/agent": "0.6.4",
     "@convex-dev/aggregate": "latest",
     "@convex-dev/auth": "0.0.95",
-    "@convex-dev/crons": "latest",
     "@convex-dev/migrations": "latest",
     "@convex-dev/rate-limiter": "latest",
     "@convex-dev/resend": "latest",

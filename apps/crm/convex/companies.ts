@@ -162,7 +162,7 @@ export const create = writeMutation({
     // A new company with a domain gets enrichment queued automatically,
     // unless the workspace turned auto enrich off in settings.
     if (args.domain && defaults.autoEnrich !== false) {
-      await ctx.db.insert("agentTasks", {
+      const taskId = await ctx.db.insert("agentTasks", {
         kind: "ENRICH_COMPANY",
         state: "open",
         reason: "New company created with a domain and no brand data.",
@@ -171,6 +171,7 @@ export const create = writeMutation({
         dueAt: Date.now(),
         attempts: 0,
       });
+      await ctx.scheduler.runAfter(0, internal.agentTasks.dispatchTask, { taskId });
     }
     await logEvent(ctx, {
       kind: "M",
@@ -227,7 +228,7 @@ export const remove = writeMutation({
   },
 });
 
-// Queue a re-enrich. The dispatcher picks it up on the next tick.
+// Queue a re-enrich and dispatch only this task after the mutation commits.
 export const reEnrich = writeMutation({
   args: { companyId: v.id("companies") },
   returns: v.null(),
@@ -238,7 +239,7 @@ export const reEnrich = writeMutation({
       throw new Error("Add a domain first so the agent knows where to look");
     }
     await ctx.db.patch("companies", args.companyId, { enrichmentStatus: "RESEARCHING" });
-    await ctx.db.insert("agentTasks", {
+    const taskId = await ctx.db.insert("agentTasks", {
       kind: "ENRICH_COMPANY",
       state: "open",
       reason: "Manual re-enrich requested from the record.",
@@ -247,7 +248,7 @@ export const reEnrich = writeMutation({
       dueAt: Date.now(),
       attempts: 0,
     });
-    await ctx.scheduler.runAfter(0, internal.agentTasks.tick, {});
+    await ctx.scheduler.runAfter(0, internal.agentTasks.dispatchTask, { taskId });
     return null;
   },
 });

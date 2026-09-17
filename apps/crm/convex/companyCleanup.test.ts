@@ -75,14 +75,47 @@ test("manual contact deletion keeps the company until its last contact is delete
 test("bounce deletion removes the last contact's company and preserves the bounce audit", async () => {
   const { t, companyId } = await setup();
   const contactId = await t.run((ctx) => ctx.db.insert("contacts", { name: "Bounced", email: "bounce@example.test", companyId }));
+  expect(await t.query(internal.outreach.unprocessedBounces, { items: [
+    { email: "bounce@example.test", messageId: "bounce-test", bouncedAt: 1000 },
+    { email: "already-gone@example.test", messageId: "old-bounce", bouncedAt: 900 },
+  ] })).toEqual([{ email: "bounce@example.test", messageId: "bounce-test", bouncedAt: 1000 }]);
   expect(await t.mutation(internal.outreach.removeBouncedContact, {
     email: "bounce@example.test", messageId: "bounce-test", bouncedAt: 1000,
   })).toBe(true);
   expect(await t.run((ctx) => ctx.db.get("contacts", contactId))).toBeNull();
   expect(await t.run((ctx) => ctx.db.get("companies", companyId))).toBeNull();
+  expect(await t.query(internal.outreach.unprocessedBounces, { items: [
+    { email: "bounce@example.test", messageId: "bounce-test", bouncedAt: 1000 },
+  ] })).toEqual([]);
   const tasks = await t.run((ctx) => ctx.db.query("agentTasks").take(10));
-  expect(tasks).toHaveLength(1);
-  expect(tasks[0].reason).toContain("Bounce detected");
+  expect(tasks).toHaveLength(0);
+});
+
+test("legacy bounce audit tasks are removed without touching real agent work", async () => {
+  const { t, companyId } = await setup();
+  const { legacyTaskId, realTaskId } = await t.run(async (ctx) => ({
+    legacyTaskId: await ctx.db.insert("agentTasks", {
+      kind: "CUSTOM",
+      state: "open",
+      reason: "Bounce detected for gone@example.test (Gmail message old). The contact was deleted from the CRM. Do not re-add this address without verification.",
+      priority: 1,
+      dueAt: 1,
+      attempts: 0,
+    }),
+    realTaskId: await ctx.db.insert("agentTasks", {
+      kind: "ENRICH_COMPANY",
+      state: "open",
+      reason: "Research requested by the owner.",
+      companyId,
+      priority: 1,
+      dueAt: 1,
+      attempts: 0,
+    }),
+  }));
+
+  expect(await t.mutation(internal.outreach.removeLegacyBounceTasks)).toBe(1);
+  expect(await t.run((ctx) => ctx.db.get("agentTasks", legacyTaskId))).toBeNull();
+  expect(await t.run((ctx) => ctx.db.get("agentTasks", realTaskId))).not.toBeNull();
 });
 
 test("moving the last contact removes the old company but keeps its new company", async () => {
@@ -124,6 +157,46 @@ test("the sweep continues across pages and preserves companies that have contact
   expect(remaining.map((c) => c._id)).toEqual([companyId]);
   const logs = await t.run((ctx) => ctx.db.query("logEvents").order("desc").take(1));
   expect(logs[0].message).toContain("scanned 105, deleted 104, failed 0");
+});
+
+test("full company cleanup starts only from an explicit owner action", async () => {
+  const { t } = await setup();
+  await expect(t.mutation(api.companyCleanup.start)).rejects.toThrow("Not authenticated");
+  await t.withIdentity(owner).mutation(api.companyCleanup.start);
+  const scheduled = await t.run((ctx) => ctx.db.system.query("_scheduled_functions").collect());
+  expect(scheduled).toHaveLength(1);
+  expect(scheduled[0].name).toBe("companyCleanup:sweep");
+  expect(scheduled[0].state).toEqual({ kind: "pending" });
+});
+
+test("future agent work schedules its exact task without a queue poller", async () => {
+  const { t, companyId } = await setup();
+  const taskId = await t.withIdentity(owner).mutation(api.agentTasks.scheduleRecheck, {
+    companyId, reason: "Recheck this company after the requested delay.", dueInDays: 2,
+  });
+  const scheduled = await t.run((ctx) => ctx.db.system.query("_scheduled_functions").collect());
+  expect(scheduled).toHaveLength(1);
+  expect(scheduled[0].name).toBe("agentTasks:dispatchTask");
+  expect(scheduled[0].args).toEqual([{ taskId }]);
+});
+
+test("activating a campaign schedules one send for that campaign", async () => {
+  const { t, companyId } = await setup();
+  const { campaignId } = await t.run(async (ctx) => {
+    const contactId = await ctx.db.insert("contacts", { name: "Recipient", email: "recipient@example.test", companyId });
+    const campaignId = await ctx.db.insert("outreachCampaigns", {
+      name: "Manual send", status: "REVIEW", dailyLimit: 10, followUpDays: [], instructions: "Test", createdAt: 1,
+    });
+    await ctx.db.insert("outreachRecipients", {
+      campaignId, contactId, step: 0, status: "APPROVED", subject: "Hello", body: "Body",
+    });
+    return { campaignId };
+  });
+  await t.withIdentity(owner).mutation(api.outreach.activate, { campaignId });
+  const scheduled = await t.run((ctx) => ctx.db.system.query("_scheduled_functions").collect());
+  expect(scheduled).toHaveLength(1);
+  expect(scheduled[0].name).toBe("outreach:sendBatch");
+  expect(scheduled[0].args).toEqual([{ campaignId }]);
 });
 
 test("a failed cascade rolls back its company and is retried without blocking other deletions", async () => {

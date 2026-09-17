@@ -2,8 +2,7 @@ import { useQuery } from "convex/react";
 import { useEffect, useState } from "react";
 import { api } from "../../convex/_generated/api";
 
-// Slim status strip above the app shell. Shows demo mode and the countdown
-// to the next cron reset; resets happen on their own, no manual trigger.
+// Slim status strip above the app shell for upstream demo deployments.
 export function DemoBanner() {
   const info = useQuery(api.demo.info);
   const [now, setNow] = useState(() => Date.now());

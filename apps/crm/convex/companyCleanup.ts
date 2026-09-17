@@ -2,6 +2,16 @@ import { v } from "convex/values";
 import { internal } from "./_generated/api";
 import { internalAction, internalMutation, internalQuery } from "./_generated/server";
 import { deleteCompanyIfEmpty } from "./model/cascade";
+import { writeMutation } from "./model/functions";
+
+export const start = writeMutation({
+  args: {},
+  returns: v.null(),
+  handler: async (ctx) => {
+    await ctx.scheduler.runAfter(0, internal.companyCleanup.sweep, {});
+    return null;
+  },
+});
 
 export const emptyPage = internalQuery({
   args: { cursor: v.union(v.string(), v.null()), startedAt: v.number() },
@@ -36,7 +46,7 @@ const resultValidator = v.object({
 });
 
 // Each company has its own transaction. A failed cascade cannot roll back
-// unrelated deletions, and the next sweep retries any company left behind.
+// unrelated deletions, and the next requested sweep retries it.
 export const sweep = internalAction({
   args: {
     cursor: v.optional(v.string()), startedAt: v.optional(v.number()),
@@ -68,7 +78,7 @@ export const sweep = internalAction({
       });
     } else {
       await ctx.runMutation(internal.logs.record, {
-        kind: "C", fn: "companyCleanup:sweep", status: failed ? "error" : "success",
+        kind: "A", fn: "companyCleanup:sweep", status: failed ? "error" : "success",
         message: `Zero-contact company cleanup complete: scanned ${scanned}, deleted ${deleted}, failed ${failed}. Started ${new Date(startedAt).toISOString()}.`,
       });
     }

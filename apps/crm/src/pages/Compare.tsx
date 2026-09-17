@@ -32,7 +32,7 @@ const ROWS: Array<Row> = [
   {
     area: "Scheduling",
     upstream: "External schedulers and worker loops",
-    convex: "Convex cron jobs, including the 10 minute demo reset",
+    convex: "One-time Convex scheduled functions started by explicit user actions",
   },
   {
     area: "Auth",

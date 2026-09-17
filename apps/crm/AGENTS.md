@@ -3,7 +3,7 @@
 ## What this is
 
 An agentic CRM on one Convex deployment. Convex is the database, the agent
-runtime, the work queue, the file store, the cron scheduler, and the web host.
+runtime, the work queue, the file store, the scheduled-function runtime, and the web host.
 There is no Postgres, no Redis, no separate API server, no Vercel, no monorepo.
 
 `convex/` is the backend, `src/` is the frontend, npm is the package manager.
@@ -48,10 +48,8 @@ the user which rules and skills you read.
   A model asked to grade its own certainty will do it, and it will be wrong in
   the direction that makes it look useful. A confidently wrong fact about a
   customer is worse than a blank field, because nobody can tell it is wrong.
-- **Dispatch schedules, it never decides.** The one-minute `agent tick` cron
-  leases what is due and starts a run per row. Anything shaped like "every N
-  minutes, the oldest ten contacts" belongs in a task's `dueAt`, not in a cron
-  expression.
+- **Dispatch schedules, it never decides.** Creating an agent task schedules
+  that exact task once at its `dueAt`. Do not add an idle queue-polling cron.
 - **Agent tools call internal functions only.** A tool that can reach a public
   mutation is a tool that can be reached from a browser console.
 - **Money is integer minor units.** `amountMinor` plus `currency`. Round once,
@@ -109,7 +107,8 @@ reset over real CRM data.
 - Anything that calls an external service is an action, wrapped in
   `@convex-dev/action-retrier`, and cached with `@convex-dev/action-cache` when
   the same lookup repeats.
-- Cron jobs stay off the top of the hour. The ESLint plugin checks this too.
+- Production currently registers no recurring cron jobs. Prefer one-time
+  scheduled functions created by explicit user actions.
 
 ## Two things that do not exist here
 

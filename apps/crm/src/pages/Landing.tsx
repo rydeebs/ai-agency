@@ -750,8 +750,8 @@ function DemoNotes() {
       key: "reset",
       body: (
         <>
-          Content <Hl>resets every 10 minutes</Hl> with a Convex cron job. Edit anything; it comes
-          back. Your fork can turn the reset off.{" "}
+          This NewRevGen workspace <Hl>keeps your data</Hl> and does not run a recurring reset or
+          background polling job.{" "}
           <DocsLink to="/docs#fork-and-setup" label="Fork and set it up" />
         </>
       ),

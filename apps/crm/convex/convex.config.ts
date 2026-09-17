@@ -1,5 +1,5 @@
 // Components for the whole app. One Convex deployment is the database, the
-// agent runtime, the work queue, the cron scheduler, the file store, and the
+// agent runtime, the work queue, scheduled functions, the file store, and the
 // web host.
 import { defineApp } from "convex/server";
 import { v } from "convex/values";
@@ -9,7 +9,6 @@ import actionCache from "@convex-dev/action-cache/convex.config";
 import actionRetrier from "@convex-dev/action-retrier/convex.config";
 import agent from "@convex-dev/agent/convex.config";
 import aggregate from "@convex-dev/aggregate/convex.config";
-import crons from "@convex-dev/crons/convex.config";
 import migrations from "@convex-dev/migrations/convex.config";
 import rateLimiter from "@convex-dev/rate-limiter/convex.config";
 import resend from "@convex-dev/resend/convex.config";
@@ -52,7 +51,6 @@ app.use(staticHosting);
 // Agent runtime
 app.use(agent);
 app.use(workflow);
-app.use(crons);
 app.use(actionRetrier);
 app.use(actionCache);
 
@@ -97,9 +95,8 @@ app.use(agentmail);
 // Dashboard rollups: pipeline value by stage. Keeps the dashboard summary at
 // O(log n) instead of scanning the deals table. Namespaces must be a small
 // fixed set (the six stages). A dealsByOwner aggregate namespaced by user id
-// was removed: the demo reseed mints new user ids every ten minutes, each id
-// became a namespace the component never deletes, and clearAll eventually
-// exceeded the 1000 scheduled function limit per mutation.
+// was removed because historic demo resets minted unbounded namespaces that
+// the component could not clear within the scheduled-function limit.
 app.use(aggregate, { name: "dealsByStage" });
 
 export default app;

@@ -2,7 +2,7 @@
 
 <p align="center">
   <strong>The open source agentic CRM, ported to run entirely on Convex.</strong><br>
-  One deployment is the database, the agent runtime, the work queue, the cron scheduler, the file store, and the web host.
+  One deployment is the database, the agent runtime, the work queue, scheduled functions, the file store, and the web host.
 </p>
 
 <p align="center">
@@ -42,7 +42,7 @@ and no reset cron. The site has a full setup and usage guide at `/docs`.
 | Caching          | [`@convex-dev/action-cache`](https://www.convex.dev/components/action-cache), 7 day TTL on brand lookups, replaces Redis                                                            |
 | Rate limiting    | [`@convex-dev/rate-limiter`](https://www.convex.dev/components/rate-limiter) on the enrichment budget                                                                               |
 | Rollups          | [`@convex-dev/aggregate`](https://www.convex.dev/components/aggregate) for pipeline value by stage and owner                                                                        |
-| Scheduling       | Convex cron jobs plus [`@convex-dev/crons`](https://www.convex.dev/components/crons)                                                                                                |
+| Scheduling       | One-time Convex scheduled functions created by explicit user actions                                                                                                               |
 | Durability       | [`@convex-dev/workflow`](https://www.convex.dev/components/workflow) and [`@convex-dev/action-retrier`](https://www.convex.dev/components/retrier)                                  |
 | Migrations       | [`@convex-dev/migrations`](https://www.convex.dev/components/migrations)                                                                                                            |
 
@@ -251,18 +251,33 @@ Companies must have at least one linked contact. Deleting the last contact
 company, also deletes the empty company in the same transaction. Companies
 that still have a contact are retained, including contacts without an email.
 
-A cleanup sweep runs every five minutes to remove existing empty companies
-and companies created or imported without contacts. Add a contact promptly
-after creating a company; company-only imports are subject to this cleanup.
+Deleting or moving a company's last contact removes the company immediately.
+For companies created or imported without contacts, use **Remove empty
+companies** on the Companies page. The full sweep runs only when requested.
 Cleanup uses the normal company deletion cascade, including related deals,
 activities, tasks, facts, custom-field values, and CRM thread links. Each
 deletion and each completed sweep is recorded in Activity. Outreach delivery
 history and submitted website assessments remain as historical records.
 
 The sweep paginates and checks for contacts again in the deletion transaction.
-Failures are logged and retried by the next sweep. Operators can start a pass
-with `npx convex run companyCleanup:sweep --prod`; a non-final result means
-the remaining pages are scheduled, and the completed totals appear in Activity.
+Failures are logged and can be retried with the same button. Operators can
+also start a pass with `npx convex run companyCleanup:sweep --prod`; a non-final
+result means the remaining pages are scheduled, and completed totals appear in
+Activity.
+
+## Background work and database I/O
+
+The production CRM has no recurring cron jobs. It does not poll Gmail, scan
+companies, drain the agent queue, or check campaign sends while idle. Work is
+started by the action that needs it:
+
+- **Send approved** schedules one send for that campaign.
+- **Check replies** and **Check bounces** query Gmail only when clicked.
+- Agent enrichment and rechecks schedule their exact task when created.
+- **Remove empty companies** starts one bounded cleanup sweep when clicked.
+
+The UI still uses reactive Convex queries while a page is open, so visible
+screens update live. Closing the CRM leaves no application cron running.
 
 ## Single-owner access
 

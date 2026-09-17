@@ -30,11 +30,11 @@ Brief description of what each file does. Updated 2026-08-09 19:55 UTC.
 | `gmail.ts` | Gmail OAuth state/callback completion, encrypted refresh-token storage, disconnect/revoke, MIME construction, token refresh, and Gmail API delivery |
 | `http.ts` | Convex Auth routes, Gmail OAuth callback, AgentMail webhook, signed Slack routes, and static hosting catch-all |
 | `staticHosting.ts` | Exposes the deployment query for live reload on deploy |
-| `crons.ts` | Demo reset every 10 minutes, agent queue tick every minute |
+| `crons.ts` | Empty cron registry; production work is scheduled by explicit user actions instead of idle polling |
 | `aggregates.ts` | Deal rollups by stage (namespaces must stay a small fixed set), with insert/replace/delete tracking helpers |
 | `demo.ts` | Reset (a no-op when demo mode is off), first-boot seed, demo info for the banner, manual reset request, and `disableDemoMode` for forks |
 | `companies.ts` | Company list, detail, create (queues enrichment), update, delete, re-enrich, names picker |
-| `companyCleanup.ts` | Internal paginated sweep and atomic zero-contact company deletion; logs each deletion and sweep totals |
+| `companyCleanup.ts` | User-triggered paginated sweep and atomic zero-contact company deletion; logs each deletion and sweep totals |
 | `companyCleanup.test.ts` | In-memory Convex tests for cleanup, bounce and manual deletion, reassignment, access checks, and scheduled pagination |
 | `contacts.ts` | Contact list, detail with facts, create, update, delete |
 | `leadAssessments.ts` | Idempotent website-tool ingestion, CRM association, benchmark-consent storage, and result-email scheduling |

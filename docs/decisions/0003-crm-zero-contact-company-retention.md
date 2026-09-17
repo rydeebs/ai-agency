@@ -7,8 +7,8 @@ from the CRM, including companies left behind after bounced contacts are deleted
 
 Deleting the last contact or moving it to a different company now checks the
 old company and invokes its existing deletion cascade in the same transaction.
-An internal five-minute sweep covers existing empty companies and independent
-company creation/import paths. Contact existence uses the `by_company` index;
+An explicit **Remove empty companies** action covers existing empty companies
+and independent company creation/import paths. Contact existence uses the `by_company` index;
 contacts without email still count. No status or enrichment exemption applies.
 
 The sweep reads 100 companies per page, uses a fixed start time as its upper

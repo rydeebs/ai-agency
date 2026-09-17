@@ -67,9 +67,8 @@ export const claimDue = internalMutation({
   },
 });
 
-// Dispatch schedules, it does not decide. The one-minute tick leases what is
-// due and starts a run per row. Anything shaped like "every N minutes, the
-// oldest ten contacts" belongs in a task's dueAt, never in a cron expression.
+// Recovery entry point for explicitly requested queue drains. Normal work is
+// scheduled once when its task is created, so the idle CRM does not poll.
 export const tick = internalMutation({
   args: {},
   returns: v.null(),
@@ -83,6 +82,38 @@ export const tick = internalMutation({
         taskId,
       });
     }
+    return null;
+  },
+});
+
+export const dispatchTask = internalMutation({
+  args: { taskId: v.id("agentTasks") },
+  returns: v.null(),
+  handler: async (ctx, args) => {
+    const task = await ctx.db.get("agentTasks", args.taskId);
+    if (!task || task.state !== "open") return null;
+    const now = Date.now();
+    if (task.dueAt > now) {
+      await ctx.scheduler.runAt(task.dueAt, internal.agentTasks.dispatchTask, args);
+      return null;
+    }
+    if (task.attempts >= MAX_ATTEMPTS) {
+      await ctx.db.patch("agentTasks", task._id, {
+        state: "failed",
+        finishedAt: now,
+        result: "Retired after too many attempts",
+      });
+      return null;
+    }
+    if (task.leasedUntil !== undefined && task.leasedUntil >= now) return null;
+    await ctx.db.patch("agentTasks", task._id, {
+      leasedUntil: now + LEASE_MS,
+      attempts: task.attempts + 1,
+      startedAt: now,
+    });
+    await agentPool.enqueueAction(ctx, internal.agentTasks.execute, {
+      taskId: task._id,
+    });
     return null;
   },
 });
@@ -180,16 +211,19 @@ export const scheduleRecheck = writeMutation({
         "State a reason. An agent that cannot say why it will be back does not have a reason, it has a default.",
       );
     }
-    return await ctx.db.insert("agentTasks", {
+    const dueAt = Date.now() + args.dueInDays * 24 * 60 * 60 * 1000;
+    const taskId = await ctx.db.insert("agentTasks", {
       kind: args.contactId ? "RECHECK_CONTACT" : "ENRICH_COMPANY",
       state: "open",
       reason: args.reason,
       companyId: args.companyId,
       contactId: args.contactId,
       priority: 2,
-      dueAt: Date.now() + args.dueInDays * 24 * 60 * 60 * 1000,
+      dueAt,
       attempts: 0,
     });
+    await ctx.scheduler.runAt(dueAt, internal.agentTasks.dispatchTask, { taskId });
+    return taskId;
   },
 });
 

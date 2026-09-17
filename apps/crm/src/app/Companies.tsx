@@ -45,6 +45,8 @@ export function Companies() {
   const [segment, setSegment] = useState("");
   const [industry, setIndustry] = useState("");
   const [showNew, setShowNew] = useState(false);
+  const [cleanupMessage, setCleanupMessage] = useState("");
+  const startCleanup = useMutation(api.companyCleanup.start);
   const [enrichmentFilter, setEnrichmentFilter] =
     useState<(typeof ENRICHMENT_FILTERS)[number]>("ALL");
   const [sortKey, setSortKey] = useState<string>("name");
@@ -149,15 +151,17 @@ export function Companies() {
     <div className="mx-auto max-w-6xl">
       <PageHeader
         title="Companies"
-        subtitle="Companies with no contacts are automatically removed on a five-minute cleanup cycle."
+        subtitle="Deleting the last contact removes its company. Full cleanup runs only when you request it."
         action={
           <div className="flex flex-wrap gap-2">
             <CsvTransfer entity="companies" />
             <OutscraperImport />
+            <Button onClick={() => void startCleanup().then(() => setCleanupMessage("Cleanup started. Results will appear in Activity."), (error: unknown) => setCleanupMessage(error instanceof Error ? error.message : "Cleanup could not start"))}>Remove empty companies</Button>
             <Button variant="primary" onClick={() => setShowNew(true)}>New company</Button>
           </div>
         }
       />
+      {cleanupMessage ? <p className="mb-4 rounded-md bg-white/5 p-3 text-sm text-neutral-300">{cleanupMessage}</p> : null}
 
       <div className="mb-4 flex flex-wrap items-center gap-3">
         <div className="w-full sm:w-72">

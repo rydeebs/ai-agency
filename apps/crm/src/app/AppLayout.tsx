@@ -307,8 +307,8 @@ export function AppLayout() {
           </p>
           <div className="mt-auto border-t border-edge p-4">
             <p className="text-[11px] leading-relaxed text-neutral-500">
-              Runs entirely on one Convex deployment: database, agents, crons,
-              and this site.
+              Runs entirely on one Convex deployment: database, agents,
+              on-demand jobs, and this site.
             </p>
             <div className="mt-3 flex items-center justify-between gap-2">
               <div className="flex items-center gap-3">

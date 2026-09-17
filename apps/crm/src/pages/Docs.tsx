@@ -333,7 +333,7 @@ export function Docs() {
               <Ext href="https://convex.dev">Convex</Ext>. The original runs on
               Next.js, Postgres, Redis, and Vercel. This version runs on one
               Convex deployment: the database, the agent runtime, the work
-              queue, the cron scheduler, file storage, and the website itself
+              queue, one-time scheduled functions, file storage, and the website itself
               all live in the same place.
             </p>
             <p>
@@ -341,8 +341,8 @@ export function Docs() {
               <Ext href="https://github.com/waynesutton/trycrm-convex">
                 github.com/waynesutton/trycrm-convex
               </Ext>
-              . The live demo resets its content every 10 minutes, so feel free
-              to change anything.
+              . This NewRevGen deployment keeps its data and runs background
+              work only after an explicit user action.
             </p>
           </Section>
 
@@ -408,8 +408,7 @@ export function Docs() {
                 <span className="text-white">Activity.</span> A live log of
                 function outcomes, in the shape of the Convex dashboard logs.
                 Pause freezes the view, checkboxes select one row or all of
-                them for a targeted clear, Clear wipes everything, and the
-                demo reset wipes it every 10 minutes anyway.
+                them for a targeted clear, and Clear wipes everything.
               </li>
               <li>
                 <span className="text-white">Command-K.</span> Press{" "}
@@ -1412,17 +1411,17 @@ curl "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/dns_records" \\
             </ul>
             <p>
               Using your fork as a real CRM, not a public demo? There is a
-              second prompt for that. It turns off demo mode so the 10 minute
-              reset cron can never wipe your data, then removes the cron:
+              second prompt for that. It turns off demo mode so seeded demo
+              data can never replace your records and removes recurring jobs:
             </p>
-            <Code>{`I forked waynesutton/trycrm-convex and I am using it as a real CRM, not a public demo. Make sure my data is never wiped: run npx convex run demo:disableDemoMode on my dev deployment, and if I have a production deployment run it again with --prod. Then delete the demo reset cron line from convex/crons.ts and push. Leave the agent tick cron in place. Finish by confirming the workspace row has demoMode set to false.`}</Code>
+            <Code>{`I forked waynesutton/trycrm-convex and I am using it as a real CRM, not a public demo. Make sure my data is never wiped: run npx convex run demo:disableDemoMode on my dev deployment, and if I have a production deployment run it again with --prod. Remove every recurring cron so background work runs only after an explicit user action. Finish by confirming the workspace row has demoMode set to false.`}</Code>
           </Section>
 
           <Section id="components" title="Every component in this app">
             <p>
               Convex components are installable building blocks that run
               inside your deployment with their own tables and functions. This
-              app uses fifteen. Each link goes to the component's directory
+              app uses fourteen. Each link goes to the component's directory
               page.
             </p>
             <ul className="flex list-disc flex-col gap-2 pl-5">
@@ -1448,10 +1447,6 @@ curl "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/dns_records" \\
                   Workpool
                 </Ext>{" "}
                 gives each agent a bounded queue so no one floods the system.
-              </li>
-              <li>
-                <Ext href="https://www.convex.dev/components/crons">Crons</Ext>{" "}
-                schedules recurring work, including the 10 minute demo reset.
               </li>
               <li>
                 <Ext href="https://www.convex.dev/components/action-retrier">

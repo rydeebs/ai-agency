@@ -221,6 +221,9 @@ export const activate = writeMutation({
     const approved = await ctx.db.query("outreachRecipients").withIndex("by_campaign_status", (q) => q.eq("campaignId", args.campaignId).eq("status", "APPROVED")).first();
     if (!approved) throw new Error("Approve at least one drafted email first");
     await ctx.db.patch("outreachCampaigns", args.campaignId, { status: "ACTIVE" });
+    await ctx.scheduler.runAfter(0, internal.outreach.sendBatch, {
+      campaignId: args.campaignId,
+    });
     return null;
   },
 });
@@ -341,20 +344,19 @@ export const sendRecipientNow = action({
 });
 
 export const sendBatch = internalAction({
-  args: {},
+  args: { campaignId: v.id("outreachCampaigns") },
   returns: v.null(),
-  handler: async (ctx) => {
-    const campaigns = await ctx.runQuery(internal.outreach.activeCampaigns, {});
-    for (const campaign of campaigns) {
-      const sentToday = await ctx.runQuery(internal.outreach.sentToday, { campaignId: campaign._id });
-      const rows = await ctx.runQuery(internal.outreach.approvedDue, { campaignId: campaign._id, limit: Math.max(0, campaign.dailyLimit - sentToday) });
-      for (const item of rows) {
-        try {
-          const id = await sendWithGmail(ctx, { to: item.contact.email!, subject: item.subject!, body: item.body!, fromName: undefined, trackingUrl: trackingUrlFor(item._id) });
-          await ctx.runMutation(internal.outreach.markSent, { recipientId: item._id, gmailMessageId: id });
-          await ctx.runMutation(internal.outreach.recordEmail, { contactId: item.contactId, companyId: item.contact.companyId, subject: item.subject!, body: item.body! });
-        } catch (error) { await ctx.runMutation(internal.outreach.markFailed, { recipientId: item._id, error: error instanceof Error ? error.message : "Gmail send failed" }); }
-      }
+  handler: async (ctx, args) => {
+    const campaign = await ctx.runQuery(internal.outreach.activeCampaign, args);
+    if (!campaign) return null;
+    const sentToday = await ctx.runQuery(internal.outreach.sentToday, { campaignId: campaign._id });
+    const rows = await ctx.runQuery(internal.outreach.approvedDue, { campaignId: campaign._id, limit: Math.max(0, campaign.dailyLimit - sentToday) });
+    for (const item of rows) {
+      try {
+        const id = await sendWithGmail(ctx, { to: item.contact.email!, subject: item.subject!, body: item.body!, fromName: undefined, trackingUrl: trackingUrlFor(item._id) });
+        await ctx.runMutation(internal.outreach.markSent, { recipientId: item._id, gmailMessageId: id });
+        await ctx.runMutation(internal.outreach.recordEmail, { contactId: item.contactId, companyId: item.contact.companyId, subject: item.subject!, body: item.body! });
+      } catch (error) { await ctx.runMutation(internal.outreach.markFailed, { recipientId: item._id, error: error instanceof Error ? error.message : "Gmail send failed" }); }
     }
     return null;
   },
@@ -365,18 +367,11 @@ export const removeBouncedContact = internalMutation({
   returns: v.boolean(),
   handler: async (ctx, args) => {
     const email = args.email.trim().toLowerCase();
-    const contact = (await ctx.db.query("contacts").collect()).find((row) => row.email?.trim().toLowerCase() === email);
+    const contact = await ctx.db
+      .query("contacts")
+      .withIndex("by_email", (q) => q.eq("email", email))
+      .first();
     if (!contact) return false;
-    // Leave an actionable agent task even though the contact record itself is
-    // removed by the cascade below.
-    await ctx.db.insert("agentTasks", {
-      kind: "CUSTOM",
-      state: "open",
-      reason: `Bounce detected for ${email} (Gmail message ${args.messageId}). The contact was deleted from the CRM. Do not re-add this address without verification.`,
-      priority: 1,
-      dueAt: Date.now(),
-      attempts: 0,
-    });
     const recipients = await ctx.db.query("outreachRecipients").withIndex("by_contact", (q) => q.eq("contactId", contact._id)).collect();
     // A contact can have multiple sequence steps and variants. Associate the
     // delivery failure with only the sent message closest to the bounce time,
@@ -402,7 +397,58 @@ export const removeBouncedContact = internalMutation({
       await ctx.db.patch("outreachRecipients", candidate._id, { status: "FAILED", bouncedAt: bounceTime, bounceMessageId: args.messageId, error: "Gmail delivery failure" });
     }
     await deleteContactCascade(ctx, contact._id);
+    await ctx.db.insert("logEvents", {
+      kind: "M",
+      fn: "outreach:removeBouncedContact",
+      status: "success",
+      message: `Bounce detected for ${email}; contact and any now-empty company deleted. Gmail message ${args.messageId}.`,
+    });
     return true;
+  },
+});
+
+const bounceItem = v.object({
+  email: v.string(),
+  messageId: v.string(),
+  bouncedAt: v.optional(v.number()),
+});
+
+export const unprocessedBounces = internalQuery({
+  args: { items: v.array(bounceItem) },
+  returns: v.array(bounceItem),
+  handler: async (ctx, args) => {
+    const result = [];
+    for (const item of args.items.slice(0, 500)) {
+      const email = item.email.trim().toLowerCase();
+      const contact = await ctx.db
+        .query("contacts")
+        .withIndex("by_email", (q) => q.eq("email", email))
+        .first();
+      if (contact) result.push({ ...item, email });
+    }
+    return result;
+  },
+});
+
+// Older bounce scans created open CUSTOM tasks after already deleting the
+// contact. They cannot perform useful work and were repeatedly claimed by the
+// former queue poller, so remove that legacy bookkeeping once during rollout.
+export const removeLegacyBounceTasks = internalMutation({
+  args: {},
+  returns: v.number(),
+  handler: async (ctx) => {
+    const openTasks = await ctx.db
+      .query("agentTasks")
+      .withIndex("by_state_and_dueAt", (q) => q.eq("state", "open"))
+      .take(500);
+    const legacy = openTasks.filter(
+      (task) =>
+        task.kind === "CUSTOM" &&
+        task.reason.startsWith("Bounce detected for ") &&
+        task.reason.includes("The contact was deleted from the CRM."),
+    );
+    for (const task of legacy) await ctx.db.delete("agentTasks", task._id);
+    return legacy.length;
   },
 });
 
@@ -416,12 +462,14 @@ export const processBounces = internalAction({
     } catch (error) {
       return { found: 0, deleted: 0, searched: 0, message: error instanceof Error ? `Gmail scan failed: ${error.message}` : "Gmail scan failed" };
     }
-    const bounced = search.emails;
+    const bounced = await ctx.runQuery(internal.outreach.unprocessedBounces, {
+      items: search.emails,
+    });
     let deleted = 0;
     for (const item of bounced) {
       if (await ctx.runMutation(internal.outreach.removeBouncedContact, item)) deleted += 1;
     }
-    return { found: bounced.length, deleted, searched: search.searched, message: search.message };
+    return { found: search.emails.length, deleted, searched: search.searched, message: search.message };
   },
 });
 
@@ -456,7 +504,19 @@ export const checkReplies = internalAction({
   },
 });
 
-export const activeCampaigns = internalQuery({ args: {}, handler: async (ctx) => (await ctx.db.query("outreachCampaigns").collect()).filter((row) => row.status === "ACTIVE") });
+export const scanReplies = action({
+  args: {},
+  returns: v.null(),
+  handler: async (ctx): Promise<null> => {
+    await ctx.runAction(internal.outreach.checkReplies, {});
+    return null;
+  },
+});
+
+export const activeCampaign = internalQuery({ args: { campaignId: v.id("outreachCampaigns") }, handler: async (ctx, args) => {
+  const campaign = await ctx.db.get("outreachCampaigns", args.campaignId);
+  return campaign?.status === "ACTIVE" ? campaign : null;
+} });
 export const sentToday = internalQuery({ args: { campaignId: v.id("outreachCampaigns") }, handler: async (ctx, args) => { const start = new Date(); start.setHours(0, 0, 0, 0); return (await ctx.db.query("outreachRecipients").withIndex("by_campaign_status", (q) => q.eq("campaignId", args.campaignId).eq("status", "SENT")).collect()).filter((row) => (row.sentAt ?? 0) >= start.getTime()).length; } });
 export const recipientForManualSend = internalQuery({ args: { recipientId: v.id("outreachRecipients") }, handler: async (ctx, args) => {
   const row = await ctx.db.get("outreachRecipients", args.recipientId);

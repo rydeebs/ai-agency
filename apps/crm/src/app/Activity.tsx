@@ -24,7 +24,6 @@ type LogRow = {
 // The activity log, in the shape of the Convex dashboard's logs page: one
 // row per notable function outcome, newest first, live. Pause freezes the
 // view without dropping the subscription; Clear wipes the table for everyone.
-// The demo reset cron wipes it too, every ten minutes.
 export function Activity() {
   const live = useQuery(api.logs.list);
   const clear = useMutation(api.logs.clear);
