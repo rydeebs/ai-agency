@@ -13,6 +13,7 @@ export default defineConfig([
       ".cursor/",
       "eslint.config.js",
       "vite.config.ts",
+      "vitest.config.mts",
     ],
   },
 

@@ -34,6 +34,8 @@ Brief description of what each file does. Updated 2026-08-09 19:55 UTC.
 | `aggregates.ts` | Deal rollups by stage (namespaces must stay a small fixed set), with insert/replace/delete tracking helpers |
 | `demo.ts` | Reset (a no-op when demo mode is off), first-boot seed, demo info for the banner, manual reset request, and `disableDemoMode` for forks |
 | `companies.ts` | Company list, detail, create (queues enrichment), update, delete, re-enrich, names picker |
+| `companyCleanup.ts` | Internal paginated sweep and atomic zero-contact company deletion; logs each deletion and sweep totals |
+| `companyCleanup.test.ts` | In-memory Convex tests for cleanup, bounce and manual deletion, reassignment, access checks, and scheduled pagination |
 | `contacts.ts` | Contact list, detail with facts, create, update, delete |
 | `leadAssessments.ts` | Idempotent website-tool ingestion, CRM association, benchmark-consent storage, and result-email scheduling |
 | `deals.ts` | Board grouped by stage, create, update, stage change with activity log, delete |

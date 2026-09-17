@@ -149,7 +149,7 @@ export function Companies() {
     <div className="mx-auto max-w-6xl">
       <PageHeader
         title="Companies"
-        subtitle="Every account in the pipeline. New companies with a domain enrich themselves."
+        subtitle="Companies with no contacts are automatically removed on a five-minute cleanup cycle."
         action={
           <div className="flex flex-wrap gap-2">
             <CsvTransfer entity="companies" />

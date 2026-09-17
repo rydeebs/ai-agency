@@ -11,5 +11,7 @@ crons.interval("outreach reply check", { minutes: 10 }, internal.outreach.checkR
 // Delivery failures usually arrive immediately after send; check each queue
 // cycle so a bounce is handled within roughly five minutes.
 crons.interval("outreach bounce check", { minutes: 5 }, internal.outreach.processBounces, {});
+// Backstop for imported or manually created companies that have no contacts.
+crons.interval("empty company cleanup", { minutes: 5 }, internal.companyCleanup.sweep, {});
 
 export default crons;

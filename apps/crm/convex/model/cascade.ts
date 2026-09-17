@@ -1,6 +1,7 @@
 import type { Id } from "../_generated/dataModel";
 import type { MutationCtx } from "../_generated/server";
 import { trackDealDelete } from "../aggregates";
+import { logEvent } from "../logs";
 
 // Cascades are code. Convex has no onDelete: Cascade, so each parent table
 // gets one idempotent function that walks children by index and deletes them.
@@ -73,6 +74,32 @@ export async function deleteContactCascade(
   await deleteFieldValuesFor(ctx, contactId);
   await deleteFactsFor(ctx, contactId);
   await ctx.db.delete("contacts", contactId);
+  if (contact.companyId) {
+    await deleteCompanyIfEmpty(ctx, contact.companyId);
+  }
+}
+
+// Check and delete in one transaction so a concurrent contact insert keeps
+// its company. Repeated cleanup attempts are safe after a successful delete.
+export async function deleteCompanyIfEmpty(
+  ctx: MutationCtx,
+  companyId: Id<"companies">,
+): Promise<boolean> {
+  const company = await ctx.db.get("companies", companyId);
+  if (!company) return false;
+  const contact = await ctx.db
+    .query("contacts")
+    .withIndex("by_company", (q) => q.eq("companyId", companyId))
+    .first();
+  if (contact) return false;
+  await deleteCompanyCascade(ctx, companyId);
+  await logEvent(ctx, {
+    kind: "M",
+    fn: "companyCleanup:removeEmpty",
+    status: "success",
+    message: `Deleted company ${company.name} (${companyId}): zero contacts; related CRM rows removed.`,
+  });
+  return true;
 }
 
 export async function deleteCompanyCascade(

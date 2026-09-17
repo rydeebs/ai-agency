@@ -21,6 +21,7 @@ import type * as auth from "../auth.js";
 import type * as capabilities from "../capabilities.js";
 import type * as chat from "../chat.js";
 import type * as companies from "../companies.js";
+import type * as companyCleanup from "../companyCleanup.js";
 import type * as contacts from "../contacts.js";
 import type * as crons from "../crons.js";
 import type * as dashboard from "../dashboard.js";
@@ -74,6 +75,7 @@ declare const fullApi: ApiFromModules<{
   capabilities: typeof capabilities;
   chat: typeof chat;
   companies: typeof companies;
+  companyCleanup: typeof companyCleanup;
   contacts: typeof contacts;
   crons: typeof crons;
   dashboard: typeof dashboard;

@@ -1,7 +1,7 @@
 import { paginationOptsValidator } from "convex/server";
 import { v } from "convex/values";
 import { logEvent } from "./logs";
-import { deleteContactCascade } from "./model/cascade";
+import { deleteCompanyIfEmpty, deleteContactCascade } from "./model/cascade";
 import { authedQuery, writeMutation } from "./model/functions";
 import { notifySlack } from "./slack";
 import { entityDefaults } from "./tableSettings";
@@ -91,6 +91,9 @@ export const create = writeMutation({
   },
   returns: v.id("contacts"),
   handler: async (ctx, args) => {
+    if (args.companyId && !(await ctx.db.get("companies", args.companyId))) {
+      throw new Error("Company not found");
+    }
     if (args.email) {
       const existing = await ctx.db
         .query("contacts")
@@ -142,11 +145,19 @@ export const update = writeMutation({
   returns: v.null(),
   handler: async (ctx, args) => {
     const { contactId, ...updates } = args;
+    const contact = await ctx.db.get("contacts", contactId);
+    if (!contact) throw new Error("Contact not found");
+    if (args.companyId && !(await ctx.db.get("companies", args.companyId))) {
+      throw new Error("Company not found");
+    }
     const patch: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(updates)) {
       if (value !== undefined) patch[key] = value;
     }
     await ctx.db.patch("contacts", contactId, patch);
+    if (contact.companyId && args.companyId && contact.companyId !== args.companyId) {
+      await deleteCompanyIfEmpty(ctx, contact.companyId);
+    }
     return null;
   },
 });

@@ -244,6 +244,26 @@ as the HTTP-action catch-all, choose the HTTP-actions destination. After a
 domain change, update `SITE_URL`, Google's Gmail redirect URI, and the optional
 `GMAIL_REDIRECT_URI` value.
 
+## Company retention
+
+Companies must have at least one linked contact. Deleting the last contact
+(including automatic Gmail bounce removal), or moving that contact to another
+company, also deletes the empty company in the same transaction. Companies
+that still have a contact are retained, including contacts without an email.
+
+A cleanup sweep runs every five minutes to remove existing empty companies
+and companies created or imported without contacts. Add a contact promptly
+after creating a company; company-only imports are subject to this cleanup.
+Cleanup uses the normal company deletion cascade, including related deals,
+activities, tasks, facts, custom-field values, and CRM thread links. Each
+deletion and each completed sweep is recorded in Activity. Outreach delivery
+history and submitted website assessments remain as historical records.
+
+The sweep paginates and checks for contacts again in the deletion transaction.
+Failures are logged and retried by the next sweep. Operators can start a pass
+with `npx convex run companyCleanup:sweep --prod`; a non-final result means
+the remaining pages are scheduled, and the completed totals appear in Activity.
+
 ## Single-owner access
 
 This fork has no demo-reset cron. `setup:initializeOwner` creates or updates the

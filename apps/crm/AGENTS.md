@@ -146,8 +146,7 @@ email through Gmail, Resend, or AgentMail, which does exist and does send.
 - `npx convex dev --once` is clean.
 - `npm run check-types` passes.
 - `npm run lint` passes.
-- There is no test suite yet. If you add one, add the script and update this
-  list in the same PR.
+- `npm run test` passes (Node unit tests and in-memory Convex tests).
 - The diff does not add: `prisma`, `nestjs`, `trpc`, `better-auth`, `eve`,
   `@vercel/*`, `DATABASE_URL`, `REDIS_URL`, `AGENT_BRIDGE_SECRET`,
   `organizationId`, a per-package `.env`, or a `confidence` parameter on a tool.
