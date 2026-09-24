@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { zodSchema } from "ai";
 import { PDFDocument } from "pdf-lib";
 import {
   assessmentReportSchema,
@@ -91,6 +92,26 @@ test("assessment schema requires the complete nine-page content shape", () => {
     }).success,
     false,
   );
+});
+
+test("assessment schema emits arrays accepted by OpenAI structured outputs", async () => {
+  const jsonSchema = await zodSchema(assessmentReportSchema).jsonSchema;
+  const expectedLengths = {
+    quickWins: 6,
+    solutions: 6,
+    fourDayPlan: 4,
+    nextPhase: 3,
+    nextSteps: 2,
+  };
+
+  for (const [field, expectedLength] of Object.entries(expectedLengths)) {
+    const property = jsonSchema.properties[field];
+    assert.equal(property.type, "array");
+    assert.equal(Array.isArray(property.items), false);
+    assert.equal(property.items.type, "object");
+    assert.equal(property.minItems, expectedLength);
+    assert.equal(property.maxItems, expectedLength);
+  }
 });
 
 test("PDF builder creates exactly nine landscape pages", async () => {

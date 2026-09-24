@@ -31,33 +31,17 @@ export const assessmentReportSchema = z.object({
     outcome: longText,
     hoursReclaimed: shortText,
   }),
-  quickWins: z.tuple([
-    quickWinSchema,
-    quickWinSchema,
-    quickWinSchema,
-    quickWinSchema,
-    quickWinSchema,
-    quickWinSchema,
-  ]),
-  solutions: z.tuple([
-    solutionSchema,
-    solutionSchema,
-    solutionSchema,
-    solutionSchema,
-    solutionSchema,
-    solutionSchema,
-  ]),
-  fourDayPlan: z.tuple([
-    z.object({ task: mediumText, tool: shortText }),
-    z.object({ task: mediumText, tool: shortText }),
-    z.object({ task: mediumText, tool: shortText }),
-    z.object({ task: mediumText, tool: shortText }),
-  ]),
-  nextPhase: z.tuple([
-    z.object({ text: mediumText, tool: shortText }),
-    z.object({ text: mediumText, tool: shortText }),
-    z.object({ text: mediumText, tool: shortText }),
-  ]),
+  // OpenAI structured outputs require arrays to use one object schema in
+  // `items`; Zod tuples emit an array of positional item schemas that the API
+  // rejects. Exact lengths preserve the report layout without using tuples.
+  quickWins: z.array(quickWinSchema).length(6),
+  solutions: z.array(solutionSchema).length(6),
+  fourDayPlan: z
+    .array(z.object({ task: mediumText, tool: shortText }))
+    .length(4),
+  nextPhase: z
+    .array(z.object({ text: mediumText, tool: shortText }))
+    .length(3),
   financialImpact: z.object({
     monthlyNetRoi: shortText,
     monthlyNetRoiCaption: mediumText,
@@ -66,10 +50,9 @@ export const assessmentReportSchema = z.object({
     monthlyToolCost: shortText,
     monthlyToolCostCaption: mediumText,
   }),
-  nextSteps: z.tuple([
-    z.object({ heading: shortText, detail: mediumText }),
-    z.object({ heading: shortText, detail: mediumText }),
-  ]),
+  nextSteps: z
+    .array(z.object({ heading: shortText, detail: mediumText }))
+    .length(2),
   unknowns: z.array(mediumText).max(12),
 });
 
