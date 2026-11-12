@@ -224,7 +224,7 @@ export function StickyCardsSection() {
         @media (min-width: 1024px) {
           .sticky-cards-grid {
             display: grid !important;
-            grid-template-columns: 35% 65% !important;
+            grid-template-columns: minmax(0, 35fr) minmax(0, 65fr) !important;
             gap: 60px !important;
             align-items: start !important;
           }

@@ -28,11 +28,12 @@ export function StatementSection() {
             lineHeight: 1.1,
             margin: '0 auto',
             letterSpacing: 'clamp(-0.5px, -0.02em, -1.7px)',
-            maxWidth: '1100px',
+            maxWidth: '1320px',
           }}
         >
-          AI should improve more than one task.
-          <br />
+          <span style={{ display: 'block', whiteSpace: 'nowrap', fontSize: 'clamp(19px, 5.4vw, 84px)' }}>
+            AI should improve more than one task.
+          </span>
           <span style={{ color: '#8D96FD' }}>
             We turn it into systems that move your whole business.
           </span>

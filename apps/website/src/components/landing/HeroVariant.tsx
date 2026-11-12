@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Navbar } from "../Navbar";
-import { ClientLogoBanner } from "../ClientLogoBanner";
+import { FeatureTicker } from "../FeatureTicker";
 import type { HeroContent } from "./types";
 
 interface GridHighlight {
@@ -180,48 +180,7 @@ export function HeroVariant({ content }: Props) {
                 {content.subheadline}
               </p>
 
-              <div
-                style={{
-                  height: "28px",
-                  overflow: "hidden",
-                  margin: "clamp(20px, 4vw, 32px) 0",
-                }}
-              >
-                <div style={{ animation: "ticker-scroll 4s linear infinite" }}>
-                  {[...content.features, ...content.features].map((feature, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        display: "flex",
-                        gap: "12px",
-                        alignItems: "center",
-                        height: "28px",
-                      }}
-                    >
-                      <span
-                        style={{
-                          color: "#D3F463",
-                          fontSize: "12px",
-                          flexShrink: 0,
-                          lineHeight: 1,
-                        }}
-                      >
-                        ✦
-                      </span>
-                      <span
-                        style={{
-                          fontSize: "clamp(14px, 2.5vw, 16px)",
-                          color: "rgba(255,255,255,0.85)",
-                          fontFamily: "var(--font-dm-sans), sans-serif",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {feature}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <FeatureTicker features={content.features} />
             </div>
 
             <div style={{ flex: 1 }} />
@@ -349,10 +308,6 @@ export function HeroVariant({ content }: Props) {
           />
         </div>
       </section>
-
-      <div style={{ backgroundColor: "#EFEFEF", padding: "0 clamp(8px, 2vw, 16px)" }}>
-        <ClientLogoBanner />
-      </div>
 
       <style jsx>{`
         @media (max-width: 768px) {

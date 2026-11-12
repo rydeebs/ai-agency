@@ -286,10 +286,6 @@
     right: -150px !important;
   }
 
-  .hero-secondary-btn {
-    display: none !important;
-  }
-
   .hero-bottom-row {
     flex-direction: column !important;
     align-items: flex-start !important;
@@ -381,4 +377,89 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* =====================
+   Feature ticker (hero)
+   ===================== */
+.feature-ticker {
+  height: 32px;
+  overflow: hidden;
+  margin: clamp(20px, 4vw, 32px) 0;
+}
+
+.feature-ticker-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  height: 32px;
+}
+
+.feature-ticker-star {
+  color: #D3F463;
+  font-size: 14px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.feature-ticker-text {
+  /* Matches the hero subheadline size. */
+  font-size: clamp(14px, 3vw, 18px);
+  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--font-dm-sans), sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =====================
+   Footer mountain backdrop
+   ===================== */
+.footer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: url("/images/footer-mountains.webp") right bottom / cover no-repeat;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .footer-backdrop {
+    background-size: auto 70%;
+    opacity: 0.6;
+  }
+}
+
+/* Capabilities: when the two cards stack, let each keep its own height. */
+@media (max-width: 900px) {
+  .what-we-do-grid {
+    height: auto !important;
+  }
+  .what-we-do-grid > div:first-child {
+    height: 460px !important;
+  }
+}
+
+/* =====================
+   Headline word rotator (hero H1)
+   ===================== */
+.headline-rotator {
+  display: inline-grid;
+  height: 1.15em;
+  /* clip-path (not overflow) keeps the baseline aligned with "Build". */
+  /* Extra room below for descenders (g, p, y); the next word's glyphs start
+     ~0.4em lower, so nothing peeks through. */
+  clip-path: inset(0 -0.1em -0.14em);
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.headline-rotator-track {
+  display: grid;
+  will-change: transform;
+}
+
+.headline-rotator-word {
+  display: block;
+  height: 1.15em;
+  line-height: 1.15em;
 }
