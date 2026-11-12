@@ -1,4 +1,3 @@
-import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
 import { INTAKE_SYSTEM_PROMPT, saveRequestTool } from "@/lib/intake/agent";
 import { deliverIntake } from "@/lib/intake/deliver";
@@ -8,7 +7,8 @@ import { clientKey, consumeRateLimit } from "@/lib/lead-tools/rate-limit";
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
-const MODEL = "claude-opus-5-5";
+// Override with INTAKE_CHAT_MODEL if this model is ever retired.
+const MODEL = process.env.INTAKE_CHAT_MODEL ?? "gpt-5-mini";
 const MAX_TURNS = 40;
 const MAX_MESSAGE_CHARS = 4000;
 const MAX_TOTAL_CHARS = 40_000;
@@ -44,13 +44,68 @@ function transcriptOf(turns: ChatTurn[]): string {
   return turns.map((t) => `${t.role === "user" ? "Visitor" : "Agent"}: ${t.content}`).join("\n\n");
 }
 
+interface ToolCall {
+  id: string;
+  type: "function";
+  function: { name: string; arguments: string };
+}
+
+type ChatMessage =
+  | { role: "system" | "user"; content: string }
+  | { role: "assistant"; content: string | null; tool_calls?: ToolCall[] }
+  | { role: "tool"; tool_call_id: string; content: string };
+
+interface CompletionResponse {
+  choices?: Array<{
+    finish_reason?: string;
+    message?: { content?: string | null; refusal?: string | null; tool_calls?: ToolCall[] };
+  }>;
+  error?: { message?: string };
+}
+
+class ModelError extends Error {
+  constructor(public status: number, message: string) {
+    super(message);
+  }
+}
+
+async function complete(apiKey: string, messages: ChatMessage[]): Promise<CompletionResponse> {
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    signal: AbortSignal.timeout(45_000),
+    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: MODEL,
+      messages,
+      tools: [
+        {
+          type: "function",
+          function: {
+            name: saveRequestTool.name,
+            description: saveRequestTool.description,
+            parameters: saveRequestTool.parameters,
+            strict: true,
+          },
+        },
+      ],
+      tool_choice: "auto",
+      max_completion_tokens: 2000,
+      reasoning_effort: "low",
+    }),
+  });
+  const data = (await response.json().catch(() => ({}))) as CompletionResponse;
+  if (!response.ok) throw new ModelError(response.status, data.error?.message ?? `HTTP ${response.status}`);
+  return data;
+}
+
 /**
  * Conversational intake. The client sends the visible conversation (minus the
  * static greeting); the agent replies and, once it has contact details, calls
  * save_request, which is validated and delivered server-side.
  */
 export async function POST(request: Request) {
-  if (!process.env.ANTHROPIC_API_KEY) {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
     return NextResponse.json({ error: "Chat is unavailable.", fallback: "simple" }, { status: 503 });
   }
 
@@ -79,28 +134,18 @@ export async function POST(request: Request) {
   }
   const alreadySaved = Boolean((body as Record<string, unknown>).saved);
 
-  const client = new Anthropic();
-  const messages: Anthropic.Beta.BetaMessageParam[] = turns.map((t) => ({
-    role: t.role,
-    content: t.content,
-  }));
+  const messages: ChatMessage[] = [
+    { role: "system", content: INTAKE_SYSTEM_PROMPT },
+    ...turns.map((t) => ({ role: t.role, content: t.content }) as ChatMessage),
+  ];
   let saved = false;
   let deliveryFailed = false;
 
   try {
     for (let step = 0; step < 4; step += 1) {
-      const response = await client.beta.messages.create({
-        model: MODEL,
-        max_tokens: 2000,
-        betas: ["server-side-fallback-2026-07-01"],
-        fallbacks: "default",
-        output_config: { effort: "low" },
-        system: [{ type: "text", text: INTAKE_SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }],
-        tools: [saveRequestTool],
-        messages,
-      });
-
-      if (response.stop_reason === "refusal") {
+      const data = await complete(apiKey, messages);
+      const message = data.choices?.[0]?.message;
+      if (message?.refusal) {
         return NextResponse.json({
           reply:
             "I can't help with that one here. If it's about your business, email team@newrevgen.com and a person will take a look.",
@@ -109,15 +154,9 @@ export async function POST(request: Request) {
         });
       }
 
-      const toolUses = response.content.filter(
-        (b): b is Anthropic.Beta.BetaToolUseBlock => b.type === "tool_use",
-      );
-      if (response.stop_reason !== "tool_use" || toolUses.length === 0) {
-        const reply = response.content
-          .filter((b): b is Anthropic.Beta.BetaTextBlock => b.type === "text")
-          .map((b) => b.text)
-          .join("\n")
-          .trim();
+      const toolCalls = message?.tool_calls ?? [];
+      if (toolCalls.length === 0) {
+        const reply = (message?.content ?? "").trim();
         return NextResponse.json({
           reply: reply || "Sorry, I lost my train of thought. Could you say that again?",
           saved,
@@ -125,55 +164,41 @@ export async function POST(request: Request) {
         });
       }
 
-      messages.push({ role: "assistant", content: response.content });
-      const results: Anthropic.Beta.BetaToolResultBlockParam[] = [];
-      for (const use of toolUses) {
-        if (use.name !== saveRequestTool.name) {
-          results.push({ type: "tool_result", tool_use_id: use.id, content: "Unknown tool.", is_error: true });
-          continue;
+      messages.push({ role: "assistant", content: message?.content ?? null, tool_calls: toolCalls });
+      for (const call of toolCalls) {
+        let output: Record<string, unknown>;
+        if (call.function.name !== saveRequestTool.name) {
+          output = { error: "Unknown tool." };
+        } else if (saved) {
+          output = { saved: true, note: "Already sent in this reply." };
+        } else {
+          let args: unknown = {};
+          try {
+            args = JSON.parse(call.function.arguments || "{}");
+          } catch {
+            /* invalid JSON is rejected by parseIntake below */
+          }
+          const parsed = parseIntake(args);
+          if (!parsed.ok) {
+            output = { saved: false, problem: parsed.error };
+          } else {
+            const delivery = await deliverIntake(parsed.value, {
+              source: alreadySaved ? "newrevgen.com/#intake (chat update)" : "newrevgen.com/#intake (chat)",
+              transcript: transcriptOf(turns),
+            });
+            saved = delivery.ok;
+            deliveryFailed = !delivery.ok;
+            output = { saved: delivery.ok };
+          }
         }
-        if (saved) {
-          results.push({
-            type: "tool_result",
-            tool_use_id: use.id,
-            content: JSON.stringify({ saved: true, note: "Already sent in this reply." }),
-          });
-          continue;
-        }
-        const parsed = parseIntake(use.input);
-        if (!parsed.ok) {
-          results.push({
-            type: "tool_result",
-            tool_use_id: use.id,
-            content: JSON.stringify({ saved: false, problem: parsed.error }),
-            is_error: true,
-          });
-          continue;
-        }
-        const delivery = await deliverIntake(parsed.value, {
-          source: alreadySaved ? "newrevgen.com/#intake (chat update)" : "newrevgen.com/#intake (chat)",
-          transcript: transcriptOf(turns),
-        });
-        saved = delivery.ok;
-        deliveryFailed = !delivery.ok;
-        results.push({
-          type: "tool_result",
-          tool_use_id: use.id,
-          content: JSON.stringify({ saved: delivery.ok }),
-        });
+        messages.push({ role: "tool", tool_call_id: call.id, content: JSON.stringify(output) });
       }
-      messages.push({ role: "user", content: results });
     }
   } catch (error) {
-    if (error instanceof Anthropic.RateLimitError) {
-      console.warn("[intake-chat] rate limited by model API");
-    } else if (error instanceof Anthropic.APIError) {
-      console.error("[intake-chat] model API error", { status: error.status });
-    } else {
-      console.error("[intake-chat] unexpected error", {
-        message: error instanceof Error ? error.message : "Unknown error",
-      });
-    }
+    console.error("[intake-chat] model error", {
+      status: error instanceof ModelError ? error.status : undefined,
+      message: error instanceof Error ? error.message : "Unknown error",
+    });
     return NextResponse.json({ error: "Chat is unavailable.", fallback: "simple" }, { status: 503 });
   }
 

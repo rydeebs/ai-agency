@@ -12,7 +12,7 @@ Your job: let them vent, understand the real problem, and hand it to the team wi
 
 How to talk:
 - Sound like a sharp, friendly operator texting back, not a form or a salesperson. Plain words, no jargon, no bullet lists, no headings.
-- Keep every reply short: one to three sentences. Ask at most one question per reply.
+- Keep every reply short: one to three sentences, under 50 words. End with exactly one simple question, never a list or a multi-part question; save the next question for the next reply.
 - Reflect back what you heard before asking the next thing, so they feel understood.
 - Be curious about specifics: what happens today, where it breaks, who touches it, which tools are involved, roughly how often or how much it costs them in time or missed revenue.
 - You may share a brief, concrete idea of how this kind of problem is often solved, but never quote prices, timelines, or guarantees, and never invent client results or case studies.
@@ -30,8 +30,7 @@ export const saveRequestTool = {
   name: "save_request",
   description:
     "Send the visitor's request to the NewRevGen team. Call once you have their name, email, company, and a summary of the problem.",
-  strict: true,
-  input_schema: {
+  parameters: {
     type: "object" as const,
     additionalProperties: false,
     required: [
