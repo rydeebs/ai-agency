@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import nodemailer from "nodemailer";
 import { formatIntake, type IntakeSubmission } from "./schema";
 
 export type DeliveryResult =
@@ -14,30 +15,35 @@ interface TeamMessage {
 }
 
 /**
- * Email via Resend's REST API. Needs RESEND_API_KEY and a verified sending
- * domain for INTAKE_EMAIL_FROM. INTAKE_EMAIL_TO accepts a comma-separated list.
+ * Email through the team's own mailbox over SMTP (Google Workspace by
+ * default). Needs SMTP_USER (the sending address, e.g. team@newrevgen.com)
+ * and SMTP_PASS (a Google app password). INTAKE_EMAIL_TO defaults to
+ * team@newrevgen.com and accepts a comma-separated list.
  */
 async function sendEmail(message: TeamMessage): Promise<boolean | null> {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) return null;
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+  if (!user || !pass) return null;
+  const port = Number(process.env.SMTP_PORT ?? 465);
+  const transport = nodemailer.createTransport({
+    host: process.env.SMTP_HOST ?? "smtp.gmail.com",
+    port,
+    secure: process.env.SMTP_SECURE ? process.env.SMTP_SECURE === "true" : port === 465,
+    auth: { user, pass },
+    connectionTimeout: 10_000,
+    socketTimeout: 10_000,
+  });
   const to = (process.env.INTAKE_EMAIL_TO ?? "team@newrevgen.com")
     .split(",")
     .map((a) => a.trim())
     .filter(Boolean);
-  const from = process.env.INTAKE_EMAIL_FROM ?? "NewRevGen Intake <intake@newrevgen.com>";
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    signal: AbortSignal.timeout(10_000),
-    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      from,
-      to,
-      subject: message.subject,
-      text: message.text,
-      ...(message.replyTo ? { reply_to: message.replyTo } : {}),
-    }),
+  await transport.sendMail({
+    from: { name: "NewRevGen website", address: user },
+    to,
+    subject: message.subject,
+    text: message.text,
+    ...(message.replyTo ? { replyTo: message.replyTo } : {}),
   });
-  if (!response.ok) throw new Error(`Email provider returned ${response.status}`);
   return true;
 }
 
@@ -78,7 +84,7 @@ async function sendToTeam(message: TeamMessage): Promise<DeliveryResult> {
   ]);
   const configured = outcomes.filter((o) => !(o.status === "fulfilled" && o.value === null));
   if (configured.length === 0) {
-    console.warn("[intake] delivery not configured; set RESEND_API_KEY and/or INTAKE_WEBHOOK_URL");
+    console.warn("[intake] delivery not configured; set SMTP_USER + SMTP_PASS and/or INTAKE_WEBHOOK_URL");
     return { ok: false, reason: "not_configured" };
   }
   outcomes.forEach((o, i) => {
