@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Navbar } from "./Navbar";
-import { ClientLogoBanner } from "./ClientLogoBanner";
+import { HeadlineRotator } from "./HeadlineRotator";
 
 const stats = [
   { number: "Assess", label: "find the right opportunity" },
@@ -11,13 +11,15 @@ const stats = [
   { number: "Manage", label: "monitor and improve" },
 ];
 
-const features = [
-  "AI strategy and readiness",
-  "Custom AI agents",
-  "Customer and employee concierges",
-  "Workflow automation and integrations",
-  "Knowledge and document intelligence",
-  "Analytics and decision support",
+// What we build, two words max; rotates in the H1.
+const buildWords = [
+  "AI agents",
+  "custom apps",
+  "AI concierges",
+  "integrations",
+  "dashboards",
+  "knowledge bases",
+  "document tools",
 ];
 
 interface GridHighlight {
@@ -154,7 +156,7 @@ export function HeroSection() {
             {/* Left content column - vertically centered */}
             <div
               style={{
-                maxWidth: "780px",
+                maxWidth: "1040px",
                 display: "flex",
                 flexDirection: "column",
               }}
@@ -164,17 +166,20 @@ export function HeroSection() {
                 style={{
                   fontFamily:
                     'var(--font-darker-grotesque), "Darker Grotesque", sans-serif',
-                  fontSize: "clamp(40px, 10vw, 96px)",
+                  fontSize: "clamp(32px, 8.2vw, 92px)",
                   fontWeight: 500,
                   color: "white",
-                  lineHeight: 1,
+                  lineHeight: 1.02,
                   letterSpacing: "clamp(-1px, -0.02em, -2px)",
                   margin: 0,
                   textAlign: "left",
                 }}
               >
-                Put AI to work {" "}
-                <span style={{ color: "#D3F463" }}>across your business.</span>
+                Automate the busywork.
+                <br />
+                <span style={{ color: "#D3F463" }}>
+                  Build <HeadlineRotator words={buildWords} />
+                </span>
               </h1>
               
               {/* Subheadline */}
@@ -193,53 +198,6 @@ export function HeroSection() {
                 automate work, and improve how your business sells, serves, and operates.
               </p>
 
-              {/* Vertical auto-scrolling feature ticker */}
-              <div
-                style={{
-                  height: "28px",
-                  overflow: "hidden",
-                  margin: "clamp(20px, 4vw, 32px) 0",
-                }}
-              >
-                <div
-                  style={{
-                    animation: "ticker-scroll 4s linear infinite",
-                  }}
-                >
-                  {[...features, ...features].map((feature, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        display: "flex",
-                        gap: "12px",
-                        alignItems: "center",
-                        height: "28px",
-                      }}
-                    >
-                      <span
-                        style={{
-                          color: "#D3F463",
-                          fontSize: "12px",
-                          flexShrink: 0,
-                          lineHeight: 1,
-                        }}
-                      >
-                        ✦
-                      </span>
-                      <span
-                        style={{
-                          fontSize: "clamp(14px, 2.5vw, 16px)",
-                          color: "rgba(255,255,255,0.85)",
-                          fontFamily: "var(--font-dm-sans), sans-serif",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {feature}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
             
             {/* Spacer to push buttons to bottom */}
@@ -279,7 +237,7 @@ export function HeroSection() {
                   Explore Free Assessments ↗
                 </Link>
                 <Link
-                  href="#services"
+                  href="#intake"
                   className="hero-secondary-btn"
                   style={{
                     backgroundColor: "transparent",
@@ -297,7 +255,7 @@ export function HeroSection() {
                     transition: "border-color 0.2s ease",
                   }}
                 >
-                  Explore Capabilities
+                  Tell us what to fix
                 </Link>
               </div>
               
@@ -371,11 +329,6 @@ export function HeroSection() {
         </div>
       </section>
 
-      {/* Client logo banner — below the hero section */}
-      <div style={{ backgroundColor: "#EFEFEF", padding: "0 clamp(8px, 2vw, 16px)" }}>
-        <ClientLogoBanner />
-      </div>
-
       <style jsx>{`
         @media (max-width: 768px) {
           .hero-section {
@@ -386,9 +339,6 @@ export function HeroSection() {
             width: 300px !important;
             height: 300px !important;
             right: -150px !important;
-          }
-          .hero-secondary-btn {
-            display: none !important;
           }
           .hero-bottom-row {
             flex-direction: column !important;

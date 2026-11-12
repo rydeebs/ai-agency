@@ -18,6 +18,8 @@ const navLinksCol2 = [
 export function Footer() {
   return (
     <footer style={{ backgroundColor: '#000000', position: 'relative', overflow: 'hidden' }}>
+      {/* Mountain backdrop, anchored right so it sits beside the brand copy */}
+      <div className="footer-backdrop" aria-hidden="true" />
       {/* Grid background with fade */}
       <div className="grid-bg-dark" />
       

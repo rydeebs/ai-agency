@@ -110,6 +110,24 @@ export function Navbar() {
           }}
         >
           <Link
+            href="/#intake"
+            className="nav-ghost-btn"
+            style={{
+              color: "white",
+              border: "1px solid rgba(255,255,255,0.25)",
+              borderRadius: "8px",
+              padding: "11px 16px",
+              fontSize: "14px",
+              fontWeight: 600,
+              fontFamily: "var(--font-dm-sans), sans-serif",
+              textDecoration: "none",
+              whiteSpace: "nowrap",
+              transition: "border-color 0.2s ease",
+            }}
+          >
+            Start a project
+          </Link>
+          <Link
             href="/tools"
             style={{
               backgroundColor: "rgb(211, 244, 99)",
@@ -196,6 +214,24 @@ export function Navbar() {
             </Link>
           ))}
           <Link
+            href="/#intake"
+            onClick={() => setMobileMenuOpen(false)}
+            style={{
+              display: "block",
+              marginTop: "16px",
+              border: "1px solid rgba(255,255,255,0.25)",
+              color: "white",
+              padding: "16px 20px",
+              borderRadius: "8px",
+              textAlign: "center",
+              fontWeight: 600,
+              textDecoration: "none",
+              fontSize: "16px",
+            }}
+          >
+            Start a project
+          </Link>
+          <Link
             href="/tools"
             onClick={() => setMobileMenuOpen(false)}
             style={{
@@ -217,6 +253,14 @@ export function Navbar() {
       )}
 
       <style jsx>{`
+        .nav-ghost-btn:hover {
+          border-color: rgba(255, 255, 255, 0.6) !important;
+        }
+        @media (max-width: 960px) {
+          .nav-ghost-btn {
+            display: none !important;
+          }
+        }
         @media (max-width: 768px) {
           .desktop-nav {
             display: none !important;

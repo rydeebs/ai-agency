@@ -1,14 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  ArrowRight,
-  Calculator,
-  ClipboardCheck,
-  FileSearch,
-  Gauge,
-  ShieldCheck,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { ToolPageFrame } from "@/components/tools/ToolPageFrame";
+import { toolDirectory as tools } from "@/components/tools/toolDirectory";
 
 export const metadata: Metadata = {
   title: "Free Business AI Assessments | NewRevGen",
@@ -17,43 +11,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/tools" },
 };
 
-const tools = [
-  {
-    href: "/tools/revenue-leak-scorecard",
-    title: "Booked-Revenue Leak Scorecard",
-    description: "Score the complete system from inbound lead to booked job and identify your three largest leaks.",
-    meta: "12 questions · Main assessment",
-    icon: Gauge,
-  },
-  {
-    href: "/tools/missed-call-calculator",
-    title: "Missed-Call Revenue Calculator",
-    description: "Model a conservative range of revenue potentially exposed by unanswered qualified calls.",
-    meta: "6 inputs · 90 seconds",
-    icon: Calculator,
-  },
-  {
-    href: "/tools/estimate-follow-up-gap",
-    title: "Estimate Follow-Up Gap Check",
-    description: "Measure follow-up maturity and model the opportunity already sitting in open estimates.",
-    meta: "8 inputs · Existing demand",
-    icon: ClipboardCheck,
-  },
-  {
-    href: "/tools/seller-independence-check",
-    title: "Seller Independence Check",
-    description: "Evaluate owner dependence and the transferability of the revenue operation.",
-    meta: "8 questions · Succession readiness",
-    icon: ShieldCheck,
-  },
-  {
-    href: "/tools/website-revenue-audit",
-    title: "Three-Point Website Revenue-Funnel Assessment",
-    description: "Check one public page for five practical lead-capture signals and receive three priority findings.",
-    meta: "Automated · About 60 seconds",
-    icon: FileSearch,
-  },
-];
+
 
 export default function ToolsPage() {
   return (

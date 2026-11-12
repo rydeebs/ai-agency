@@ -1,3 +1,5 @@
+import { IntakeChat } from "./IntakeChat";
+
 export function WhatWeDoSection() {
   const services = [
     'AI Strategy & Assessments',
@@ -129,30 +131,8 @@ export function WhatWeDoSection() {
             </div>
           </div>
 
-          {/* RIGHT — Video */}
-          <div
-            style={{
-              borderRadius: '16px',
-              overflow: 'hidden',
-              height: '100%',
-              position: 'relative',
-              backgroundColor: '#1E1E1E',
-            }}
-          >
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain',
-              }}
-            >
-              <source src="/videos/how-we-work.mp4" type="video/mp4" />
-            </video>
-          </div>
+          {/* RIGHT — talk or type to us */}
+          <IntakeChat />
         </div>
       </div>
     </section>
