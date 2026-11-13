@@ -24,7 +24,7 @@ export const voiceTools = [
     type: "function",
     name: saveRequestTool.name,
     description: saveRequestTool.description,
-    parameters: saveRequestTool.input_schema,
+    parameters: saveRequestTool.parameters,
   },
   {
     type: "function",
