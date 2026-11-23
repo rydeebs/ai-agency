@@ -1,4 +1,10 @@
+import Link from "next/link";
 import { IntakeChat } from "./IntakeChat";
+
+const industryLinks = [
+  { label: "Roofing companies", href: "/roofing" },
+  { label: "Contractors & service businesses", href: "/operations" },
+];
 
 export function WhatWeDoSection() {
   const services = [
@@ -129,6 +135,31 @@ export function WhatWeDoSection() {
                 ))}
               </div>
             </div>
+
+            <nav
+              aria-label="Industry pages"
+              style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', position: 'relative' }}
+            >
+              {industryLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  style={{
+                    backgroundColor: '#D3F463',
+                    color: '#17181B',
+                    borderRadius: '8px',
+                    padding: '10px 14px',
+                    fontSize: '14px',
+                    fontWeight: 700,
+                    fontFamily: 'var(--font-dm-sans, DM Sans, sans-serif)',
+                    textDecoration: 'none',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {link.label} ↗
+                </Link>
+              ))}
+            </nav>
           </div>
 
           {/* RIGHT — talk or type to us */}

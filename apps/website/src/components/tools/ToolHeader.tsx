@@ -7,6 +7,13 @@ import { useState } from "react";
 
 const bookingUrl = "https://calendar.app.google/fvAx1yvcih4jMp346";
 
+const navLinks = [
+  { label: "Roofing", href: "/roofing" },
+  { label: "Contractors", href: "/operations" },
+  { label: "All tools", href: "/tools" },
+  { label: "What we fix", href: "/#services" },
+];
+
 export function ToolHeader() {
   const [open, setOpen] = useState(false);
 
@@ -23,13 +30,12 @@ export function ToolHeader() {
         />
       </Link>
 
-      <nav aria-label="Tool navigation" className="hidden items-center gap-7 md:flex">
-        <Link className="text-sm text-white/65 transition hover:text-white" href="/tools">
-          All tools
-        </Link>
-        <Link className="text-sm text-white/65 transition hover:text-white" href="/#services">
-          What we fix
-        </Link>
+      <nav aria-label="Site navigation" className="hidden items-center gap-7 md:flex">
+        {navLinks.map((link) => (
+          <Link key={link.href} className="text-sm text-white/65 transition hover:text-white" href={link.href}>
+            {link.label}
+          </Link>
+        ))}
         <a
           className="rounded-lg bg-cp-lime px-4 py-2.5 text-sm font-bold text-cp-dark transition hover:opacity-85"
           href={bookingUrl}
@@ -52,15 +58,14 @@ export function ToolHeader() {
 
       {open ? (
         <nav
-          aria-label="Mobile tool navigation"
+          aria-label="Mobile site navigation"
           className="absolute left-5 right-5 top-[72px] flex flex-col gap-1 rounded-xl border border-white/10 bg-cp-dark p-3 shadow-2xl md:hidden"
         >
-          <Link className="rounded-lg px-4 py-3 text-white" href="/tools" onClick={() => setOpen(false)}>
-            All tools
-          </Link>
-          <Link className="rounded-lg px-4 py-3 text-white" href="/#services" onClick={() => setOpen(false)}>
-            What we fix
-          </Link>
+          {navLinks.map((link) => (
+            <Link key={link.href} className="rounded-lg px-4 py-3 text-white" href={link.href} onClick={() => setOpen(false)}>
+              {link.label}
+            </Link>
+          ))}
           <a
             className="mt-1 rounded-lg bg-cp-lime px-4 py-3 text-center font-bold text-cp-dark"
             href={bookingUrl}
