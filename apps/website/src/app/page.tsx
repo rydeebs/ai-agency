@@ -8,6 +8,8 @@ import { FoundersSection } from "@/components/FoundersSection";
 import { FAQSection } from "@/components/FAQSection";
 import { CTASection } from "@/components/CTASection";
 import { Footer } from "@/components/Footer";
+import { homeFaqs } from "@/content/home";
+import { faqPageNode } from "@/lib/seo/structured-data";
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
@@ -50,6 +52,9 @@ const organizationJsonLd = {
         "Systems integration",
         "Revenue operations",
         "Operational process improvement",
+        "AI for roofing contractors",
+        "Missed-call text-back",
+        "Estimate follow-up automation",
       ],
     },
     {
@@ -63,6 +68,7 @@ const organizationJsonLd = {
       inLanguage: "en-US",
       publisher: { "@id": "https://newrevgen.com/#organization" },
     },
+    faqPageNode("/", homeFaqs),
   ],
 };
 

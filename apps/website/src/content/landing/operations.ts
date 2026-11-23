@@ -140,7 +140,7 @@ export const operationsContent: LandingContent = {
     mainCard: {
       title: "Contractor Revenue System",
       description:
-        "Missed calls, lead routing, estimate follow-up, CRM cleanup, reviews, and dashboards — wired together and tuned for your trade. We do not leave until the system is helping your office book work without babysitting it.",
+        "Missed calls, lead routing, estimate follow-up, CRM cleanup, reviews, and dashboards, wired together and tuned for your trade. We do not leave until the system is helping your office book work without babysitting it.",
       price: "Custom Scope",
       priceCaption: "Priced on lead volume, trade, and current stack",
       ctaLabel: "Get a free revenue leak assessment ↗",
@@ -157,7 +157,7 @@ export const operationsContent: LandingContent = {
     quickStartCard: {
       title: "30-Day Pilot",
       description:
-        "Want proof first? We'll launch one piece — usually missed-call text-back or estimate follow-up — and measure the booked-job lift before expanding.",
+        "Want proof first? We'll launch one piece, usually missed-call text-back or estimate follow-up, and measure the booked-job lift before expanding.",
       ctaLabel: "Start a pilot",
     },
   },
@@ -169,7 +169,7 @@ export const operationsContent: LandingContent = {
     items: [
       {
         q: "Do you actually understand contractors and service businesses?",
-        a: "Yes. We focus on owner-led contractors and field-service companies. We get how calls, estimates, dispatch, drive time, seasonality, crews, and reviews actually work — and we build around it, not against it.",
+        a: "Yes. We focus on owner-led contractors and field-service companies. We get how calls, estimates, dispatch, drive time, seasonality, crews, and reviews actually work, and we build around it, not against it.",
       },
       {
         q: "What CRMs do you work with?",
@@ -181,7 +181,7 @@ export const operationsContent: LandingContent = {
       },
       {
         q: "Will this replace my office staff?",
-        a: "No — it gives them back hours. We replace the chase work: manual follow-ups, missed-call text-backs, quote reminders, list-building, and status updates, so your team can focus on closing, scheduling, and customer experience.",
+        a: "No. It gives them back hours. We replace the chase work: manual follow-ups, missed-call text-backs, quote reminders, list-building, and status updates, so your team can focus on closing, scheduling, and customer experience.",
       },
       {
         q: "What does the free revenue leak assessment include?",
@@ -193,7 +193,7 @@ export const operationsContent: LandingContent = {
     headlineLine1: "Stop losing jobs",
     headlineLine2: "after the lead comes in.",
     description:
-      "Book a free revenue leak assessment. We'll show you where calls, estimates, tools, and follow-up are costing you booked work — no slides, no fluff.",
+      "Book a free revenue leak assessment. We'll show you where calls, estimates, tools, and follow-up are costing you booked work. No slides, no fluff.",
     ctaLabel: "Get my free assessment",
     videoSrc: "/videos/cta-background-operations.mp4",
   },
@@ -204,6 +204,6 @@ export const operationsContent: LandingContent = {
       "Drop your details and we'll come prepared with a diagnosis of your biggest lead, estimate, CRM, and software leaks. No slide deck, no obligation.",
     submitLabel: "Request my assessment ↗",
     successMessage:
-      "Got it — we'll reach out within one business day to lock in your free revenue leak assessment.",
+      "Got it. We'll reach out within one business day to lock in your free revenue leak assessment.",
   },
 };
