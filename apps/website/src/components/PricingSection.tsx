@@ -219,8 +219,8 @@ export function PricingSection() {
                   margin: '0 0 20px 0',
                 }}
               >
-                Want proof first? We launch one high-impact workflow—such as intake,
-                research, document processing, service, reporting, or follow-up—and measure
+                Want proof first? We launch one high-impact workflow, such as intake,
+                research, document processing, service, reporting, or follow-up, and measure
                 the result before expanding.
               </p>
               <a

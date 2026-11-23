@@ -7,6 +7,8 @@ The public NewRevGen marketing and lead-generation website. It is a Next.js 16 A
 - `/` — primary contractor and service-business landing page
 - `/about` and `/contact` — company identity and contact trust routes
 - `/operations` — operations-focused contractor landing page
+- `/roofing` — roofing hub linking the four roofing service pages
+- `/roofing/[slug]` — `ai-for-roofing-contractors`, `missed-call-recovery`, `estimate-follow-up`, and `storm-lead-response`; copy lives in `src/content/landing/roofing.ts`
 - `/firms` — accounting and finance firm landing page
 - `/101` — AI literacy and training landing page
 - `/api/lead` — legacy lead-form endpoint; validates submissions without logging personally identifiable fields

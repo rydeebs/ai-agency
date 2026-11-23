@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { JsonLd } from "@/components/JsonLd";
 import { AssessmentExperience } from "@/components/tools/AssessmentExperience";
 import { PublicAuditExperience } from "@/components/tools/PublicAuditExperience";
+import { ToolGuideSection } from "@/components/tools/ToolGuideSection";
 import { ToolPageFrame } from "@/components/tools/ToolPageFrame";
+import { getToolGuide } from "@/content/tools/guides";
 import { assessmentTools, getAssessmentTool } from "@/lib/lead-tools/catalog";
+import { faqPageNode, jsonLdGraph } from "@/lib/seo/structured-data";
 
 interface ToolRouteProps {
   params: Promise<{ slug: string }>;
@@ -45,5 +49,19 @@ export default async function ToolRoute({ params }: ToolRouteProps) {
   }
   const tool = getAssessmentTool(slug);
   if (!tool) notFound();
-  return <ToolPageFrame><AssessmentExperience tool={tool} gateMode={gateMode()} /></ToolPageFrame>;
+  const guide = getToolGuide(tool.slug);
+  return (
+    <ToolPageFrame
+      after={
+        guide ? (
+          <>
+            <JsonLd json={jsonLdGraph([faqPageNode(`/tools/${tool.slug}`, guide.faq)])} />
+            <ToolGuideSection guide={guide} />
+          </>
+        ) : null
+      }
+    >
+      <AssessmentExperience tool={tool} gateMode={gateMode()} />
+    </ToolPageFrame>
+  );
 }

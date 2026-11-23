@@ -4,9 +4,11 @@ import { ToolHeader } from "./ToolHeader";
 
 interface ToolPageFrameProps {
   children: ReactNode;
+  /** Server-rendered content shown below the dark tool card. */
+  after?: ReactNode;
 }
 
-export function ToolPageFrame({ children }: ToolPageFrameProps) {
+export function ToolPageFrame({ children, after }: ToolPageFrameProps) {
   return (
     <main className="min-h-screen bg-cp-body-bg">
       <div className="p-2 sm:p-3">
@@ -16,6 +18,7 @@ export function ToolPageFrame({ children }: ToolPageFrameProps) {
           {children}
         </div>
       </div>
+      {after}
       <footer className="mx-auto flex w-full max-w-[1280px] flex-col gap-4 px-5 py-8 text-sm text-cp-text md:flex-row md:items-center md:justify-between md:px-10">
         <p>© 2026 NewRevGen. Directional tools for better revenue operations.</p>
         <nav aria-label="Legal" className="flex gap-5">

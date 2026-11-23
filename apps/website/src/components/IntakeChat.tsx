@@ -167,7 +167,7 @@ export function IntakeChat() {
           ...prev,
           makeTurn(
             "assistant",
-            "Got it — thanks for laying that out. Leave your details below and a person on our team will reply by email. Add more anytime.",
+            "Got it, thanks for laying that out. Leave your details below and a person on our team will reply by email. Add more anytime.",
           ),
         ]);
         return;
@@ -224,7 +224,7 @@ export function IntakeChat() {
           ...prev,
           makeTurn(
             "assistant",
-            `Thanks, ${contact.name.split(" ")[0] || "there"} — it's with the team. Expect a reply at ${contact.email}, usually within one business day.`,
+            `Thanks, ${contact.name.split(" ")[0] || "there"}, it's with the team. Expect a reply at ${contact.email}, usually within one business day.`,
           ),
         ]);
         return;
@@ -420,9 +420,9 @@ export function IntakeChat() {
                 disabled={(mode === "simple" && saved) || onCall}
                 placeholder={
                   onCall
-                    ? "On a call — just talk, we're taking notes"
+                    ? "On a call. Just talk, we're taking notes"
                     : mode === "simple" && saved
-                      ? "Sent — email us to add anything else"
+                      ? "Sent. Email us to add anything else"
                       : userTurns.length
                         ? "Reply…"
                         : "Start venting…"

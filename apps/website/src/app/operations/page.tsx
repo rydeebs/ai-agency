@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/JsonLd";
 import { LandingPageTemplate } from "@/components/landing/LandingPageTemplate";
 import { operationsContent } from "@/content/landing/operations";
+import { faqPageNode, jsonLdGraph, serviceNode } from "@/lib/seo/structured-data";
 
 export const metadata: Metadata = {
   title: operationsContent.meta.title,
@@ -30,6 +32,22 @@ export const metadata: Metadata = {
   },
 };
 
+const structuredData = jsonLdGraph([
+  serviceNode({
+    path: "/operations",
+    name: operationsContent.pricing.mainCard.title,
+    serviceType: "AI revenue systems for contractors and service businesses",
+    description: operationsContent.meta.description,
+    audience: "Owner-led contractors and field-service businesses",
+  }),
+  faqPageNode("/operations", operationsContent.faq.items),
+]);
+
 export default function OperationsPage() {
-  return <LandingPageTemplate content={operationsContent} />;
+  return (
+    <>
+      <JsonLd json={structuredData} />
+      <LandingPageTemplate content={operationsContent} />
+    </>
+  );
 }

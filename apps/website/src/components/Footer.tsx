@@ -3,6 +3,8 @@
 import Image from "next/image";
 
 const navLinksCol1 = [
+  { label: 'Roofing', href: '/roofing' },
+  { label: 'Contractors', href: '/operations' },
   { label: 'Why Us', href: '/#why-us' },
   { label: 'Capabilities', href: '/#services' },
   { label: 'Free Assessments', href: '/tools' },
