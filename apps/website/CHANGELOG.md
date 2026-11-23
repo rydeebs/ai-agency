@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `/roofing` hub and four roofing service pages (AI for roofing contractors, missed-call recovery, estimate follow-up, storm lead response) with Service, FAQPage, and BreadcrumbList JSON-LD and Markdown alternates
+- Server-rendered explanations and FAQs on `/tools/missed-call-calculator` and `/tools/estimate-follow-up-gap`, cross-linked with the roofing pages
+- Service and FAQPage JSON-LD on `/operations`, and FAQPage on the homepage
+- Roofing and Contractors links in the main nav, tool header, footer, and homepage services section
+- Permanent `www.newrevgen.com` to apex redirect
 - Standards-aware HTML/Markdown content negotiation with `Vary: Accept`, q-value handling, direct `.md` alternates, and `406` responses
 - Agent-oriented `/llms.txt`, explicit `robots.txt`, and authored Markdown versions of indexed public pages
 - Recoverable HTML and Markdown 404 responses with links to machine-readable discovery files
@@ -16,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Integration coverage for public routes, negotiation, metadata, structured data, trust content, and discovery files
 
 ### Fixed
+- 404 pages no longer inherit the homepage canonical, `og:url`, or `index` robots directive
+- Removed em and en dashes from homepage, `/operations`, and tool copy
 - Corrected `newrevegen.com` canonical URL typos on vertical landing pages
 
 ## [0.2.0] - 2026-03-28
