@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   title: "Page Not Found | NewRevGen",
   description:
     "The requested NewRevGen page does not exist. Use the site map or agent guidance to find the right page.",
+  // The root layout's homepage canonical, Open Graph URL, and index directive must not leak onto 404 responses.
+  alternates: { canonical: null },
+  openGraph: null,
+  robots: { index: false, follow: true },
 };
 
 const recoveryLinks = [
