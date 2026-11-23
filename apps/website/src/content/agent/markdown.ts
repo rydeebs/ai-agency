@@ -1,7 +1,15 @@
-import type { LandingContent } from "@/components/landing/types";
+import type {
+  LandingContent,
+  ServicePageContent,
+} from "@/components/landing/types";
 import { ai101Content } from "@/content/landing/101";
 import { firmsContent } from "@/content/landing/firms";
 import { operationsContent } from "@/content/landing/operations";
+import {
+  roofingHubContent,
+  roofingServicePages,
+} from "@/content/landing/roofing";
+import { getToolGuide } from "@/content/tools/guides";
 import {
   assessmentTools,
   getAssessmentTool,
@@ -44,6 +52,9 @@ Email [team@newrevgen.com](mailto:team@newrevgen.com), [book a call](https://cal
 
 ## Site index
 
+- [Roofing companies](${siteUrl}/roofing)
+${roofingServicePages.map((page) => `  - [${page.h1}](${siteUrl}${page.path})`).join("\n")}
+- [Contractors and service businesses](${siteUrl}/operations)
 - [About NewRevGen](${siteUrl}/about)
 - [Free assessments and calculators](${siteUrl}/tools)
 - [Privacy policy](${siteUrl}/privacy)
@@ -168,6 +179,95 @@ ${content.cta.description} [Contact NewRevGen](${siteUrl}/contact).
 `;
 }
 
+function linkList(links: Array<{ href: string; label: string; description: string }>): string {
+  return list(links.map((link) => `[${link.label}](${siteUrl}${link.href}): ${link.description}`));
+}
+
+function servicePageMarkdown(content: ServicePageContent): string {
+  const sections = content.sections
+    .map((section) =>
+      [
+        `## ${section.heading}`,
+        ...section.paragraphs,
+        section.bullets ? list(section.bullets) : "",
+        section.steps
+          ? section.steps.map((step, index) => `${index + 1}. ${step}`).join("\n")
+          : "",
+        section.closing ?? "",
+      ]
+        .filter(Boolean)
+        .join("\n\n"),
+    )
+    .join("\n\n");
+
+  return `# ${content.h1}
+
+> ${content.meta.description}
+
+${content.intro}
+
+## Short answers
+
+${content.quickAnswers.map(({ q, a }) => `### ${q}\n\n${a}`).join("\n\n")}
+
+${sections}
+
+## ${content.setup.heading}
+
+${content.setup.intro}
+
+${list(content.setup.items.map((item) => `**${item.title}:** ${item.text}`))}
+
+${content.setup.approvalNote}
+
+## Frequently asked questions
+
+${content.faq.items.map(({ q, a }) => `### ${q}\n\n${a}`).join("\n\n")}
+
+## Related pages
+
+${linkList(content.related)}
+
+## Next step
+
+${content.cta.description} [Contact NewRevGen](${siteUrl}/contact).
+`;
+}
+
+function roofingHubMarkdown(): string {
+  const hub = roofingHubContent;
+  return `# ${hub.h1}
+
+> ${hub.meta.description}
+
+${hub.intro}
+
+## ${hub.quickAnswer.q}
+
+${hub.quickAnswer.a}
+
+## Roofing pages
+
+${linkList(hub.pages)}
+
+## How we work with roofing owners
+
+${list(hub.approach)}
+
+## Free calculators
+
+${linkList(hub.tools)}
+
+## Other trades
+
+[${hub.otherTrades.label}](${siteUrl}${hub.otherTrades.href}): ${hub.otherTrades.description}
+
+## Next step
+
+${hub.cta.description} [Contact NewRevGen](${siteUrl}/contact).
+`;
+}
+
 function toolsMarkdown(): string {
   const tools = assessmentTools
     .map(
@@ -204,6 +304,7 @@ The assessment reviews mobile contact paths, after-hours inquiry capture, form e
 
   const tool = getAssessmentTool(slug);
   if (!tool) return undefined;
+  const guide = getToolGuide(tool.slug);
 
   return `# ${tool.title}
 
@@ -216,7 +317,19 @@ Estimated completion time: ${tool.timeEstimate}.
 ${list(tool.questions.map((question) => question.label))}
 
 Results are directional and based on the answers supplied. They are intended to identify a practical next workflow, not guarantee revenue, savings, valuation, or performance.
+${guide ? `
+## ${guide.heading}
 
+${guide.paragraphs.join("\n\n")}
+
+## Frequently asked questions
+
+${guide.faq.map(({ q, a }) => `### ${q}\n\n${a}`).join("\n\n")}
+
+## Related pages
+
+${linkList(guide.related)}
+` : ""}
 [Open the interactive assessment](${siteUrl}/tools/${tool.slug}) or [contact NewRevGen](${siteUrl}/contact).
 `;
 }
@@ -228,12 +341,16 @@ const staticPages = new Map<string, string>([
   ["/privacy", privacyMarkdown],
   ["/terms", termsMarkdown],
   ["/operations", landingPageMarkdown(operationsContent)],
+  ["/roofing", roofingHubMarkdown()],
+  ...roofingServicePages.map(
+    (page): [string, string] => [page.path, servicePageMarkdown(page)],
+  ),
   ["/firms", landingPageMarkdown(firmsContent)],
   ["/101", landingPageMarkdown(ai101Content)],
   ["/tools", toolsMarkdown()],
 ]);
 
-export const markdownNotFound = `# 404 — Page not found
+export const markdownNotFound = `# 404: Page not found
 
 The requested path does not exist on NewRevGen.
 
