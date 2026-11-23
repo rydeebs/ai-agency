@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { once } from "node:events";
 import { readFile } from "node:fs/promises";
+import http from "node:http";
 import { fileURLToPath } from "node:url";
 import net from "node:net";
 import path from "node:path";
@@ -18,6 +19,11 @@ const publicPages = [
   "/about",
   "/contact",
   "/operations",
+  "/roofing",
+  "/roofing/ai-for-roofing-contractors",
+  "/roofing/missed-call-recovery",
+  "/roofing/estimate-follow-up",
+  "/roofing/storm-lead-response",
   "/firms",
   "/101",
   "/tools",
@@ -29,6 +35,10 @@ const publicPages = [
   "/privacy",
   "/terms",
 ];
+
+const roofingServicePages = publicPages.filter((pathname) =>
+  pathname.startsWith("/roofing/"),
+);
 
 let baseUrl;
 let server;
@@ -70,6 +80,29 @@ function includesVary(response, field) {
   return (response.headers.get("vary") ?? "")
     .split(",")
     .some((value) => value.trim().toLowerCase() === field.toLowerCase());
+}
+
+function jsonLdNodes(html) {
+  return [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+    .flatMap((match) => {
+      const parsed = JSON.parse(match[1]);
+      return parsed["@graph"] ?? [parsed];
+    });
+}
+
+function requestWithHost(pathname, host) {
+  const { hostname, port } = new URL(baseUrl);
+  return new Promise((resolve, reject) => {
+    const request = http.request(
+      { hostname, port, path: pathname, method: "GET", headers: { Host: host, Accept: "text/html" } },
+      (response) => {
+        response.resume();
+        resolve({ status: response.statusCode, location: response.headers.location });
+      },
+    );
+    request.on("error", reject);
+    request.end();
+  });
 }
 
 function visibleText(html) {
@@ -236,13 +269,18 @@ test("unknown paths return recoverable 404 responses in HTML and Markdown", asyn
     headers: { Accept: "text/markdown" },
   });
   const markdown = await markdownResponse.text();
+  assert.doesNotMatch(html, /<link rel="canonical"/, "404 pages set no canonical");
+  assert.doesNotMatch(html, /<meta property="og:url"/, "404 pages set no og:url");
+  assert.match(html, /<meta name="robots" content="noindex/);
+  assert.doesNotMatch(html, /<meta name="robots" content="index/);
+
   assert.equal(markdownResponse.status, 404);
   assert.match(
     markdownResponse.headers.get("content-type") ?? "",
     /^text\/markdown\b/,
   );
   assert.equal(includesVary(markdownResponse, "Accept"), true);
-  assert.match(markdown, /^# 404 — Page not found/m);
+  assert.match(markdown, /^# 404: Page not found/m);
   assert.match(markdown, /https:\/\/newrevgen\.com\/sitemap\.xml/);
   assert.match(markdown, /https:\/\/newrevgen\.com\/llms\.txt/);
 });
@@ -300,6 +338,13 @@ test("machine-readable discovery files are valid and reference canonical routes"
   assert.match(llms, /\*\*When to use NewRevGen\*\*/);
   assert.match(llms, /## Primary pages\n\n- \[Homepage\]/);
   assert.match(llms, /https:\/\/newrevgen\.com\/contact\.md/);
+  for (const pathname of publicPages.filter((page) => page.startsWith("/roofing"))) {
+    assert.match(
+      llms,
+      new RegExp(`https://newrevgen\\.com${pathname}\\.md`),
+      `${pathname} is in llms.txt`,
+    );
+  }
 
   const sitemapResponse = await fetch(`${baseUrl}/sitemap.xml`);
   const sitemap = await sitemapResponse.text();
@@ -321,4 +366,86 @@ test("machine-readable discovery files are valid and reference canonical routes"
   assert.match(robots, /Disallow: \/api\//);
   assert.match(robots, /Sitemap: https:\/\/newrevgen\.com\/sitemap\.xml/);
   assert.match(robots, /Host: https:\/\/newrevgen\.com/);
+});
+
+test("www host permanently redirects to the apex, preserving path and query", async () => {
+  const root = await requestWithHost("/", "www.newrevgen.com");
+  assert.equal(root.status, 308);
+  assert.match(root.location ?? "", /^https:\/\/newrevgen\.com\/?$/);
+
+  const deep = await requestWithHost("/roofing/estimate-follow-up?ref=test", "www.newrevgen.com");
+  assert.equal(deep.status, 308);
+  assert.equal(deep.location, "https://newrevgen.com/roofing/estimate-follow-up?ref=test");
+
+  const apex = await requestWithHost("/", "newrevgen.com");
+  assert.equal(apex.status, 200);
+});
+
+test("roofing service pages have unique metadata and Service, FAQPage, and breadcrumb JSON-LD", async () => {
+  const titles = new Set();
+  for (const pathname of roofingServicePages) {
+    const html = await (await fetch(`${baseUrl}${pathname}`, { headers: { Accept: "text/html" } })).text();
+    const title = html.match(/<title>([^<]*)<\/title>/)?.[1];
+    assert.ok(title && !titles.has(title), `${pathname} has a unique title`);
+    titles.add(title);
+    assert.match(html, /<meta name="description" content="[^"]{80,160}"/, `${pathname} description`);
+    assert.equal((html.match(/<h1[\s>]/g) ?? []).length, 1, `${pathname} has one H1`);
+
+    const nodes = jsonLdNodes(html);
+    const service = nodes.find((node) => node["@type"] === "Service");
+    assert.ok(service, `${pathname} has Service JSON-LD`);
+    assert.equal(service.url, `https://newrevgen.com${pathname}`);
+    assert.equal(service.provider.name, "NewRevGen");
+
+    const faq = nodes.find((node) => node["@type"] === "FAQPage");
+    assert.ok(faq && faq.mainEntity.length >= 5, `${pathname} has FAQPage JSON-LD`);
+    const text = visibleText(html);
+    for (const question of faq.mainEntity) {
+      assert.equal(question["@type"], "Question");
+      assert.ok(question.acceptedAnswer.text.length > 0);
+      const visibleQuestion = question.name.replace(/'/g, " ").replace(/\s+/g, " ");
+      assert.ok(text.includes(visibleQuestion), `${pathname} shows "${question.name}"`);
+    }
+    assert.ok(nodes.some((node) => node["@type"] === "BreadcrumbList"));
+    assert.match(html, /href="\/contact"/, `${pathname} links to contact`);
+    assert.doesNotMatch(text, /[\u2013\u2014]/, `${pathname} copy has no en or em dashes`);
+  }
+
+  const hub = await (await fetch(`${baseUrl}/roofing`, { headers: { Accept: "text/html" } })).text();
+  for (const pathname of roofingServicePages) {
+    assert.match(hub, new RegExp(`href="${pathname}"`), `/roofing links to ${pathname}`);
+  }
+});
+
+test("missed-call and estimate tools serve crawlable guidance linked to roofing pages", async () => {
+  const expectations = {
+    "/tools/missed-call-calculator": "/roofing/missed-call-recovery",
+    "/tools/estimate-follow-up-gap": "/roofing/estimate-follow-up",
+  };
+  for (const [pathname, roofingPath] of Object.entries(expectations)) {
+    const html = await (await fetch(`${baseUrl}${pathname}`, { headers: { Accept: "text/html" } })).text();
+    const words = visibleText(html).split(" ").length;
+    assert.ok(words >= 300, `${pathname} has ${words} visible words`);
+    assert.match(html, new RegExp(`href="${roofingPath}"`));
+    assert.match(html, /href="\/operations"/);
+    assert.ok(jsonLdNodes(html).some((node) => node["@type"] === "FAQPage"));
+
+    const roofingHtml = await (await fetch(`${baseUrl}${roofingPath}`, { headers: { Accept: "text/html" } })).text();
+    assert.match(roofingHtml, new RegExp(`href="${pathname}"`), `${roofingPath} links back to ${pathname}`);
+  }
+});
+
+test("global navigation links the roofing hub and the contractor page", async () => {
+  for (const pathname of ["/", "/tools", "/about", "/roofing"]) {
+    const html = await (await fetch(`${baseUrl}${pathname}`, { headers: { Accept: "text/html" } })).text();
+    assert.match(html, /href="\/roofing"/, `${pathname} links /roofing`);
+    assert.match(html, /href="\/operations"/, `${pathname} links /operations`);
+  }
+});
+
+test("operations page declares Service and FAQPage JSON-LD", async () => {
+  const html = await (await fetch(`${baseUrl}/operations`, { headers: { Accept: "text/html" } })).text();
+  const types = jsonLdNodes(html).map((node) => node["@type"]);
+  assert.ok(types.includes("Service"));
+  assert.ok(types.includes("FAQPage"));
 });
