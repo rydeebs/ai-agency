@@ -2,7 +2,7 @@ import { intakeFocusAreas, intakeTeamSizes, intakeTimelines } from "./schema";
 
 /** First line the visitor sees; shown client-side and given to the model as context. */
 export const INTAKE_GREETING =
-  "Hey 👋 What's eating up your team's time right now? Vent away — messy and half-formed is totally fine.";
+  "Hey 👋 What's eating up your team's time right now? Vent away. Messy and half-formed is totally fine.";
 
 export const INTAKE_SYSTEM_PROMPT = `You are the intake desk on NewRevGen's website. NewRevGen is a small AI automation agency, founded by Ryan DeBerardinis, that finds slow, manual, or error-prone workflows in growing businesses and fixes them with practical AI, automation, and system integrations. Typical clients are operationally busy service businesses (contractors, HVAC, propane and fuel, field service, logistics), plus growing brands and teams. We are operators first: we build around the client's existing tools, keep a human approval step on consequential actions, and we say so plainly when automation isn't the right fix.
 

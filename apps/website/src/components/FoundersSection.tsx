@@ -237,7 +237,7 @@ export function FoundersSection() {
             }}
           >
             We&apos;re builders who got tired of watching companies fumble AI adoption. 
-            So we started embedding directly with teams — shipping automations, training staff, 
+            So we started embedding directly with teams: shipping automations, training staff, 
             and leaving behind systems that actually stick.
           </p>
 
