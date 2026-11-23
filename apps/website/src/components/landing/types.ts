@@ -109,6 +109,56 @@ export interface TickerContent {
   strip2: string[];
 }
 
+export interface QuestionAnswer {
+  q: string;
+  a: string;
+}
+
+export interface ContentSection {
+  heading: string;
+  paragraphs: string[];
+  bullets?: string[];
+  steps?: string[];
+  closing?: string;
+}
+
+export interface RelatedLink {
+  href: string;
+  label: string;
+  description: string;
+}
+
+/** A single-intent service page, such as one of the roofing pages. */
+export interface ServicePageContent {
+  path: string;
+  meta: {
+    title: string;
+    description: string;
+  };
+  breadcrumbLabel: string;
+  parent: { path: string; label: string };
+  eyebrow: string;
+  h1: string;
+  intro: string;
+  quickAnswers: QuestionAnswer[];
+  sections: ContentSection[];
+  setup: {
+    heading: string;
+    intro: string;
+    items: Array<{ title: string; text: string }>;
+    approvalNote: string;
+  };
+  related: RelatedLink[];
+  faq: FAQContent;
+  cta: CTAContent;
+  service: {
+    name: string;
+    serviceType: string;
+    description: string;
+    audience: string;
+  };
+}
+
 export interface LandingContent {
   vertical: Vertical;
   meta: LandingMeta;
